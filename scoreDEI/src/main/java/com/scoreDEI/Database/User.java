@@ -13,13 +13,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
-    @NotNull @Column(unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @NotNull @Column(unique = true)
+    @Column(name = "phone", nullable = false, unique = true)
     private Long phone;
-    @NotNull
+    @Column(name = "password", nullable = false)
     private String password;
 
     public User() {
@@ -70,5 +70,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                '}';
     }
 }
