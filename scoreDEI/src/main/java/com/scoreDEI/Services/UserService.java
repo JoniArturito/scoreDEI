@@ -14,7 +14,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUser() {
+    public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         userRepository.findAll().forEach(allUsers::add);
         return allUsers;
