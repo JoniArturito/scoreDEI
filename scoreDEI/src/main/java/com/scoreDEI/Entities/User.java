@@ -1,7 +1,6 @@
-package com.scoreDEI.Database;
+package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;

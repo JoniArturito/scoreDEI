@@ -1,4 +1,4 @@
-package com.scoreDEI.Database;
+package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
