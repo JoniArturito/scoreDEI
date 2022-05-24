@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
@@ -15,6 +16,7 @@ public class Card extends GameEvent{
     @Column(name = "yellow", nullable = false)
     private boolean isYellow = true;
     @ManyToOne
+    @JoinColumn(name="playerId", nullable=false)
     private Player player;
 
     public Card() {

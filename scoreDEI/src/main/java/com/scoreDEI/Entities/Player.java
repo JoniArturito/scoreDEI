@@ -25,8 +25,10 @@ public class Player {
     private Date birthday;
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
-    @OneToMany(mappedBy = "gameEventId")
-    private List<GameEvent> events;
+    @OneToMany(mappedBy = "player")
+    private List<Card> cards;
+    @OneToMany(mappedBy = "player")
+    private List<Goal> goals;
 
     public Player() {
     }
@@ -35,7 +37,8 @@ public class Player {
         this.name = name;
         this.position = position;
         this.birthday = birthday;
-        events = new ArrayList<>();
+        cards = new ArrayList<>();
+        goals = new ArrayList<>();
     }
 
     public Player(String name, String position, Date birthday, Team team) {
@@ -43,7 +46,8 @@ public class Player {
         this.position = position;
         this.birthday = birthday;
         this.team = team;
-        events = new ArrayList<>();
+        cards = new ArrayList<>();
+        goals = new ArrayList<>();
     }
 
     public int getPlayerId() {
@@ -86,12 +90,20 @@ public class Player {
         this.team = team;
     }
 
-    public List<GameEvent> getEvents() {
-        return events;
+    public List<Card> getCards() {
+        return cards;
     }
 
-    public void setEvents(List<GameEvent> events) {
-        this.events = events;
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public List<Goal> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
     }
 
     @Override

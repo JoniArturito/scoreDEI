@@ -3,6 +3,7 @@ package com.scoreDEI.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @XmlRootElement
 public class Goal extends GameEvent{
     @ManyToOne
+    @JoinColumn(name="playerId", nullable=false)
     private Player player;
 
     public Goal() {
