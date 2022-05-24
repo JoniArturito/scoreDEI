@@ -6,24 +6,26 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "games")
 @JsonIgnoreProperties({"games"})
 @XmlRootElement
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private int id;
+    @Column(name = "gameId", nullable = false)
+    private int gameId;
     @Column(name = "begindate", nullable = false)
     private Timestamp beginDate;
     @Column(name = "location", nullable = false)
     private String location;
 
-    @ManyToMany(mappedBy = "id")
-    private ArrayList<Team> teams;
+    @ManyToMany(mappedBy = "games")
+    private List<Team> teams;
     @OneToMany
-    private ArrayList<GameEvent> events;
+    private List<GameEvent> events;
 
     public Game() {
     }
@@ -36,11 +38,11 @@ public class Game {
     }
 
     public int getId() {
-        return id;
+        return gameId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.gameId = id;
     }
 
     public Timestamp getBeginDate() {
@@ -59,7 +61,7 @@ public class Game {
         this.location = location;
     }
 
-    public ArrayList<Team> getTeams() {
+    public List<Team> getTeams() {
         return teams;
     }
 
@@ -67,7 +69,7 @@ public class Game {
         this.teams = teams;
     }
 
-    public ArrayList<GameEvent> getEvents() {
+    public List<GameEvent> getEvents() {
         return events;
     }
 

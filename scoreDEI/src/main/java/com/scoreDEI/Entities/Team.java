@@ -5,25 +5,27 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "teams")
 @JsonIgnoreProperties({"teams"})
 @XmlRootElement
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private int id;
+    @Column(name = "teamId", nullable = false)
+    private int teamId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "logo")
     private byte[] logo;
-    @ManyToMany(mappedBy = "id")
-    private ArrayList<Game> games;
-    @OneToMany(mappedBy = "id")
-    private ArrayList<Player> players;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    private List<Game> games;
+    @OneToMany(mappedBy = "playerId")
+    private List<Player> players;
 
     public Team() {
     }
@@ -35,12 +37,12 @@ public class Team {
         players = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
+    public int getTeamId() {
+        return teamId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
     public String getName() {
@@ -59,7 +61,7 @@ public class Team {
         this.logo = logo;
     }
 
-    public ArrayList<Game> getGames() {
+    public List<Game> getGames() {
         return games;
     }
 
@@ -67,7 +69,7 @@ public class Team {
         this.games = games;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 

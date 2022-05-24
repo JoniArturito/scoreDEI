@@ -6,27 +6,27 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "players")
 @JsonIgnoreProperties({"players"})
 @XmlRootElement
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private int id;
+    @Column(name = "playerId", nullable = false)
+    private int playerId;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "position", nullable = false)
     private String position;
     @Column(name = "birthday", nullable = false)
     private Date birthday;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
-    @OneToMany(mappedBy = "id")
-    private ArrayList<Card> cards;
-    @OneToMany(mappedBy = "id")
-    private ArrayList<Goal> goals;
+    @OneToMany(mappedBy = "gameEventId")
+    private List<GameEvent> events;
 
     public Player() {
     }
@@ -35,8 +35,7 @@ public class Player {
         this.name = name;
         this.position = position;
         this.birthday = birthday;
-        cards = new ArrayList<>();
-        goals = new ArrayList<>();
+        events = new ArrayList<>();
     }
 
     public Player(String name, String position, Date birthday, Team team) {
@@ -44,16 +43,15 @@ public class Player {
         this.position = position;
         this.birthday = birthday;
         this.team = team;
-        cards = new ArrayList<>();
-        goals = new ArrayList<>();
+        events = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
+    public int getPlayerId() {
+        return playerId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public String getName() {
@@ -88,20 +86,12 @@ public class Player {
         this.team = team;
     }
 
-    public ArrayList<Card> getCards() {
-        return cards;
+    public List<GameEvent> getEvents() {
+        return events;
     }
 
-    public void setCards(ArrayList<Card> cards) {
-        this.cards = cards;
-    }
-
-    public ArrayList<Goal> getGoals() {
-        return goals;
-    }
-
-    public void setGoals(ArrayList<Goal> goals) {
-        this.goals = goals;
+    public void setEvents(List<GameEvent> events) {
+        this.events = events;
     }
 
     @Override
