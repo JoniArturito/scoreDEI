@@ -29,7 +29,12 @@ public class DatabaseController {
 
     @GetMapping("/")
     public String redirect(){
-        return "redirect:/listUsers";
+        return "redirect:/createData";
+    }
+
+    @GetMapping({"/createData"})
+    public String createData() {
+        return "createData";
     }
 
     @GetMapping("/listUsers")
@@ -58,7 +63,7 @@ public class DatabaseController {
         for (AdminUser ad: admins)
             this.userService.addUser(ad);
 
-        return "redirect:/listUsers";
+        return "redirect:/";
     }
 
     @PostMapping("/addAdmin")
