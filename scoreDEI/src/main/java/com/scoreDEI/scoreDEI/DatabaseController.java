@@ -40,7 +40,7 @@ public class DatabaseController {
     }
 
     @PostMapping("/saveData")
-    public String saveData(Model model) {
+    public String saveData(Model m) {
         AdminUser[] admins = {
                 new AdminUser("Rui", "abcdefgh@gmail.com", 123456789L, PasswordHash.toHexString(PasswordHash.getSha("bruh"))),
                 new AdminUser("Joao", "ijklmnop@gmail.com", 123456788L, PasswordHash.toHexString(PasswordHash.getSha("ananas")))
@@ -59,5 +59,19 @@ public class DatabaseController {
             this.userService.addUser(ad);
 
         return "redirect:/listUsers";
+    }
+
+    @PostMapping("/addAdmin")
+    public String addAdmin(Model m)
+    {
+        m.addAttribute("adminUser", new AdminUser());
+        return "editAdmin";
+    }
+
+    @PostMapping("/addRegUser")
+    public String addRegUser(Model m)
+    {
+        m.addAttribute("regularUser", new RegularUser());
+        return "editRegUser";
     }
 }
