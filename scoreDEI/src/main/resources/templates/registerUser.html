@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEi</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div class="menu">
+    <h2 id="logo">scoreDEI</h2>
+    <a href="#">Home</a>
+    <a href="#">Users</a>
+    <a href="#">Teams</a>
+    <a href="#">Players</a>
+    <a href="#">Games</a>
+    <a href="#">Statistics</a>
+  </div>
+
+  <div class="body">
+
+      <h2 style=".registrationHeader">User registration</h2>
+      <form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
+
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" value="" required>
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="phone">Phone number:</label>
+          <input type="tel" id="phone" name="phone" pattern="[0-9]{9+}" required>
+
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" value="" required>
+
+          <input type="checkbox" id="admin_role" name="admin_role">
+          <label for="admin_role">Is admin?</label><br>
+
+          <input type="submit" value="Register">
+
+      </form>
+
+  </div>
+
+</div>
+</body>
+</html>

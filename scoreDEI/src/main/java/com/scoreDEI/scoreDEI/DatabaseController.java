@@ -2,12 +2,14 @@ package com.scoreDEI.scoreDEI;
 
 import com.scoreDEI.Entities.AdminUser;
 import com.scoreDEI.Entities.RegularUser;
+import com.scoreDEI.Forms.RegisterForm;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.testng.annotations.Test;
 
@@ -31,6 +33,34 @@ public class DatabaseController {
     @GetMapping("/")
     public String redirect(){
         return "home";
+    }
+
+    @GetMapping("/register")
+    public String registerUserForm(Model model) {
+        model.addAttribute("registerForm", new RegisterForm());
+        return "registerUser";
+    }
+
+    @PostMapping("/register")
+    public String registerUserSubmit(@ModelAttribute RegisterForm form, Model model) {
+        model.addAttribute("registerForm", form);
+
+        System.out.println(form.toString());
+
+        String username = form.getUsername();
+        String password = PasswordHash.toHexString(PasswordHash.getSha(form.getPassword()));
+        String email = form.getEmail();
+        long phone = form.getPhone();
+
+        if(form.isAdmin_role()) {
+            AdminUser user = new AdminUser(username, email, phone, password);
+            this.userService.addUser(user);
+        } else {
+            RegularUser user = new RegularUser(username, email, phone, password);
+            this.userService.addUser(user);
+        }
+
+        return "registerUser";
     }
 
     @GetMapping({"/createData"})
