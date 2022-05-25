@@ -29,7 +29,7 @@ public class DatabaseController {
 
     @GetMapping("/")
     public String redirect(){
-        return "redirect:/createData";
+        return "home";
     }
 
     @GetMapping({"/createData"})
