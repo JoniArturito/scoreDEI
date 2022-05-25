@@ -40,4 +40,8 @@ public class PlayerService {
         }
         return allPlayers.get(0);
     }
+
+    public void clearAllPlayers(){
+        playerRepository.deleteAll();
+    }
 }

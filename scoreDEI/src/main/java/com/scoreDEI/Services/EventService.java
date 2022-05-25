@@ -45,4 +45,8 @@ public class EventService {
     {
         eventRepository.save(event);
     }
+
+    public void clearAllEvents(){
+        eventRepository.deleteAll();
+    }
 }

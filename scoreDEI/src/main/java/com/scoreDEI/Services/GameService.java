@@ -27,4 +27,8 @@ public class GameService {
     public Optional<Game> getGame(int id){
         return gameRepository.findById(id);
     }
+
+    public void clearAllGames(){
+        gameRepository.deleteAll();
+    }
 }

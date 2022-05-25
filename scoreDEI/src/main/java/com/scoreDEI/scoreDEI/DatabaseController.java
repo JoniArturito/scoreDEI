@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.testng.annotations.Test;
 
 @Controller
 public class DatabaseController {
@@ -58,10 +59,10 @@ public class DatabaseController {
                 new RegularUser("Carlos", "cccc@gmail.com", 555555555L, PasswordHash.toHexString(PasswordHash.getSha("1234")))
         };
 
-        for (RegularUser us : users)
-            this.userService.addUser(us);
         for (AdminUser ad: admins)
             this.userService.addUser(ad);
+        for (RegularUser us : users)
+            this.userService.addUser(us);
 
         return "redirect:/";
     }

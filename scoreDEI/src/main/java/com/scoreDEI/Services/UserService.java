@@ -6,6 +6,7 @@ import com.scoreDEI.Entities.User;
 import com.scoreDEI.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,5 +40,9 @@ public class UserService {
     public void addRegUser(RegularUser user)
     {
         userRepository.save(user);
+    }
+
+    public void clearAllUsers(){
+        userRepository.deleteAll();
     }
 }

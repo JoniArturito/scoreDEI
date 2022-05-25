@@ -35,4 +35,8 @@ public class TeamService {
         allTeams.sort(new SortTeamsByScore());
         return allTeams;
     }
+
+    public void clearAllTeams(){
+        teamRepository.deleteAll();
+    }
 }
