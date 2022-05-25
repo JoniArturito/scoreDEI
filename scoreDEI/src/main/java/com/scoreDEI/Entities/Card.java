@@ -45,6 +45,11 @@ public class Card extends GameEvent{
     }
 
     @Override
+    public int getTypeEvent() {
+        return 1;
+    }
+
+    @Override
     public String toString() {
         return "Card{" +
                 "isYellow=" + isYellow +

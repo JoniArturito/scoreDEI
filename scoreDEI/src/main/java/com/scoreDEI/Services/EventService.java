@@ -1,6 +1,9 @@
 package com.scoreDEI.Services;
 
+import com.scoreDEI.Entities.Card;
 import com.scoreDEI.Entities.GameEvent;
+import com.scoreDEI.Entities.GameStatus;
+import com.scoreDEI.Entities.Goal;
 import com.scoreDEI.Repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +29,20 @@ public class EventService {
 
     public Optional<GameEvent> getGameEvent(int id){
         return eventRepository.findById(id);
+    }
+
+    public void addCardEvent(Card event)
+    {
+        eventRepository.save(event);
+    }
+
+    public void addStatusEvent(GameStatus event)
+    {
+        eventRepository.save(event);
+    }
+
+    public void addGoalEvent(Goal event)
+    {
+        eventRepository.save(event);
     }
 }

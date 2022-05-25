@@ -1,6 +1,7 @@
 package com.scoreDEI.Services;
 
 import com.scoreDEI.Entities.Team;
+import com.scoreDEI.Others.Sorts.SortTeamsByScore;
 import com.scoreDEI.Repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,12 @@ public class TeamService {
 
     public Optional<Team> getTeam(int id){
         return teamRepository.findById(id);
+    }
+
+    public List<Team> getOrderedTeams(){
+        List<Team> allTeams = new ArrayList<>();
+        teamRepository.findAll().forEach(allTeams::add);
+        allTeams.sort(new SortTeamsByScore());
+        return allTeams;
     }
 }

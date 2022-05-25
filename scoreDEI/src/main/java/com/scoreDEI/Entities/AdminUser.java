@@ -15,4 +15,9 @@ public class AdminUser extends User{
     public AdminUser(String name, String email, Long phone, String password) {
         super(name, email, phone, password);
     }
+
+    @Override
+    public int getType() {
+        return 1;
+    }
 }

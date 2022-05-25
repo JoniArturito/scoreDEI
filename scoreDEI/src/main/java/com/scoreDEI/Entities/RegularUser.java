@@ -16,4 +16,8 @@ public class RegularUser extends User{
         super(name, email, phone, password);
     }
 
+    @Override
+    public int getType() {
+        return 2;
+    }
 }

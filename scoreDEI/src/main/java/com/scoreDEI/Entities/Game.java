@@ -1,6 +1,7 @@
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.scoreDEI.Others.Sorts.SortEventByDate;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -70,11 +71,46 @@ public class Game {
     }
 
     public List<GameEvent> getEvents() {
+        events.sort(new SortEventByDate());
         return events;
     }
 
     public void setEvents(ArrayList<GameEvent> events) {
         this.events = events;
+    }
+
+    public int[] getScore() {
+        int[] score = new int[2];
+        for (GameEvent event: events) {
+            if (event.getTypeEvent() == 3) {
+                Goal goalEvent = (Goal) event;
+                String teamName = goalEvent.getPlayer().getTeam().getName();
+                for (int i = 0; i < teams.size(); i++) {
+                    if (teamName.equals(teams.get(i).getName())) {
+                        score[i]++;
+                        break;
+                    }
+                }
+            }
+        }
+        return score;
+    }
+
+    public int isWinner(Team team) {
+        int[] score = getScore();
+        int index = -1;
+        for (int i = 0; i < teams.size(); i++)
+        {
+            if (team.getName().equals(teams.get(i).getName()))
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) return -2;
+        if (score[index] > score[1-index]) return 1;
+        else if (score[index] < score[1-index]) return -1;
+        else return 0;
     }
 
     @Override

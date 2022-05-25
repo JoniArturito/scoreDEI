@@ -33,6 +33,11 @@ public class Goal extends GameEvent{
     }
 
     @Override
+    public int getTypeEvent() {
+        return 3;
+    }
+
+    @Override
     public String toString() {
         return "Goal{" +
                 "player=" + player +

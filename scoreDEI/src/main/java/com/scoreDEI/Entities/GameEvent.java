@@ -53,6 +53,11 @@ public class GameEvent {
         this.game = game;
     }
 
+    public int getTypeEvent()
+    {
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "GameEvent{" +

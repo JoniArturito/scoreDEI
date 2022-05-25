@@ -1,6 +1,7 @@
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.scoreDEI.Others.Sorts.SortPlayersByScore;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -75,6 +76,39 @@ public class Team {
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public int[] getGamesInfo()
+    {
+        /*
+            0 -> numero de jogos
+            1 -> vitorias
+            2 -> empates
+            3 -> derrotas
+         */
+        int[] info = new int[4];
+        info[0] = games.size();
+        int error = 0;
+        for (Game game: games)
+        {
+            switch (game.isWinner(this)) {
+                case 1 -> info[1]++;
+                case 0 -> info[2]++;
+                case -1 -> info[3]++;
+                default -> error++;
+            }
+        }
+        return info;
+    }
+
+    public Player getBestScorer()
+    {
+        players.sort(new SortPlayersByScore());
+        for (Player player: players)
+        {
+            System.out.printf("%s -> %d\n", player, player.getNumberGoals());
+        }
+        return players.get(0);
     }
 
     @Override

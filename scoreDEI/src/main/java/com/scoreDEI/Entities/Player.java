@@ -106,6 +106,11 @@ public class Player {
         this.goals = goals;
     }
 
+    public int getNumberGoals()
+    {
+        return goals.size();
+    }
+
     @Override
     public String toString() {
         return "Player{" +

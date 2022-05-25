@@ -1,5 +1,7 @@
 package com.scoreDEI.Services;
 
+import com.scoreDEI.Entities.AdminUser;
+import com.scoreDEI.Entities.RegularUser;
 import com.scoreDEI.Entities.User;
 import com.scoreDEI.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,21 @@ public class UserService {
     }
 
     public void addUser(User user){
-        System.out.println(user);
+        //System.out.println(user);
         userRepository.save(user);
     }
 
     public Optional<User> getUser(int id){
         return userRepository.findById(id);
+    }
+
+    public void addAdmin(AdminUser user)
+    {
+        userRepository.save(user);
+    }
+
+    public void addRegUser(RegularUser user)
+    {
+        userRepository.save(user);
     }
 }

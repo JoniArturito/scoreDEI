@@ -73,6 +73,11 @@ public class User {
         this.password = password;
     }
 
+    public int getType()
+    {
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -31,6 +31,11 @@ public class GameStatus extends GameEvent{
     }
 
     @Override
+    public int getTypeEvent() {
+        return 2;
+    }
+
+    @Override
     public String toString() {
         return "GameStatus{" +
                 "type=" + type +
