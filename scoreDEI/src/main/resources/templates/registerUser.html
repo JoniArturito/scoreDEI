@@ -10,42 +10,81 @@
 <body>
 
 <div class="main">
-  <div class="menu">
-    <h2 id="logo">scoreDEI</h2>
-    <a href="#">Home</a>
-    <a href="#">Users</a>
-    <a href="#">Teams</a>
-    <a href="#">Players</a>
-    <a href="#">Games</a>
-    <a href="#">Statistics</a>
-  </div>
+    <div class="menu">
+        <h2 id="logo">scoreDEI</h2>
+        <a href="#">Home</a>
+        <a href="#">Users</a>
+        <a href="#">Teams</a>
+        <a href="#">Players</a>
+        <a href="#">Games</a>
+        <a href="#">Statistics</a>
+    </div>
 
-  <div class="body">
+    <div class="body">
 
-      <h2 style=".registrationHeader">User registration</h2>
-      <form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
+        <div class="container">
 
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" value="" required>
+            <div class="header">
+              <h2 class="headerTitle">User registration</h2>
+              <p class="headerSubtitle">Fill the form to create a user.</p>
+            </div>
 
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required>
+            <div class="form">
 
-          <label for="phone">Phone number:</label>
-          <input type="tel" id="phone" name="phone" pattern="[0-9]{9+}" required>
+                <form action="#" th:action="@{/register}" th:object="${registerForm}" method="post">
 
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" value="" required>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="username">Username:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" id="username" name="username" placeholder="Enter the username..." value="" required>
+                        </div>
+                    </div>
 
-          <input type="checkbox" id="admin_role" name="admin_role">
-          <label for="admin_role">Is admin?</label><br>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="email">Email:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="email" id="email" name="email" placeholder="Enter the email..." required>
+                        </div>
+                    </div>
 
-          <input type="submit" value="Register">
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="phone">Phone number:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="tel" id="phone" name="phone" placeholder="Enter the phone number..." pattern="[0-9]{9+}" required>
+                        </div>
+                    </div>
 
-      </form>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="password">Password:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="password" id="password" name="password" placeholder="Enter the password..." value="" required>
+                        </div>
+                    </div>
 
-  </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="admin_role">Grant admin privileges?</label><br>
+                        </div>
+                        <div class="admin_role">
+                            <input type="checkbox" id="admin_role" name="admin_role">
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
