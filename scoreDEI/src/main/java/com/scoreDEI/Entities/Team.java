@@ -19,6 +19,8 @@ public class Team {
     private int teamId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+    @Column(name = "imageName", nullable = false)
+    private String imageName;
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "logo")

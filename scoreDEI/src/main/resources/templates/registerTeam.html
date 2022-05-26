@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div class="menu">
+        <h2 id="logo">scoreDEI</h2>
+        <a href="">Home</a>
+        <a href="">Users</a>
+        <a href="">Teams</a>
+        <a href="">Players</a>
+        <a href="">Games</a>
+        <a href="">Statistics</a>
+    </div>
+
+    <div class="body">
+
+        <div class="container">
+
+            <div class="header">
+                <h2 class="headerTitle">Team registration</h2>
+                <p class="headerSubtitle">Fill the form to create a team.</p>
+            </div>
+
+            <div class="form">
+
+                <form action="#" th:action="@{/registerTeam}" th:object="${TeamForm}" method="post" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="name">Team Name:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" id="name" name="name" placeholder="Enter the Team Name..." value="" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="multipartFile">Select a file:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="file" id="multipartFile" name="multipartFile" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

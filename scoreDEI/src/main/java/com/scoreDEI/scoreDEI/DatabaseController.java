@@ -2,7 +2,9 @@ package com.scoreDEI.scoreDEI;
 
 import com.scoreDEI.Entities.AdminUser;
 import com.scoreDEI.Entities.RegularUser;
+import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Forms.RegisterForm;
+import com.scoreDEI.Forms.TeamForm;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Arrays;
 
 @Controller
 public class DatabaseController {
@@ -97,17 +101,20 @@ public class DatabaseController {
         return "redirect:/";
     }
 
-    @PostMapping("/addAdmin")
-    public String addAdmin(Model m)
-    {
-        m.addAttribute("adminUser", new AdminUser());
-        return "editAdmin";
+    @GetMapping("/registerTeam")
+    public String registerTeamForm(Model model) {
+        model.addAttribute("TeamForm", new TeamForm());
+        return "registerTeam";
     }
 
-    @PostMapping("/addRegUser")
-    public String addRegUser(Model m)
-    {
-        m.addAttribute("regularUser", new RegularUser());
-        return "editRegUser";
+    @PostMapping("/registerTeam")
+    public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model) throws Exception {
+        model.addAttribute("TeamForm", form);
+
+        System.out.println(form.getName());
+        System.out.println(form.getMultipartFile().getName());
+        System.out.println(Arrays.toString(form.getMultipartFile().getBytes()));
+
+        return "registerTeam";
     }
 }
