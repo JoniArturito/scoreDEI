@@ -31,7 +31,7 @@ public class DatabaseController {
 
     @GetMapping("/")
     public String redirect(){
-        return "experiment";
+        return "listUsers";
     }
 
     @GetMapping("/register")
