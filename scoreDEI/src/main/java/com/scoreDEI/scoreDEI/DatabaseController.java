@@ -3,16 +3,14 @@ package com.scoreDEI.scoreDEI;
 import com.scoreDEI.Entities.*;
 import com.scoreDEI.Forms.GameForm;
 import com.scoreDEI.Forms.PlayerForm;
-import com.scoreDEI.Forms.RegisterForm;
+import com.scoreDEI.Forms.UserForm;
 import com.scoreDEI.Forms.TeamForm;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
@@ -46,15 +44,13 @@ public class DatabaseController {
 
     @GetMapping("/register")
     public String registerUserForm(Model model) {
-        model.addAttribute("registerForm", new RegisterForm());
+        model.addAttribute("registerForm", new UserForm());
         return "registerUser";
     }
 
     @PostMapping("/register")
-    public String registerUserSubmit(@ModelAttribute RegisterForm form, Model model) {
+    public String registerUserSubmit(@ModelAttribute UserForm form, Model model) {
         model.addAttribute("registerForm", form);
-
-        System.out.println(form.toString());
 
         String username = form.getUsername();
         String password = PasswordHash.toHexString(PasswordHash.getSha(form.getPassword()));
@@ -69,12 +65,83 @@ public class DatabaseController {
             this.userService.addUser(user);
         }
 
-        return "registerUser";
+        return "redirect:/listUsers";
     }
 
-    @GetMapping({"/createData"})
-    public String createData() {
-        return "createData";
+    @GetMapping("/user/edit/name")
+    public String updateUsername(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<User> op = this.userService.getUser(id);
+        model.addAttribute("editForm", new UserForm());
+        if (op.isPresent()) {
+            model.addAttribute("user", op.get());
+            return "user/updateUsername";
+        }
+        return "redirect:/listUsers";
+    }
+
+    @PostMapping("/user/edit/name")
+    public String updateUsername(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
+        model.addAttribute("editForm", form);
+        String username = form.getUsername();
+        userService.updateUsername(id, username);
+        return "redirect:/listUsers";
+    }
+
+    @GetMapping("/user/edit/email")
+    public String updateEmail(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<User> op = this.userService.getUser(id);
+        model.addAttribute("editForm", new UserForm());
+        if (op.isPresent()) {
+            model.addAttribute("user", op.get());
+            return "user/updatePassword";
+        }
+        return "redirect:/listUsers";
+    }
+
+    @PostMapping("/user/edit/email")
+    public String updateEmail(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
+        model.addAttribute("editForm", form);
+        String email = form.getUsername();
+        userService.updateEmail(id, email);
+        return "redirect:/listUsers";
+    }
+
+    @GetMapping("/user/edit/phone")
+    public String updatePhone(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<User> op = this.userService.getUser(id);
+        model.addAttribute("editForm", new UserForm());
+        if (op.isPresent()) {
+            model.addAttribute("user", op.get());
+            return "user/updatePhone";
+        }
+        return "redirect:/listUsers";
+    }
+
+    @PostMapping("/user/edit/phone")
+    public String updatePhone(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
+        model.addAttribute("editForm", form);
+        long phone = form.getPhone();
+        userService.updatePhone(id, phone);
+        return "redirect:/listUsers";
+    }
+
+    @GetMapping("/user/edit/password")
+    public String updatePassword(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<User> op = this.userService.getUser(id);
+        model.addAttribute("editForm", new UserForm());
+        if (op.isPresent()) {
+            model.addAttribute("user", op.get());
+            return "user/updatePassword";
+        }
+        return "redirect:/listUsers";
+    }
+
+    @PostMapping("/user/edit/password")
+    public String updatePassword(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
+        model.addAttribute("editForm", form);
+        long phone = form.getPhone();
+        userService.updatePhone(id, phone);
+        return "redirect:/listUsers";
     }
 
     @GetMapping("/listUsers")
@@ -83,6 +150,11 @@ public class DatabaseController {
         m.addAttribute("admins", this.userService.getAllAdmins());
         m.addAttribute("regular_users", this.userService.getAllRegUsers());
         return "listUsers";
+    }
+
+    @GetMapping({"/createData"})
+    public String createData() {
+        return "createData";
     }
 
     @PostMapping("/saveData")

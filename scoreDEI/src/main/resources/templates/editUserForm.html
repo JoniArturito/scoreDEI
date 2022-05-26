@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEi</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div th:replace="navbar.html"></div>
+  <div class="body">
+
+    <div class="container">
+
+      <div class="header">
+        <h2 class="headerTitle">User registration</h2>
+        <p class="headerSubtitle">Fill the form to create a user.</p>
+      </div>
+
+      <div class="form">
+
+        <form action="#" th:action="@{/editUser(id=${user.userId})}" th:object="${editForm}" method="post">
+
+          <div class="row">
+            <div class="col-25">
+              <label for="username">Username:</label>
+            </div>
+            <div class="col-75">
+              <input type="text" id="username" name="username" placeholder="${user.name}" value="${user.name}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="email">Email:</label>
+            </div>
+            <div class="col-75">
+              <input type="email" id="email" name="email" placeholder="${user.email}" value="${user.email}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="phone">Phone number:</label>
+            </div>
+            <div class="col-75">
+              <input type="tel" id="phone" name="phone" placeholder="${user.phone}" value="${user.phone}" pattern="[0-9]{9+}">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="password">Password:</label>
+            </div>
+            <div class="col-75">
+              <input type="password" id="password" name="password" placeholder="Enter the new password..." value="">
+            </div>
+          </div>
+
+          <div class="row">
+            <input style={padding-top:250px} type="submit" value="Register">
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

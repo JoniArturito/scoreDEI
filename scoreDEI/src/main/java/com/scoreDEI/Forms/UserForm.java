@@ -1,6 +1,6 @@
 package com.scoreDEI.Forms;
 
-public class RegisterForm {
+public class UserForm {
     private String username;
     private String password;
     private String email;
@@ -49,7 +49,7 @@ public class RegisterForm {
 
     @Override
     public String toString() {
-        return "RegisterForm{" +
+        return "UserForm{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +

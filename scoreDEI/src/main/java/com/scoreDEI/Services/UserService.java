@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.testng.annotations.Test;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,5 +74,45 @@ public class UserService {
 
     public void clearAllUsers(){
         userRepository.deleteAll();
+    }
+
+    @Transactional
+    public void changeUser(int id, User user) {
+        Optional<User> u = this.getUser(id);
+
+        if(u.isPresent()) {
+            u.get().setName(user.getName());
+            u.get().setEmail(user.getEmail());
+            u.get().setPassword(user.getPassword());
+            u.get().setPhone(user.getPhone());
+        }
+    }
+
+    @Transactional
+    public void updateUsername(int id, String username) {
+        Optional<User> u = this.getUser(id);
+
+        u.ifPresent(user -> user.setName(username));
+    }
+
+    @Transactional
+    public void updateEmail(int id, String email) {
+        Optional<User> u = this.getUser(id);
+
+        u.ifPresent(user -> user.setEmail(email));
+    }
+
+    @Transactional
+    public void updatePhone(int id, long phone) {
+        Optional<User> u = this.getUser(id);
+
+        u.ifPresent(user -> user.setPhone(phone));
+    }
+
+    @Transactional
+    public void updatePassword(int id, String password) {
+        Optional<User> u = this.getUser(id);
+
+        u.ifPresent(user -> user.setPassword(password));
     }
 }
