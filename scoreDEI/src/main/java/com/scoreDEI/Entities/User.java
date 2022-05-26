@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_gen")
     @Column(name = "userId", nullable = false)
     private int userId;
     @Column(name = "name", nullable = false)

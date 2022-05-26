@@ -14,7 +14,7 @@ import java.util.List;
 @XmlRootElement
 public class Player {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "player_gen")
     @Column(name = "playerId", nullable = false)
     private int playerId;
     @Column(name = "name", nullable = false)

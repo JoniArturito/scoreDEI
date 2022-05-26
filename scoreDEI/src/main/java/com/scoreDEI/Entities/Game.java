@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.scoreDEI.Others.Sorts.SortEventByDate;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
 @XmlRootElement
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "game_gen")
     @Column(name = "gameId", nullable = false)
     private int gameId;
     @Column(name = "begindate", nullable = false)
@@ -23,6 +24,7 @@ public class Game {
     @Column(name = "location", nullable = false)
     private String location;
 
+    //Divide into one Home Team and one Visitor Team
     @ManyToMany(mappedBy = "games")
     private List<Team> teams;
     @OneToMany
@@ -62,10 +64,12 @@ public class Game {
         this.location = location;
     }
 
+    @Transactional
     public List<Team> getTeams() {
         return teams;
     }
 
+    @Transactional
     public void setTeams(ArrayList<Team> teams) {
         this.teams = teams;
     }

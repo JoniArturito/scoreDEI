@@ -6,6 +6,8 @@ import com.scoreDEI.Repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,7 @@ public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
 
+    @Transactional
     public List<Team> getAllTeams(){
         List<Team> allTeams = new ArrayList<>();
         teamRepository.findAll().forEach(allTeams::add);
@@ -25,10 +28,19 @@ public class TeamService {
         teamRepository.save(team);
     }
 
+    @Transactional
     public Optional<Team> getTeam(int id){
         return teamRepository.findById(id);
     }
 
+    @Transactional
+    public Optional<Team> getTeam(String name)
+    {
+        List<Team> query = teamRepository.findTeamByName(name);
+        return Optional.ofNullable(query.get(0));
+    }
+
+    @Transactional
     public List<Team> getOrderedTeams(){
         List<Team> allTeams = new ArrayList<>();
         teamRepository.findAll().forEach(allTeams::add);
@@ -38,5 +50,17 @@ public class TeamService {
 
     public void clearAllTeams(){
         teamRepository.deleteAll();
+    }
+
+    @Transactional
+    public List<Team> findTeamByName(String chars) {
+        return teamRepository.findTeamByName(chars);
+    }
+
+    @Transactional
+    public void addGameToTeam(Team team)
+    {
+        teamRepository.findById(team.getTeamId());
+
     }
 }

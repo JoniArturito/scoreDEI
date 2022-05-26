@@ -7,13 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "events")
 @JsonIgnoreProperties({"game_events"})
 @XmlRootElement
 public class GameEvent {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "event_gen")
     @Column(name = "gameEventId", nullable = false)
     private int gameEventId;
     @Column(name = "eventdate", nullable = false)

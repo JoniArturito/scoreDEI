@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.scoreDEI.Others.Sorts.SortPlayersByScore;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,11 @@ import java.util.List;
 @XmlRootElement
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "team_gen")
     @Column(name = "teamId", nullable = false)
     private int teamId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Column(name = "imageName", nullable = false)
-    private String imageName;
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "logo")
@@ -68,10 +67,17 @@ public class Team {
         return games;
     }
 
+    @Transactional
     public void setGames(ArrayList<Game> games) {
         this.games = games;
     }
 
+    @Transactional
+    public void addGame(Game game) {
+        this.games.add(game);
+    }
+
+    @Transactional
     public List<Player> getPlayers() {
         return players;
     }

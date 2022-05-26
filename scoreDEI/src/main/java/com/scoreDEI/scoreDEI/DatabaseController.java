@@ -1,8 +1,8 @@
 package com.scoreDEI.scoreDEI;
 
-import com.scoreDEI.Entities.AdminUser;
-import com.scoreDEI.Entities.RegularUser;
-import com.scoreDEI.Entities.Team;
+import com.scoreDEI.Entities.*;
+import com.scoreDEI.Forms.GameForm;
+import com.scoreDEI.Forms.PlayerForm;
 import com.scoreDEI.Forms.RegisterForm;
 import com.scoreDEI.Forms.TeamForm;
 import com.scoreDEI.Others.PasswordHash;
@@ -14,7 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Controller
 public class DatabaseController {
@@ -111,10 +117,86 @@ public class DatabaseController {
     public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model) throws Exception {
         model.addAttribute("TeamForm", form);
 
-        System.out.println(form.getName());
-        System.out.println(form.getMultipartFile().getName());
-        System.out.println(Arrays.toString(form.getMultipartFile().getBytes()));
+        Team dbTeam = new Team(form.getName(), form.getMultipartFile().getBytes());
+        this.teamService.addTeam(dbTeam);
 
         return "registerTeam";
+    }
+
+    @GetMapping("/registerPlayer")
+    public String registerPlayerForm(Model model) {
+        model.addAttribute("teams", this.teamService.getAllTeams());
+        model.addAttribute("PlayerForm", new PlayerForm());
+        return "registerPlayer";
+    }
+
+    @PostMapping("/registerPlayer")
+    public String registerPlayerSubmit(@ModelAttribute PlayerForm form, Model model){
+        model.addAttribute("PlayerForm", form);
+
+        String playerName = form.getName();
+        String playerPosition = form.getPosition();
+        Date playerBirthday = form.getBirthday();
+        Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
+
+        if (playerTeam.isPresent()) {
+            Player dbPlayer = new Player(playerName, playerPosition, playerBirthday, playerTeam.get());
+            this.playerService.addPlayer(dbPlayer);
+        }
+        else{
+            System.out.println("Team not found");
+        }
+
+        return "registerPlayer";
+    }
+
+    @GetMapping("/registerGame")
+    public String registerGameForm(Model model) {
+        model.addAttribute("teams", this.teamService.getAllTeams());
+        model.addAttribute("Game", new GameForm());
+        return "registerGame";
+    }
+
+    @PostMapping("/registerGame")
+    public String registerGameSubmit(@ModelAttribute GameForm form, Model model) {
+        model.addAttribute("GameForm", form);
+
+        if (form.getHomeTeam().equals(form.getVisitorTeam())){
+            System.out.println("Team cant play against itself");
+        }
+        else{
+            /*
+            System.out.println(form.getHomeTeam());
+            System.out.println(form.getVisitorTeam());
+            System.out.println(form.getDateTime());
+            System.out.println(form.getLocation());
+            */
+            Optional<Team> homeTeam = this.teamService.getTeam(form.getHomeTeam());
+            Optional<Team> visitorTeam = this.teamService.getTeam(form.getVisitorTeam());
+            String newDateTimeLocal = (form.getDateTime().replace("T", " ")).concat(":00");
+            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            String location = form.getLocation();
+
+            if (homeTeam.isPresent() && visitorTeam.isPresent())
+            {
+                Team hTeam = homeTeam.get();
+                Team vTeam = visitorTeam.get();
+                ArrayList<Team> teams = new ArrayList<>();
+                teams.add(hTeam);
+                teams.add(vTeam);
+                Game dbGame = new Game(dateAndTime, location);
+                dbGame.setTeams(teams);
+                hTeam.addGame(dbGame);
+                vTeam.addGame(dbGame);
+                this.gameService.addGame(dbGame);
+                this.teamService.addTeam(hTeam);
+                this.teamService.addTeam(vTeam);
+            }
+            else{
+                System.out.println("At least one team isnt present");
+            }
+        }
+
+        return "registerGame";
     }
 }

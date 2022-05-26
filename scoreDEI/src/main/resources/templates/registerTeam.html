@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
     <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
 </head>
@@ -10,15 +10,7 @@
 <body>
 
 <div class="main">
-    <div class="menu">
-        <h2 id="logo">scoreDEI</h2>
-        <a href="">Home</a>
-        <a href="">Users</a>
-        <a href="">Teams</a>
-        <a href="">Players</a>
-        <a href="">Games</a>
-        <a href="">Statistics</a>
-    </div>
+    <div th:replace="navbar.html"></div>
 
     <div class="body">
 
