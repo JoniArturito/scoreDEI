@@ -17,6 +17,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public UserService() {};
+
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
         userRepository.findAll().forEach(allUsers::add);
@@ -24,7 +26,6 @@ public class UserService {
     }
 
     public void addUser(User user){
-        //System.out.println(user);
         userRepository.save(user);
     }
 

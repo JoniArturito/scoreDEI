@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.testng.annotations.Test;
 
 @Controller
 public class DatabaseController {
@@ -69,10 +68,9 @@ public class DatabaseController {
     }
 
     @GetMapping("/listUsers")
-    public String listUsers(Model m)
-    {
+    public String listUsers(Model m) {
         m.addAttribute("users", this.userService.getAllUsers());
-        return "listUsers";
+        return "registerUser";
     }
 
     @PostMapping("/saveData")
