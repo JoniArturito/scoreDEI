@@ -18,7 +18,38 @@
         <h1 class="headerTitle">List of users</h1>
       </div>
 
-      th:each="
+      <table border="1">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        <tr th:each="s : ${users}">
+          <td th:text="${s.name}">id</td>
+          <td th:text="${s.email}">name</td>
+        </tr>
+      </table>
+
+      <table border="1">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        <tr th:each="s : ${admins}">
+          <td th:text="${s.name}">id</td>
+          <td th:text="${s.email}">name</td>
+        </tr>
+      </table>
+
+      <table border="1">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+        <tr th:each="s : ${regular_users}">
+          <td th:text="${s.name}">id</td>
+          <td th:text="${s.email}">name</td>
+        </tr>
+      </table>
 
     </div>
 

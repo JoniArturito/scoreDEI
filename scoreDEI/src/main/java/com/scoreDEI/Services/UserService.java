@@ -25,6 +25,34 @@ public class UserService {
         return allUsers;
     }
 
+    public List<AdminUser> getAllAdmins() {
+        List<User> allUsers = new ArrayList<>();
+        userRepository.findAll().forEach(allUsers::add);
+        List<AdminUser> allAdmins = new ArrayList<>();
+        for (User user: allUsers)
+        {
+            if (user.getType() == 1)
+            {
+                allAdmins.add((AdminUser) user);
+            }
+        }
+        return allAdmins;
+    }
+
+    public List<RegularUser> getAllRegUsers() {
+        List<User> allUsers = new ArrayList<>();
+        userRepository.findAll().forEach(allUsers::add);
+        List<RegularUser> allReg = new ArrayList<>();
+        for (User user: allUsers)
+        {
+            if (user.getType() == 2)
+            {
+                allReg.add((RegularUser) user);
+            }
+        }
+        return allReg;
+    }
+
     public void addUser(User user){
         userRepository.save(user);
     }

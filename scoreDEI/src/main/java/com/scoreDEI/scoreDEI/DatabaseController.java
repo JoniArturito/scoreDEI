@@ -31,7 +31,7 @@ public class DatabaseController {
 
     @GetMapping("/")
     public String redirect(){
-        return "listUsers";
+        return "redirect:/listUsers";
     }
 
     @GetMapping("/register")
@@ -70,7 +70,9 @@ public class DatabaseController {
     @GetMapping("/listUsers")
     public String listUsers(Model m) {
         m.addAttribute("users", this.userService.getAllUsers());
-        return "registerUser";
+        m.addAttribute("admins", this.userService.getAllAdmins());
+        m.addAttribute("regular_users", this.userService.getAllRegUsers());
+        return "listUsers";
     }
 
     @PostMapping("/saveData")
