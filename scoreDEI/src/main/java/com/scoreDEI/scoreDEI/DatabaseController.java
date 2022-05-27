@@ -7,13 +7,18 @@ import com.scoreDEI.Forms.UserForm;
 import com.scoreDEI.Forms.TeamForm;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -192,7 +197,75 @@ public class DatabaseController {
         Team dbTeam = new Team(form.getName(), form.getMultipartFile().getBytes());
         this.teamService.addTeam(dbTeam);
 
-        return "registerTeam";
+        return "redirect:/listTeams";
+    }
+
+    @GetMapping("/listTeams")
+    public String listTeams(Model model) {
+        model.addAttribute("teams", this.teamService.getAllTeams());
+
+        return "/team/listTeams";
+    }
+
+    @GetMapping("/team/logo")
+    public void getTeamLogo(@RequestParam(name="id", required = true) int id, HttpServletResponse response) throws IOException {
+        response.setContentType("image/png");
+
+        Optional<Team> t = this.teamService.getTeam(id);
+
+        if(t.isPresent()) {
+            Team team = t.get();
+            InputStream image = new ByteArrayInputStream(team.getLogo());
+            IOUtils.copy(image, response.getOutputStream());
+        }
+    }
+
+    @GetMapping("/team/edit/logo")
+    public String updateTeamLogo(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<Team> t = this.teamService.getTeam(id);
+
+        if(t.isPresent()) {
+            model.addAttribute("teamForm", new TeamForm());
+            model.addAttribute("team", t.get());
+
+            return "team/updateLogo";
+        }
+
+        return "redirect:/listTeams";
+    }
+
+    @PostMapping("/team/edit/logo")
+    public String updateTeamLogo(@RequestParam(name="id", required = true) int id, @ModelAttribute TeamForm form, Model model) throws IOException {
+        model.addAttribute("teamForm", form);
+
+        byte[] new_logo = form.getMultipartFile().getBytes();
+        this.teamService.updateTeamLogo(id, new_logo);
+
+        return "redirect:/listTeams";
+    }
+
+    @GetMapping("/team/edit/name")
+    public String updateTeamName(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<Team> t = this.teamService.getTeam(id);
+
+        if(t.isPresent()) {
+            model.addAttribute("teamForm", new TeamForm());
+            model.addAttribute("team", t.get());
+
+            return "team/updateTeamName";
+        }
+
+        return "redirect:/listTeams";
+    }
+
+    @PostMapping("/team/edit/name")
+    public String updateTeamName(@RequestParam(name="id", required = true) int id, @ModelAttribute TeamForm form, Model model) throws IOException {
+        model.addAttribute("teamForm", form);
+
+        String name = form.getName();
+        this.teamService.updateTeamName(id, name);
+
+        return "redirect:/listTeams";
     }
 
     @GetMapping("/registerPlayer")

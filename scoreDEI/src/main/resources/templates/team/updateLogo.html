@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEi</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div th:replace="navbar.html"></div>
+  <div class="body">
+
+    <div class="container">
+
+      <div class="header">
+        <h2 class="headerTitle">Update team logo.</h2>
+      </div>
+
+      <div class="form">
+
+        <form action="#" th:action="@{/team/edit/logo(id=${team.teamId})}" th:object="${teamForm}" method="post">
+
+          <div class="row">
+            <div class="col-25">
+              <label for="multipartFile">Select a file:</label>
+            </div>
+            <div class="col-75">
+              <input type="file" id="multipartFile" name="multipartFile" accept="image/*">
+            </div>
+          </div>
+
+          <div class="row">
+            <input style={padding-top:250px} type="submit" value="Save">
+            <a class="cancel" href="/listTeams"> Cancel </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

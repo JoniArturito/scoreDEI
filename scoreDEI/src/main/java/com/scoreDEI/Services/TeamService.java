@@ -58,9 +58,20 @@ public class TeamService {
     }
 
     @Transactional
-    public void addGameToTeam(Team team)
-    {
+    public void addGameToTeam(Team team) {
         teamRepository.findById(team.getTeamId());
-
     }
+
+    @Transactional
+    public void updateTeamLogo(int id, byte[] new_logo) {
+        Optional<Team> t = this.getTeam(id);
+        t.ifPresent(team -> team.setLogo(new_logo));
+    }
+
+    @Transactional
+    public void updateTeamName(int id, String name) {
+        Optional<Team> t = this.getTeam(id);
+        t.ifPresent(team -> team.setName(name));
+    }
+
 }

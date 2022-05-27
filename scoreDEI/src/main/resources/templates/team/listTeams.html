@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEi</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div th:replace="navbar.html"></div>
+  <div class="body">
+
+    <div class = "container">
+
+      <div class="header">
+        <h1 class="headerTitle">List of teams</h1>
+        <a href="/registerTeam"> Register new team. </a>
+      </div>
+
+      <div class="users_info">
+        <h2>Teams</h2>
+        <table border="1">
+          <tr>
+            <th>Logo</th>
+            <th></th>
+            <th>Name</th>
+            <th></th>
+          </tr>
+          <tr th:each="s : ${teams}">
+            <td><img th:src="@{team/logo(id=${s.teamId})}" alt="This team has no logo."></td>
+            <td><a style="{color:black; font-size: 18px}" th:href="@{team/edit/logo(id=${s.teamId})}">Change team logo</a></td>
+            <td><a style="{color:black; font-size: 18px}" th:text="${s.name}" th:href="@{team/edit/name(id=${s.teamId})}">name</a></td>
+            <td><a th:href="@{team/delete(id=${s.teamId})}">Delete</a></td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
