@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class="container">
+
+            <div class="header">
+                <h2 class="headerTitle">Player registration</h2>
+                <p class="headerSubtitle">Fill the form to create a player.</p>
+            </div>
+
+            <div class="form">
+
+                <form action="#" th:action="@{/player/register}" th:object="${PlayerForm}" method="post">
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="name">Player Name:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" id="name" name="name" placeholder="Enter the player name..." value="" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <fieldset>
+                            <div class="col-25">
+                                <label for="name">Position:</label>
+                            </div>
+
+                            <div class="col-75">
+                                <input type="radio" id="goalkeeper" name="position" value="Goalkeeper">
+                                <label for="goalkeeper">Goalkeeper</label><br>
+
+                                <input type="radio" id="defender" name="position" value="Defender">
+                                <label for="defender">Defender</label><br>
+
+                                <input type="radio" id="midfielder" name="position" value="Midfielder">
+                                <label for="midfielder">Midfielder</label>
+
+                                <input type="radio" id="forward" name="position" value="Forward">
+                                <label for="forward">Forward</label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="birthday">Birthday:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="date" id="birthday" name="birthday" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="team">Team:</label>
+                        </div>
+                        <div class="col-75">
+                            <select name="teamName" id="team" required>
+                                <tr th:each="s : ${teams}">
+                                    <option th:text="${s.name}"> name </option>
+                                </tr>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class="container">
+
+            <div class="header">
+                <h2 class="headerTitle">Update player's name</h2>
+            </div>
+
+            <div class="form">
+
+                <form action="#" th:action="@{/player/edit/name(id=${player.getPlayerId()})}" th:object="${playerForm}" method="post">
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="name">Player Name:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" id="name" name="name" placeholder="Enter the player name..." value="" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Save">
+                        <a class="cancel" href="/player/list"> Cancel </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.scoreDEI.scoreDEI;
 
+import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Forms.TeamForm;
 import com.scoreDEI.Services.TeamService;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -42,6 +44,20 @@ public class TeamDataController {
         model.addAttribute("teams", this.teamService.getAllTeams());
 
         return "/team/list";
+    }
+
+    @GetMapping("/profile")
+    public String teamProfile(@RequestParam(name="id", required = true) int id, Model model) {
+        Optional<Team> t = this.teamService.getTeam(id);
+
+        if(t.isPresent()) {
+            List<Player> players = t.get().getPlayers();
+            model.addAttribute("team", t.get());
+            model.addAttribute("players", players);
+            return "/team/profile";
+        }
+
+        return "redirect:/team/list";
     }
 
     @GetMapping("/logo")

@@ -74,33 +74,6 @@ public class DatabaseController {
         return "redirect:/";
     }
 
-    @GetMapping("/registerPlayer")
-    public String registerPlayerForm(Model model) {
-        model.addAttribute("teams", this.teamService.getAllTeams());
-        model.addAttribute("PlayerForm", new PlayerForm());
-        return "registerPlayer";
-    }
-
-    @PostMapping("/registerPlayer")
-    public String registerPlayerSubmit(@ModelAttribute PlayerForm form, Model model){
-        model.addAttribute("PlayerForm", form);
-
-        String playerName = form.getName();
-        String playerPosition = form.getPosition();
-        Date playerBirthday = form.getBirthday();
-        Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
-
-        if (playerTeam.isPresent()) {
-            Player dbPlayer = new Player(playerName, playerPosition, playerBirthday, playerTeam.get());
-            this.playerService.addPlayer(dbPlayer);
-        }
-        else{
-            System.out.println("Team not found");
-        }
-
-        return "registerPlayer";
-    }
-
     @GetMapping("/registerGame")
     public String registerGameForm(Model model) {
         model.addAttribute("teams", this.teamService.getAllTeams());

@@ -6,7 +6,6 @@ import com.scoreDEI.Repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +33,11 @@ public class TeamService {
     }
 
     @Transactional
-    public Optional<Team> getTeam(String name)
-    {
+    public Optional<Team> getTeam(String name) {
         List<Team> query = teamRepository.findTeamByName(name);
-        System.out.println();
-        for(Team q: query)
-        {
-            System.out.println(q);
+        for(Team t: query) {
+            System.out.println("-> " + t.getName());
         }
-        System.out.println();
         return Optional.ofNullable(query.get(0));
     }
 

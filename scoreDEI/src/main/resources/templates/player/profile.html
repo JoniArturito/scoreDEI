@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class = "container">
+
+            <div class="header">
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${player.getPlayerId()})}">Change name.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/position(id=${player.getPlayerId()})}">Change position.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/birthday(id=${player.getPlayerId()})}">Change birthday.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/team(id=${player.getPlayerId()})}">Change team.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${player.getPlayerId()})}">Delete player.</a>
+            </div>
+
+            <div>
+                <h1 class="headerTitle" th:text="${player.getName()}"></h1>
+            </div>
+
+            <div class="position">
+                <h3>Position:</h3>
+                <p th:text="${player.getPosition()}"></p>
+            </div>
+
+            <div class="birthday">
+                <h3>Birthday:</h3>
+                <p th:text="${player.getBirthday()}"></p>
+            </div>
+
+            <div class="team">
+                <h3>Team:</h3>
+                <a style="{color:black}" th:href="@{/team/profile(id=${player.getTeam().getTeamId()})}">Hello</a>
+                <p th:text="${player.getPosition()}"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class = "container">
+
+            <div class="header">
+                <h1 class="headerTitle">List of players per team</h1>
+                <a href="/player/register">Register player</a>
+            </div>
+
+            <div class="users_info">
+                <ul th:each="team : ${teams}">
+                    <br>
+                    <h2 th:href="@{/team/profile(id=${team.getTeamId()})}" th:text="${team.getName()}"></h2>
+                    <table border="1">
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Birthday</th>
+                        </tr>
+                        <tr th:each="player : ${team.getPlayers()}">
+                            <td><a style="{color:black; font-size: 18px}" th:href="@{profile(id=${player.getPlayerId()})}" th:text="${player.name}">name</a></td>
+                            <td><a style="{color:black; font-size: 18px}" th:text="${player.position}">position</a></td>
+                            <td><a style="{color:black; font-size: 18px}" th:text="${player.birthday}">birthday</a></td>
+                        </tr>
+                    </table>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
