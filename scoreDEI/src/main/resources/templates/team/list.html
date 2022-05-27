@@ -17,7 +17,7 @@
 
       <div class="header">
         <h1 class="headerTitle">List of teams</h1>
-        <a href="/registerTeam"> Register new team. </a>
+        <a href="/team/register"> Register new team. </a>
       </div>
 
       <div class="users_info">
@@ -30,10 +30,10 @@
             <th></th>
           </tr>
           <tr th:each="s : ${teams}">
-            <td><img th:src="@{team/logo(id=${s.teamId})}" alt="This team has no logo."></td>
-            <td><a style="{color:black; font-size: 18px}" th:href="@{team/edit/logo(id=${s.teamId})}">Change team logo</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.name}" th:href="@{team/edit/name(id=${s.teamId})}">name</a></td>
-            <td><a th:href="@{team/delete(id=${s.teamId})}">Delete</a></td>
+            <td><img th:src="@{logo(id=${s.teamId})}" alt="This team has no logo."></td>
+            <td><a style="{color:black; font-size: 18px}" th:href="@{edit/logo(id=${s.teamId})}">Change team logo</a></td>
+            <td><a style="{color:black; font-size: 18px}" th:text="${s.name}" th:href="@{edit/name(id=${s.teamId})}">name</a></td>
+            <td><a th:href="@{delete(id=${s.teamId})}">Delete</a></td>
           </tr>
         </table>
       </div>

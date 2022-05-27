@@ -23,14 +23,14 @@
 
             <div class="form">
 
-                <form action="#" th:action="@{/registerTeam}" th:object="${TeamForm}" method="post" enctype="multipart/form-data">
+                <form action="#" th:action="@{/team/register}" th:object="${TeamForm}" method="post" enctype="multipart/form-data">
 
                     <div class="row">
                         <div class="col-25">
-                            <label for="name">Team Name:</label>
+                            <label for="name">Team name:</label>
                         </div>
                         <div class="col-75">
-                            <input type="text" id="name" name="name" placeholder="Enter the Team Name..." value="" required>
+                            <input type="text" id="name" name="name" placeholder="Enter the team Name..." value="" required>
                         </div>
                     </div>
 

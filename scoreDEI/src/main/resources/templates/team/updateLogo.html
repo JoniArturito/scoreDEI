@@ -21,7 +21,7 @@
 
       <div class="form">
 
-        <form action="#" th:action="@{/team/edit/logo(id=${team.teamId})}" th:object="${teamForm}" method="post">
+        <form action="#" th:action="@{/team/edit/logo(id=${team.teamId})}" th:object="${teamForm}" method="post" enctype="multipart/form-data">
 
           <div class="row">
             <div class="col-25">
@@ -34,7 +34,7 @@
 
           <div class="row">
             <input style={padding-top:250px} type="submit" value="Save">
-            <a class="cancel" href="/listTeams"> Cancel </a>
+            <a class="cancel" href="/team/list"> Cancel </a>
           </div>
 
         </form>
