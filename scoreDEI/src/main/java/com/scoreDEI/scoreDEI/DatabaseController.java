@@ -116,12 +116,6 @@ public class DatabaseController {
             System.out.println("Team cant play against itself");
         }
         else{
-            /*
-            System.out.println(form.getHomeTeam());
-            System.out.println(form.getVisitorTeam());
-            System.out.println(form.getDateTime());
-            System.out.println(form.getLocation());
-            */
             Optional<Team> homeTeam = this.teamService.getTeam(form.getHomeTeam());
             Optional<Team> visitorTeam = this.teamService.getTeam(form.getVisitorTeam());
             String newDateTimeLocal = (form.getDateTime().replace("T", " ")).concat(":00");
@@ -132,16 +126,8 @@ public class DatabaseController {
             {
                 Team hTeam = homeTeam.get();
                 Team vTeam = visitorTeam.get();
-                ArrayList<Team> teams = new ArrayList<>();
-                teams.add(hTeam);
-                teams.add(vTeam);
-                Game dbGame = new Game(dateAndTime, location);
-                dbGame.setTeams(teams);
-                hTeam.addGame(dbGame);
-                vTeam.addGame(dbGame);
+                Game dbGame = new Game(dateAndTime, location, hTeam, vTeam);
                 this.gameService.addGame(dbGame);
-                this.teamService.addTeam(hTeam);
-                this.teamService.addTeam(vTeam);
             }
             else{
                 System.out.println("At least one team isnt present");

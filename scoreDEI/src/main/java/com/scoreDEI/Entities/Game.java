@@ -25,27 +25,56 @@ public class Game {
     private String location;
 
     //Divide into one Home Team and one Visitor Team
-    @ManyToMany(mappedBy = "games")
-    private List<Team> teams;
+    /*@ManyToMany(mappedBy = "games")
+    private List<Team> teams;*/
+
+    @ManyToOne
+    @JoinColumn(name = "home_team_id", nullable = false)
+    private Team homeTeam;
+    @ManyToOne
+    @JoinColumn(name = "visitor_team_id", nullable = false, foreignKey = @ForeignKey(name = "visitor_team_id"))
+    private Team visitorTeam;
+
     @OneToMany
     private List<GameEvent> events;
 
     public Game() {
     }
 
-    public Game(Timestamp beginDate, String location) {
+    public Game(Timestamp beginDate, String location, Team homeTeam, Team visitorTeam) {
         this.beginDate = beginDate;
         this.location = location;
-        teams = new ArrayList<>();
+        this.homeTeam = homeTeam;
+        this.visitorTeam = visitorTeam;
         events = new ArrayList<>();
     }
 
-    public int getId() {
+    public int getGameId() {
         return gameId;
     }
 
-    public void setId(int id) {
-        this.gameId = id;
+    @Transactional
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    @Transactional
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    @Transactional
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    @Transactional
+    public Team getVisitorTeam() {
+        return visitorTeam;
+    }
+
+    public void setVisitorTeam(Team visitorTeam) {
+        this.visitorTeam = visitorTeam;
     }
 
     public Timestamp getBeginDate() {
@@ -64,16 +93,6 @@ public class Game {
         this.location = location;
     }
 
-    @Transactional
-    public List<Team> getTeams() {
-        return teams;
-    }
-
-    @Transactional
-    public void setTeams(ArrayList<Team> teams) {
-        this.teams = teams;
-    }
-
     public List<GameEvent> getEvents() {
         events.sort(new SortEventByDate());
         return events;
@@ -89,11 +108,11 @@ public class Game {
             if (event.getTypeEvent() == 3) {
                 Goal goalEvent = (Goal) event;
                 String teamName = goalEvent.getPlayer().getTeam().getName();
-                for (int i = 0; i < teams.size(); i++) {
-                    if (teamName.equals(teams.get(i).getName())) {
-                        score[i]++;
-                        break;
-                    }
+                if (teamName.equals(homeTeam.getName())) {
+                    score[0]++;
+                }
+                else if (teamName.equals(visitorTeam.getName())) {
+                    score[1]++;
                 }
             }
         }
@@ -103,15 +122,13 @@ public class Game {
     public int isWinner(Team team) {
         int[] score = getScore();
         int index = -1;
-        for (int i = 0; i < teams.size(); i++)
-        {
-            if (team.getName().equals(teams.get(i).getName()))
-            {
-                index = i;
-                break;
-            }
+        if (team.getName().equals(homeTeam.getName())) {
+            index = 0;
         }
-        if (index == -1) return -2;
+        else if (team.getName().equals(visitorTeam.getName())){
+            index = 1;
+        }
+        else return -2;
         if (score[index] > score[1-index]) return 1;
         else if (score[index] < score[1-index]) return -1;
         else return 0;
@@ -122,7 +139,8 @@ public class Game {
         return "Game{" +
                 "beginDate=" + beginDate +
                 ", location='" + location + '\'' +
-                ", teams=" + teams +
+                ", homeTeam=" + homeTeam +
+                ", visitorTeam" + visitorTeam +
                 '}';
     }
 }

@@ -37,6 +37,12 @@ public class TeamService {
     public Optional<Team> getTeam(String name)
     {
         List<Team> query = teamRepository.findTeamByName(name);
+        System.out.println();
+        for(Team q: query)
+        {
+            System.out.println(q);
+        }
+        System.out.println();
         return Optional.ofNullable(query.get(0));
     }
 

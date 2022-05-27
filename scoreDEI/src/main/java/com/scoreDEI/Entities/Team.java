@@ -24,8 +24,10 @@ public class Team {
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "logo")
     private byte[] logo;
-    @ManyToMany(cascade = CascadeType.MERGE)
-    private List<Game> games;
+    @OneToMany(mappedBy = "homeTeam")
+    private List<Game> homeGames;
+    @OneToMany(mappedBy = "visitorTeam")
+    private List<Game> visitorGames;
     @OneToMany(mappedBy = "playerId")
     private List<Player> players;
 
@@ -35,7 +37,8 @@ public class Team {
     public Team(String name, byte[] logo) {
         this.name = name;
         this.logo = logo;
-        games = new ArrayList<>();
+        homeGames = new ArrayList<>();
+        visitorGames = new ArrayList<>();
         players = new ArrayList<>();
     }
 
@@ -63,18 +66,34 @@ public class Team {
         this.logo = logo;
     }
 
-    public List<Game> getGames() {
-        return games;
+    @Transactional
+    public List<Game> getHomeGames() {
+        return homeGames;
     }
 
     @Transactional
-    public void setGames(ArrayList<Game> games) {
-        this.games = games;
+    public void setHomeGames(List<Game> homeGames) {
+        this.homeGames = homeGames;
     }
 
     @Transactional
-    public void addGame(Game game) {
-        this.games.add(game);
+    public List<Game> getVisitorGames() {
+        return visitorGames;
+    }
+
+    @Transactional
+    public void setVisitorGames(List<Game> visitorGames) {
+        this.visitorGames = visitorGames;
+    }
+
+    @Transactional
+    public void addHomeGame(Game home) {
+        homeGames.add(home);
+    }
+
+    @Transactional
+    public void addVisitorGame(Game visitor) {
+        visitorGames.add(visitor);
     }
 
     @Transactional
@@ -95,10 +114,17 @@ public class Team {
             3 -> derrotas
          */
         int[] info = new int[4];
-        info[0] = games.size();
+        info[0] = homeGames.size() + visitorGames.size();
         int error = 0;
-        for (Game game: games)
-        {
+        for (Game game: homeGames) {
+            switch (game.isWinner(this)) {
+                case 1 -> info[1]++;
+                case 0 -> info[2]++;
+                case -1 -> info[3]++;
+                default -> error++;
+            }
+        }
+        for (Game game: visitorGames) {
             switch (game.isWinner(this)) {
                 case 1 -> info[1]++;
                 case 0 -> info[2]++;
