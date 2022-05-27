@@ -1,10 +1,7 @@
 package com.scoreDEI.scoreDEI;
 
 import com.scoreDEI.Entities.*;
-import com.scoreDEI.Forms.GameForm;
-import com.scoreDEI.Forms.PlayerForm;
-import com.scoreDEI.Forms.UserForm;
-import com.scoreDEI.Forms.TeamForm;
+import com.scoreDEI.Forms.*;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -108,5 +105,113 @@ public class DatabaseController {
         }
 
         return "registerGame";
+    }
+
+    @GetMapping("/registerEvent")
+    public String registerEventForm(Model model) {
+        model.addAttribute("games", this.gameService.getAllGames());
+        model.addAttribute("EventForm", new EventForm());
+        return "registerEvent";
+    }
+
+    @PostMapping("/registerEvent")
+    public String registerEventSubmit(@ModelAttribute EventForm form, Model model) {
+
+        System.out.println(form.getGame());
+        Optional<Game> opGame = this.gameService.getGame(form.getGame());
+
+        if (opGame.isPresent()) {
+            switch(form.getTypeEvent()) {
+                case 0:
+                    GameStatusForm toModel = new GameStatusForm(opGame.get(), 0);
+                    model.addAttribute("GameStatusForm", toModel);
+                    return "registerGameStatus";
+                case 1:
+                    model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 1));
+                    return "registerGameStatus";
+                case 2:
+                    model.addAttribute("GoalForm", new GoalForm(opGame.get()));
+                    return "registerGoal";
+                case 3:
+                    model.addAttribute("CardForm", new CardForm(opGame.get(), true));
+                    return "registerGameStatus";
+                case 4:
+                    model.addAttribute("CardForm", new CardForm(opGame.get(), false));
+                    return "registerGameStatus";
+                case 5:
+                    model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 2));
+                    return "registerGameStatus";
+                case 6:
+                    model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 3));
+                    return "registerGameStatus";
+                default:
+                    break;
+            }
+        }
+
+        return "registerEvent";
+    }
+
+    /*@GetMapping("/registerGameStatus")
+    public String registerGameStatusForm(@ModelAttribute GameStatusForm form, Model model) {
+        model.addAttribute("GameStatusForm", form);
+        return "registerGameStatus";
+    }*/
+
+    @PostMapping("/registerGameStatus")
+    public String registerGameStatusSubmit(@ModelAttribute GameStatusForm form, Model model) {
+        model.addAttribute("GameStatusForm", form);
+
+        System.out.println(form.getGame());
+        System.out.println(form.getType());
+        System.out.println(form.getEventDate());
+
+        String newDateTimeLocal = (form.getEventDate().replace("T", " ")).concat(":00");
+        Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+
+        GameStatus dbGameStatus = new GameStatus(dateAndTime, form.getGame(), form.getType());
+        this.eventService.addGameEvent(dbGameStatus);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/registerGoal")
+    public String registerGoalForm(@ModelAttribute GoalForm form, Model model) {
+        model.addAttribute("GoalForm", form);
+        return "registerGoal";
+    }
+
+    @PostMapping("/registerGoal")
+    public String registerGoalSubmit(@ModelAttribute GoalForm form, Model model) {
+        String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
+        Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+
+        Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
+        if (opPlayer.isPresent()) {
+            Goal dbGoal = new Goal(dateAndTime, form.getGame(), opPlayer.get());
+            this.eventService.addGoalEvent(dbGoal);
+        }
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/registerCard")
+    public String registerCardForm(@ModelAttribute CardForm form, Model model) {
+        model.addAttribute("CardForm", form);
+        return "registerCard";
+    }
+
+    @PostMapping("/registerCard")
+    public String registerCardSubmit(@ModelAttribute CardForm form, Model model) {
+        String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
+        Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+
+        Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
+        if (opPlayer.isPresent()) {
+            Card dbCard = new Card(dateAndTime, form.getGame(), form.isYellow(), opPlayer.get());
+            this.eventService.addCardEvent(dbCard);
+        }
+
+        return "redirect:/";
     }
 }

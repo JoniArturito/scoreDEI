@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class="container">
+
+            <div class="header">
+                <h2 class="headerTitle">Game Status Registration</h2>
+                <p class="headerSubtitle">Register the Game Status.</p>
+            </div>
+
+            <div class="form">
+
+                <form action="#" th:action="@{/registerGameStatus}" th:object="${GameStatusForm}" method="post">
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="eventDate">Time of Event:</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="datetime-local" id="eventDate" name="eventDate">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

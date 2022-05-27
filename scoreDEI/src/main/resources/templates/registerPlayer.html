@@ -71,7 +71,7 @@
                         <div class="col-75">
                             <select name="teamName" id="team">
                                 <tr th:each="s : ${teams}">
-                                    <option th:text="${s.name}"> name </option>
+                                    <option th:text="${s.name}" value="${s.name}"> name </option>
                                 </tr>
                             </select>
                         </div>

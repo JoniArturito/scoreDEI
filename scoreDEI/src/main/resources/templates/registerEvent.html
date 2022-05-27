@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class="container">
+
+            <div class="header">
+                <h2 class="headerTitle">Event Registration</h2>
+                <p class="headerSubtitle">Choose the type of event.</p>
+            </div>
+
+            <div class="form">
+
+                <form action="#" th:action="@{/registerEvent}" th:object="${EventForm}" method="post">
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label>Which game?</label>
+                        </div>
+                        <div class="col-75">
+                            <select name="game" id="game">
+                                <tr th:each="s : ${games}">
+                                    <option th:text="${s.name}"> name </option>
+                                </tr>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <fieldset>
+                            <div class="col-25">
+                                <label>Type of Event:</label>
+                            </div>
+
+                            <div class="col-75">
+                                <input type="radio" id="begin" name="typeEvent" value=0>
+                                <label for="begin">Game begin</label><br>
+
+                                <input type="radio" id="end" name="typeEvent" value=1>
+                                <label for="end">Game ending</label><br>
+
+                                <input type="radio" id="score" name="typeEvent" value=2>
+                                <label for="score">Goal</label>
+
+                                <input type="radio" id="yellow" name="typeEvent" value=3>
+                                <label for="yellow">Yellow Card</label>
+
+                                <input type="radio" id="red" name="typeEvent" value=4>
+                                <label for="red">Red Card</label>
+
+                                <input type="radio" id="interruption" name="typeEvent" value=5>
+                                <label for="interruption">Game interrupted</label>
+
+                                <input type="radio" id="resumed" name="typeEvent" value=6>
+                                <label for="resumed">Game resumed</label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

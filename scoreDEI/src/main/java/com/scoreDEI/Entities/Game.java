@@ -19,6 +19,8 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "game_gen")
     @Column(name = "gameId", nullable = false)
     private int gameId;
+    @Column(name = "name", nullable = false)
+    private String name;
     @Column(name = "begindate", nullable = false)
     private Timestamp beginDate;
     @Column(name = "location", nullable = false)
@@ -47,15 +49,25 @@ public class Game {
         this.homeTeam = homeTeam;
         this.visitorTeam = visitorTeam;
         events = new ArrayList<>();
+        name = homeTeam.getName() + " - " +
+                visitorTeam.getName() + " (" +
+                beginDate.toString() + ")";
     }
 
     public int getGameId() {
         return gameId;
     }
 
-    @Transactional
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Transactional

@@ -22,8 +22,8 @@ public class Card extends GameEvent{
     public Card() {
     }
 
-    public Card(Timestamp eventDate, boolean isYellow, Player player) {
-        super(eventDate);
+    public Card(Timestamp eventDate, Game game, boolean isYellow, Player player) {
+        super(eventDate, game);
         this.isYellow = isYellow;
         this.player = player;
     }

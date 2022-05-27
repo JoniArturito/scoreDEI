@@ -1,5 +1,6 @@
 package com.scoreDEI.Services;
 
+import com.scoreDEI.Entities.Game;
 import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Others.Sorts.SortPlayersByScore;
@@ -70,5 +71,22 @@ public class PlayerService {
     public void updateTeam(int id, Team team) {
         Optional<Player> p = this.getPlayer(id);
         p.ifPresent(player -> player.setTeam(team));
+    }
+
+    public List<Player> findPlayerByName(String chars) {
+        return playerRepository.findPlayerByName(chars);
+    }
+
+    @Transactional
+    public Optional<Player> getPlayer(String name)
+    {
+        List<Player> query = playerRepository.findPlayerByName(name);
+        System.out.println();
+        for(Player q: query)
+        {
+            System.out.println(q);
+        }
+        System.out.println();
+        return Optional.ofNullable(query.get(0));
     }
 }

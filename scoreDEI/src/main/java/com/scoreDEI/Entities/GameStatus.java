@@ -17,8 +17,8 @@ public class GameStatus extends GameEvent{
     public GameStatus() {
     }
 
-    public GameStatus(Timestamp eventDate, int type) {
-        super(eventDate);
+    public GameStatus(Timestamp eventDate, Game game, int type) {
+        super(eventDate, game);
         this.type = type;
     }
 

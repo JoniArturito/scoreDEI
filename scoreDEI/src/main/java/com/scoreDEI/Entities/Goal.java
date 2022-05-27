@@ -19,8 +19,8 @@ public class Goal extends GameEvent{
     public Goal() {
     }
 
-    public Goal(Timestamp eventDate, Player player) {
-        super(eventDate);
+    public Goal(Timestamp eventDate, Game game, Player player) {
+        super(eventDate, game);
         this.player = player;
     }
 

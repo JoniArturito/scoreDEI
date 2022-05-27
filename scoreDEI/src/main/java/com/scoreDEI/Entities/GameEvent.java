@@ -25,8 +25,9 @@ public class GameEvent {
     public GameEvent() {
     }
 
-    public GameEvent(Timestamp eventDate) {
+    public GameEvent(Timestamp eventDate, Game game) {
         this.eventDate = eventDate;
+        this.game = game;
     }
 
     public int getGameEventId() {
