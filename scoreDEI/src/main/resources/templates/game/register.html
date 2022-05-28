@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEI</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div th:replace="navbar.html"></div>
+  <div class="body">
+
+    <div class="container">
+
+      <div class="header">
+        <h2 class="headerTitle">Game registration</h2>
+        <p class="headerSubtitle">Fill the form to create a game match.</p>
+      </div>
+
+      <div class="form">
+
+        <form action="#" th:action="@{/game/register}" th:object="${GameForm}" method="post">
+
+          <div class="row">
+            <div class="col-25">
+              <label for="homeTeam">Home Team:</label>
+            </div>
+            <div class="col-75">
+              <select name="homeTeam" id="homeTeam">
+                <tr th:each="s : ${teams}">
+                  <option th:text="${s.name}"> name </option>
+                </tr>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="visitorTeam">Visitor Team:</label>
+            </div>
+            <div class="col-75">
+              <select name="visitorTeam" id="visitorTeam">
+                <tr th:each="s : ${teams}">
+                  <option th:text="${s.name}"> name </option>
+                </tr>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="location">Location:</label><br>
+            </div>
+            <div class="col-75">
+              <input type="text" id="location" name="location"><br>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="dateTime">Date and Time of Event::</label>
+            </div>
+            <div class="col-75">
+              <input type="datetime-local" id="dateTime" name="dateTime">
+            </div>
+          </div>
+
+          <div class="row">
+            <input style={padding-top:250px} type="submit" value="Register">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

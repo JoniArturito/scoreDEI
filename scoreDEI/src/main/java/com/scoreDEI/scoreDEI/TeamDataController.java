@@ -30,11 +30,16 @@ public class TeamDataController {
     }
 
     @PostMapping("/register")
-    public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model) throws Exception {
+    public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model) {
         model.addAttribute("TeamForm", form);
 
-        Team dbTeam = new Team(form.getName(), form.getMultipartFile().getBytes());
-        this.teamService.addTeam(dbTeam);
+        try {
+            Team dbTeam = new Team(form.getName(), form.getMultipartFile().getBytes());
+            this.teamService.addTeam(dbTeam);
+        } catch (Exception e) {
+            String name = form.getName();
+            return String.format("redirect:/error/team/register?name=%s",  name);
+        }
 
         return "redirect:/team/list";
     }

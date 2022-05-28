@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class = "container">
+
+            <div class="header">
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/home(id=${game.getGameId()})}">Change home name.</a></td>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/away(id=${game.getGameId()})}">Change away team.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/location(id=${game.getGameId()})}">Change game location.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/date(id=${game.getGameId()})}">Change game date.</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${game.getGameId()})}">Delete game.</a>
+            </div>
+
+            <div>
+                <h1 class="headerTitle" th:text="${game.getHomeTeam().getName() + ' - ' + game.getVisitorTeam().getName()}"></h1>
+            </div>
+
+            <div class="location">
+                <h3>Location:</h3>
+                <p th:text="${game.getLocation()}"></p>
+            </div>
+
+            <div class="date">
+                <h3>Date:</h3>
+                <p th:text="${game.getBeginDate()}"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class = "container">
+
+            <div class="header">
+                <h1 class="headerTitle">List of games</h1>
+                <a href="/game/register"> Register new game. </a>
+            </div>
+
+            <div class="game_info">
+                <h2>Games</h2>
+                <table border="1">
+                    <tr>
+                        <th>Game</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr th:each="game : ${games}">
+                        <td><a style="{color:black; font-size: 18px}" th:text="${game.getHomeTeam().getName() + ' - ' + game.getVisitorTeam().getName()}" th:href="@{profile(id=${game.getGameId()})}">Name.</a></td>
+                        <td><a style="{color:black; font-size: 18px}" th:text="${game.getLocation()}">Location.</a></td>
+                        <td><a style="{color:black; font-size: 18px}" th:text="${game.getBeginDate()}">Date.</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

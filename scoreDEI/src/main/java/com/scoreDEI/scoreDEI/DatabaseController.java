@@ -41,7 +41,7 @@ public class DatabaseController {
 
     @GetMapping("/")
     public String redirect(){
-        return "redirect:/user/list";
+        return "redirect:/game/list";
     }
 
     @GetMapping({"/createData"})
@@ -69,42 +69,6 @@ public class DatabaseController {
             this.userService.addUser(us);
 
         return "redirect:/";
-    }
-
-    @GetMapping("/registerGame")
-    public String registerGameForm(Model model) {
-        model.addAttribute("teams", this.teamService.getAllTeams());
-        model.addAttribute("Game", new GameForm());
-        return "registerGame";
-    }
-
-    @PostMapping("/registerGame")
-    public String registerGameSubmit(@ModelAttribute GameForm form, Model model) {
-        model.addAttribute("GameForm", form);
-
-        if (form.getHomeTeam().equals(form.getVisitorTeam())){
-            System.out.println("Team cant play against itself");
-        }
-        else{
-            Optional<Team> homeTeam = this.teamService.getTeam(form.getHomeTeam());
-            Optional<Team> visitorTeam = this.teamService.getTeam(form.getVisitorTeam());
-            String newDateTimeLocal = (form.getDateTime().replace("T", " ")).concat(":00");
-            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
-            String location = form.getLocation();
-
-            if (homeTeam.isPresent() && visitorTeam.isPresent())
-            {
-                Team hTeam = homeTeam.get();
-                Team vTeam = visitorTeam.get();
-                Game dbGame = new Game(dateAndTime, location, hTeam, vTeam);
-                this.gameService.addGame(dbGame);
-            }
-            else{
-                System.out.println("At least one team isnt present");
-            }
-        }
-
-        return "registerGame";
     }
 
     @GetMapping("/registerEvent")

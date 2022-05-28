@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class = "container">
+
+            <div class="header">
+                <h1 class="headerTitle">Error!</h1>
+                <p th:text="'Team ' + ${name} + ' already exists!'"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
