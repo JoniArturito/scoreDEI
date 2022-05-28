@@ -9,9 +9,17 @@ public class CardForm {
     private String playerName;
     private String beginDate;
 
+    private String gameIdString;
+    private String isYellowString;
+
+    public CardForm() {
+    }
+
     public CardForm(Game game, boolean isYellow) {
         this.game = game;
         this.isYellow = isYellow;
+        gameIdString = Integer.toString(game.getGameId());
+        isYellowString = Boolean.toString(isYellow);
     }
 
     public Game getGame() {
@@ -44,5 +52,21 @@ public class CardForm {
 
     public void setBeginDate(String beginDate) {
         this.beginDate = beginDate;
+    }
+
+    public String getGameIdString() {
+        return gameIdString;
+    }
+
+    public void setGameIdString(String gameIdString) {
+        this.gameIdString = gameIdString;
+    }
+
+    public String getIsYellowString() {
+        return isYellowString;
+    }
+
+    public void setIsYellowString(String isYellowString) {
+        this.isYellowString = isYellowString;
     }
 }

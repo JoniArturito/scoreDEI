@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>scoreDEI</title>
@@ -26,16 +26,18 @@
 
                     <div class="row">
                         <div class="col-25">
-                        <label for="playerName">Player:</label>
-                    </div>
+                            <label for="playerName">Player:</label>
+                            <input type="hidden" id="gameIdString" name="gameIdString" th:value="${CardForm.gameIdString}">
+                            <input type="hidden" id="isYellowString" name="isYellowString" th:value="${CardForm.isYellowString}">
+                        </div>
                         <div class="col-75">
                             <select name="playerName" id="playerName">
-                                <optgroup label="${CardForm.getGame().getHomeTeam().getName()}">
+                                <optgroup th:label="${CardForm.getGame().getHomeTeam().getName()}" label="">
                                     <tr th:each="s : ${CardForm.getGame().getHomeTeam().getPlayers()}">
                                         <option th:text="${s.name}"> name </option>
                                     </tr>
                                 </optgroup>
-                                <optgroup label="${CardForm.getGame().getVisitorTeam().getName()}">
+                                <optgroup th:label="${CardForm.getGame().getVisitorTeam().getName()}" label="">
                                     <tr th:each="s : ${CardForm.getGame().getVisitorTeam().getPlayers()}">
                                         <option th:text="${s.name}"> name </option>
                                     </tr>
@@ -46,10 +48,10 @@
 
                     <div class="row">
                         <div class="col-25">
-                            <label for="eventDate">Time of Event:</label>
+                            <label for="beginDate">Time of Event:</label>
                         </div>
                         <div class="col-75">
-                            <input type="datetime-local" id="eventDate" name="eventDate">
+                            <input type="datetime-local" id="beginDate" name="beginDate">
                         </div>
                     </div>
 

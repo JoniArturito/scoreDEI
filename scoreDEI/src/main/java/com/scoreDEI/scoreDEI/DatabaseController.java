@@ -80,100 +80,138 @@ public class DatabaseController {
 
     @PostMapping("/registerEvent")
     public String registerEventSubmit(@ModelAttribute EventForm form, Model model) {
-
-        System.out.println(form.getGame());
-        Optional<Game> opGame = this.gameService.getGame(form.getGame());
-
-        if (opGame.isPresent()) {
-            switch(form.getTypeEvent()) {
-                case 0:
-                    GameStatusForm toModel = new GameStatusForm(opGame.get(), 0);
-                    model.addAttribute("GameStatusForm", toModel);
-                    return "registerGameStatus";
-                case 1:
-                    model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 1));
-                    return "registerGameStatus";
-                case 2:
-                    model.addAttribute("GoalForm", new GoalForm(opGame.get()));
-                    return "registerGoal";
-                case 3:
-                    model.addAttribute("CardForm", new CardForm(opGame.get(), true));
-                    return "registerGameStatus";
-                case 4:
-                    model.addAttribute("CardForm", new CardForm(opGame.get(), false));
-                    return "registerGameStatus";
-                case 5:
-                    model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 2));
-                    return "registerGameStatus";
-                case 6:
-                    model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 3));
-                    return "registerGameStatus";
-                default:
-                    break;
-            }
+        switch(form.getTypeEvent()) {
+            case 0:
+                //model.addAttribute("GameStatusForm", new GameStatusForm());
+                return String.format("redirect:/registerGameStatus?name=%s&type=0", form.getGame());
+            case 1:
+                //model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 1));
+                return String.format("redirect:/registerGameStatus?name=%s&type=1", form.getGame());
+            case 2:
+                //model.addAttribute("GoalForm", new GoalForm(opGame.get()));
+                return String.format("redirect:/registerGoal?name=%s", form.getGame());
+            case 3:
+                //model.addAttribute("CardForm", new CardForm(opGame.get(), true));
+                return String.format("redirect:/registerCard?name=%s&isYellow=true", form.getGame());
+            case 4:
+                //model.addAttribute("CardForm", new CardForm(opGame.get(), false));
+                return String.format("redirect:/registerCard?name=%s&isYellow=false", form.getGame());
+            case 5:
+                //model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 2));
+                return String.format("redirect:/registerGameStatus?name=%s&type=2", form.getGame());
+            case 6:
+                //model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), 3));
+                return String.format("redirect:/registerGameStatus?name=%s&type=3", form.getGame());
+            default:
+                break;
         }
 
         return "registerEvent";
     }
 
     /*@GetMapping("/registerGameStatus")
-    public String registerGameStatusForm(@ModelAttribute GameStatusForm form, Model model) {
-        model.addAttribute("GameStatusForm", form);
+    public String registerGameStatusForm(Model model) {
+        model.addAttribute("GameStatusForm", new GameStatusForm());
         return "registerGameStatus";
     }*/
 
-    @PostMapping("/registerGameStatus")
+    @GetMapping("/registerGameStatus")
+    public String registerGameStatusForm(@RequestParam(name="name", required=true) String name, @RequestParam(name="type", required=true) int type, Model model) {
+        System.out.println(name);
+        System.out.println(type);
+
+        Optional<Game> opGame = this.gameService.getGame(name);
+        if (opGame.isPresent()) {
+            System.out.println(opGame.get());
+            model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), type));
+            return "registerGameStatus";
+        }
+
+        return "registerEvent";
+    }
+
+    @PostMapping(value = "/registerGameStatus")
     public String registerGameStatusSubmit(@ModelAttribute GameStatusForm form, Model model) {
         model.addAttribute("GameStatusForm", form);
+        form.setGameId(Integer.parseInt(form.getGameIdString()));
+        form.setType(Integer.parseInt(form.getTypeString()));
+        Optional<Game> opGame = this.gameService.getGame(form.getGameId());
+        if (opGame.isPresent()) {
+            form.setGame(opGame.get());
 
-        System.out.println(form.getGame());
-        System.out.println(form.getType());
-        System.out.println(form.getEventDate());
+            System.out.println(form.getEventDate());
+            System.out.println(form.getGame());
+            System.out.println(form.getType());
+            //System.out.println(form.getEventDate());
 
-        String newDateTimeLocal = (form.getEventDate().replace("T", " ")).concat(":00");
-        Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            String newDateTimeLocal = (form.getEventDate().replace("T", " ")).concat(":00");
+            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
 
-        GameStatus dbGameStatus = new GameStatus(dateAndTime, form.getGame(), form.getType());
-        this.eventService.addGameEvent(dbGameStatus);
+            GameStatus dbGameStatus = new GameStatus(dateAndTime, form.getGame(), form.getType());
+            this.eventService.addGameEvent(dbGameStatus);
+        }
 
         return "redirect:/";
     }
 
     @GetMapping("/registerGoal")
-    public String registerGoalForm(@ModelAttribute GoalForm form, Model model) {
-        model.addAttribute("GoalForm", form);
-        return "registerGoal";
+    public String registerGoalForm(@RequestParam(name="name", required=true) String name, Model model) {
+        Optional<Game> opGame = this.gameService.getGame(name);
+        if (opGame.isPresent()) {
+            System.out.println(opGame.get());
+            model.addAttribute("GoalForm", new GoalForm(opGame.get()));
+            return "registerGoal";
+        }
+
+        return "registerEvent";
     }
 
     @PostMapping("/registerGoal")
     public String registerGoalSubmit(@ModelAttribute GoalForm form, Model model) {
-        String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
-        Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+        model.addAttribute("GoalForm", form);
+        Optional<Game> opGame = this.gameService.getGame(Integer.parseInt(form.getGameIdString()));
+        if (opGame.isPresent()) {
+            System.out.println(opGame.get());
+            form.setGame(opGame.get());
+            String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
+            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
 
-        Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
-        if (opPlayer.isPresent()) {
-            Goal dbGoal = new Goal(dateAndTime, form.getGame(), opPlayer.get());
-            this.eventService.addGoalEvent(dbGoal);
+            Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
+            if (opPlayer.isPresent()) {
+                Goal dbGoal = new Goal(dateAndTime, form.getGame(), opPlayer.get());
+                this.eventService.addGoalEvent(dbGoal);
+            }
         }
 
         return "redirect:/";
     }
 
     @GetMapping("/registerCard")
-    public String registerCardForm(@ModelAttribute CardForm form, Model model) {
-        model.addAttribute("CardForm", form);
-        return "registerCard";
+    public String registerCardForm(@RequestParam(name="name", required=true) String name, @RequestParam(name="isYellow", required=true) boolean isYellow, Model model) {
+        Optional<Game> opGame = this.gameService.getGame(name);
+        if (opGame.isPresent()) {
+            System.out.println(opGame.get());
+            model.addAttribute("CardForm", new CardForm(opGame.get(), isYellow));
+            return "registerCard";
+        }
+        return "registerEvent";
     }
 
     @PostMapping("/registerCard")
     public String registerCardSubmit(@ModelAttribute CardForm form, Model model) {
-        String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
-        Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+        model.addAttribute("CardForm", form);
+        Optional<Game> opGame = this.gameService.getGame(Integer.parseInt(form.getGameIdString()));
+        if (opGame.isPresent()) {
+            form.setGame(opGame.get());
+            form.setYellow(Boolean.parseBoolean(form.getIsYellowString()));
+            String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
+            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
 
-        Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
-        if (opPlayer.isPresent()) {
-            Card dbCard = new Card(dateAndTime, form.getGame(), form.isYellow(), opPlayer.get());
-            this.eventService.addCardEvent(dbCard);
+            Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
+            if (opPlayer.isPresent()) {
+                Card dbCard = new Card(dateAndTime, form.getGame(), form.isYellow(), opPlayer.get());
+                this.eventService.addCardEvent(dbCard);
+            }
         }
 
         return "redirect:/";

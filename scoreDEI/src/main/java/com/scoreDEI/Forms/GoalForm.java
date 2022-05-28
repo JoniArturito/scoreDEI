@@ -4,12 +4,17 @@ import com.scoreDEI.Entities.Game;
 
 public class GoalForm {
     private Game game;
+    private String gameIdString;
 
     private String beginDate;
     private String playerName;
 
+    public GoalForm() {
+    }
+
     public GoalForm(Game game) {
         this.game = game;
+        gameIdString = Integer.toString(game.getGameId());
     }
 
     public Game getGame() {
@@ -34,5 +39,13 @@ public class GoalForm {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public String getGameIdString() {
+        return gameIdString;
+    }
+
+    public void setGameIdString(String gameIdString) {
+        this.gameIdString = gameIdString;
     }
 }
