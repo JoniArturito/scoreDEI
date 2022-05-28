@@ -25,104 +25,141 @@ public class TeamDataController {
 
     @GetMapping("/register")
     public String registerTeamForm(Model model) {
-        model.addAttribute("TeamForm", new TeamForm());
-        return "/team/register";
+        try {
+            model.addAttribute("TeamForm", new TeamForm());
+            return "/team/register";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @PostMapping("/register")
     public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model) {
-        model.addAttribute("TeamForm", form);
-
         try {
+            model.addAttribute("TeamForm", form);
+
             Team dbTeam = new Team(form.getName(), form.getMultipartFile().getBytes());
             this.teamService.addTeam(dbTeam);
-        } catch (Exception e) {
-            String name = form.getName();
-            return String.format("redirect:/error/team/register?name=%s",  name);
-        }
 
-        return "redirect:/team/list";
+            return "redirect:/team/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/list")
     public String listTeams(Model model) {
-        model.addAttribute("teams", this.teamService.getAllTeams());
+        try {
+            model.addAttribute("teams", this.teamService.getAllTeams());
 
-        return "/team/list";
+            return "/team/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/profile")
-    public String teamProfile(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Team> t = this.teamService.getTeam(id);
+    public String teamProfile(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Team> t = this.teamService.getTeam(id);
 
-        if(t.isPresent()) {
-            List<Player> players = t.get().getPlayers();
-            model.addAttribute("team", t.get());
-            model.addAttribute("players", players);
-            return "/team/profile";
+            if(t.isPresent()) {
+                List<Player> players = t.get().getPlayers();
+                model.addAttribute("team", t.get());
+                model.addAttribute("players", players);
+                return "/team/profile";
+            } else {
+                return "redirect:/error/";
+            }
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/team/list";
     }
 
     @GetMapping("/logo")
-    public void getTeamLogo(@RequestParam(name="id", required = true) int id, HttpServletResponse response) throws IOException {
-        response.setContentType("image/png");
+    public String getTeamLogo(@RequestParam(name="id") int id, HttpServletResponse response) {
+        try {
+            response.setContentType("image/png");
 
-        Optional<Team> t = this.teamService.getTeam(id);
+            Optional<Team> t = this.teamService.getTeam(id);
 
-        if(t.isPresent()) {
-            Team team = t.get();
-            InputStream image = new ByteArrayInputStream(team.getLogo());
-            IOUtils.copy(image, response.getOutputStream());
+            if(t.isPresent()) {
+                Team team = t.get();
+                InputStream image = new ByteArrayInputStream(team.getLogo());
+                IOUtils.copy(image, response.getOutputStream());
+                return null;
+            }
+
+            return "redirect:/error/";
+        } catch (IOException e) {
+            return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/logo")
-    public String updateTeamLogo(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Team> t = this.teamService.getTeam(id);
+    public String updateTeamLogo(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Team> t = this.teamService.getTeam(id);
 
-        if(t.isPresent()) {
-            model.addAttribute("teamForm", new TeamForm());
-            model.addAttribute("team", t.get());
+            if(t.isPresent()) {
+                model.addAttribute("teamForm", new TeamForm());
+                model.addAttribute("team", t.get());
 
-            return "team/updateLogo";
+                return "team/updateLogo";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/team/list";
     }
 
     @PostMapping("/edit/logo")
-    public String updateTeamLogo(@RequestParam(name="id", required = true) int id, @ModelAttribute TeamForm form, Model model) throws IOException {
-        model.addAttribute("teamForm", form);
+    public String updateTeamLogo(@RequestParam(name="id") int id,
+                                 @ModelAttribute TeamForm form, Model model){
 
-        byte[] new_logo = form.getMultipartFile().getBytes();
-        this.teamService.updateTeamLogo(id, new_logo);
+        try {
+            model.addAttribute("teamForm", form);
 
-        return "redirect:/team/list";
+            byte[] new_logo = form.getMultipartFile().getBytes();
+            this.teamService.updateTeamLogo(id, new_logo);
+
+            return "redirect:/team/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/name")
-    public String updateTeamName(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Team> t = this.teamService.getTeam(id);
+    public String updateTeamName(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Team> t = this.teamService.getTeam(id);
 
-        if(t.isPresent()) {
-            model.addAttribute("teamForm", new TeamForm());
-            model.addAttribute("team", t.get());
+            if(t.isPresent()) {
+                model.addAttribute("teamForm", new TeamForm());
+                model.addAttribute("team", t.get());
 
-            return "team/updateTeamName";
+                return "team/updateTeamName";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/team/list";
     }
 
     @PostMapping("/edit/name")
-    public String updateTeamName(@RequestParam(name="id", required = true) int id, @ModelAttribute TeamForm form, Model model) throws IOException {
-        model.addAttribute("teamForm", form);
+    public String updateTeamName(@RequestParam(name="id") int id,
+                                 @ModelAttribute TeamForm form, Model model) {
+        try {
+            model.addAttribute("teamForm", form);
 
-        String name = form.getName();
-        this.teamService.updateTeamName(id, name);
+            String name = form.getName();
+            this.teamService.updateTeamName(id, name);
 
-        return "redirect:/team/list";
+            return "redirect:/team/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 }

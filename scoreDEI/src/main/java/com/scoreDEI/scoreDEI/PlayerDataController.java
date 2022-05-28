@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.Optional;
 
@@ -25,143 +24,195 @@ public class PlayerDataController {
 
     @GetMapping("/register")
     public String registerPlayerForm(Model model) {
-        model.addAttribute("teams", this.teamService.getAllTeams());
-        model.addAttribute("PlayerForm", new PlayerForm());
-        return "player/register";
+        try {
+            model.addAttribute("teams", this.teamService.getAllTeams());
+            model.addAttribute("PlayerForm", new PlayerForm());
+
+            return "player/register";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @PostMapping("/register")
     public String registerPlayerSubmit(@ModelAttribute PlayerForm form, Model model){
-        model.addAttribute("PlayerForm", form);
+        try {
+            model.addAttribute("PlayerForm", form);
 
-        String playerName = form.getName();
-        String playerPosition = form.getPosition();
-        Date playerBirthday = form.getBirthday();
-        Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
+            String playerName = form.getName();
+            String playerPosition = form.getPosition();
+            Date playerBirthday = form.getBirthday();
+            Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
 
-        if (playerTeam.isPresent()) {
-            Player dbPlayer = new Player(playerName, playerPosition, playerBirthday, playerTeam.get());
-            this.playerService.addPlayer(dbPlayer);
+            if (playerTeam.isPresent()) {
+                Player dbPlayer = new Player(playerName, playerPosition, playerBirthday, playerTeam.get());
+                this.playerService.addPlayer(dbPlayer);
+            } else {
+                return "redirect:/error/";
+            }
+
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-        else{
-            System.out.println("Team not found");
-        }
-
-        return "redirect:/player/list";
     }
 
     @GetMapping("/list")
     public String listTeams(Model model) {
-        model.addAttribute("teams", this.teamService.getAllTeams());
+        try {
+            model.addAttribute("teams", this.teamService.getAllTeams());
 
-        return "/player/list";
+            return "/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/profile")
-    public String playerProfile(@RequestParam(name="id", required=true) int id, Model model) {
-        Optional<Player> p = this.playerService.getPlayer(id);
+    public String playerProfile(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Player> p = this.playerService.getPlayer(id);
 
-        if(p.isPresent()) {
-            model.addAttribute("player", p.get());
-            return "/player/profile";
+            if(p.isPresent()) {
+                model.addAttribute("player", p.get());
+                return "/player/profile";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/player/list";
     }
 
     @GetMapping("/edit/name")
-    public String updatePlayerName(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Player> p = this.playerService.getPlayer(id);
+    public String updatePlayerName(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Player> p = this.playerService.getPlayer(id);
 
-        if(p.isPresent()) {
-            model.addAttribute("playerForm", new PlayerForm());
-            model.addAttribute("player", p.get());
+            if(p.isPresent()) {
+                model.addAttribute("playerForm", new PlayerForm());
+                model.addAttribute("player", p.get());
 
-            return "player/updateName";
+                return "player/updateName";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/player/list";
     }
 
     @PostMapping("/edit/name")
-    public String updatePlayerName(@RequestParam(name="id", required = true) int id, @ModelAttribute PlayerForm form, Model model) throws IOException {
-        model.addAttribute("playerForm", form);
+    public String updatePlayerName(@RequestParam(name="id") int id,
+                                   @ModelAttribute PlayerForm form, Model model) {
+        try {
+            model.addAttribute("playerForm", form);
 
-        String name = form.getName();
-        this.playerService.updateName(id, name);
+            String name = form.getName();
+            this.playerService.updateName(id, name);
 
-        return "redirect:/player/list";
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/position")
-    public String updatePosition(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Player> p = this.playerService.getPlayer(id);
+    public String updatePosition(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Player> p = this.playerService.getPlayer(id);
 
-        if(p.isPresent()) {
-            model.addAttribute("playerForm", new PlayerForm());
-            model.addAttribute("player", p.get());
+            if(p.isPresent()) {
+                model.addAttribute("playerForm", new PlayerForm());
+                model.addAttribute("player", p.get());
 
-            return "player/updatePosition";
+                return "player/updatePosition";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/player/list";
     }
 
     @PostMapping("/edit/position")
-    public String updatePosition(@RequestParam(name="id", required = true) int id, @ModelAttribute PlayerForm form, Model model) throws IOException {
-        model.addAttribute("playerForm", form);
+    public String updatePosition(@RequestParam(name="id") int id,
+                                 @ModelAttribute PlayerForm form, Model model) {
+        try {
+            model.addAttribute("playerForm", form);
 
-        String position = form.getPosition();
-        this.playerService.updatePosition(id, position);
+            String position = form.getPosition();
+            this.playerService.updatePosition(id, position);
 
-        return "redirect:/player/list";
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/birthday")
-    public String updateBirthday(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Player> p = this.playerService.getPlayer(id);
+    public String updateBirthday(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Player> p = this.playerService.getPlayer(id);
 
-        if(p.isPresent()) {
-            model.addAttribute("playerForm", new PlayerForm());
-            model.addAttribute("player", p.get());
+            if(p.isPresent()) {
+                model.addAttribute("playerForm", new PlayerForm());
+                model.addAttribute("player", p.get());
 
-            return "player/updateBirthday";
+                return "player/updateBirthday";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/player/list";
     }
 
     @PostMapping("/edit/birthday")
-    public String updateBirthday(@RequestParam(name="id", required = true) int id, @ModelAttribute PlayerForm form, Model model) throws IOException {
-        model.addAttribute("playerForm", form);
+    public String updateBirthday(@RequestParam(name="id") int id,
+                                 @ModelAttribute PlayerForm form, Model model) {
+        try {
+            model.addAttribute("playerForm", form);
 
-        Date birthday = form.getBirthday();
-        this.playerService.updateBirthday(id, birthday);
+            Date birthday = form.getBirthday();
+            this.playerService.updateBirthday(id, birthday);
 
-        return "redirect:/player/list";
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/team")
-    public String updatePlayerTeam(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<Player> p = this.playerService.getPlayer(id);
+    public String updatePlayerTeam(@RequestParam(name="id") int id, Model model) {
+        try {
+            Optional<Player> p = this.playerService.getPlayer(id);
 
-        if(p.isPresent()) {
-            model.addAttribute("playerForm", new PlayerForm());
-            model.addAttribute("player", p.get());
-            model.addAttribute("teams", this.teamService.getAllTeams());
+            if(p.isPresent()) {
+                model.addAttribute("playerForm", new PlayerForm());
+                model.addAttribute("player", p.get());
+                model.addAttribute("teams", this.teamService.getAllTeams());
 
-            return "player/updateTeam";
+                return "player/updateTeam";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-
-        return "redirect:/player/list";
     }
 
     @PostMapping("/edit/team")
-    public String updatePlayerTeam(@RequestParam(name="id", required = true) int id, @ModelAttribute PlayerForm form, Model model) throws IOException {
-        model.addAttribute("playerForm", form);
-        Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
-        playerTeam.ifPresent(team -> this.playerService.updateTeam(id, team));
+    public String updatePlayerTeam(@RequestParam(name="id") int id,
+                                   @ModelAttribute PlayerForm form, Model model) {
+        try {
+            model.addAttribute("playerForm", form);
+            Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
+            playerTeam.ifPresent(team -> this.playerService.updateTeam(id, team));
 
-        return "redirect:/player/list";
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 }

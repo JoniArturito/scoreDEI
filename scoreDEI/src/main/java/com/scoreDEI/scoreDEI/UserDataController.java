@@ -21,25 +21,37 @@ public class UserDataController {
 
     @GetMapping("/register")
     public String registerUserForm(Model model) {
-        model.addAttribute("registerForm", new UserForm());
-        return "/user/register";
+
+        try {
+            model.addAttribute("registerForm", new UserForm());
+
+            return "/user/register";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @PostMapping("/register")
     public String registerUserSubmit(@ModelAttribute UserForm form, Model model) {
-        model.addAttribute("registerForm", form);
 
-        String username = form.getUsername();
-        String password = PasswordHash.toHexString(PasswordHash.getSha(form.getPassword()));
-        String email = form.getEmail();
-        long phone = form.getPhone();
+        try {
+            model.addAttribute("registerForm", form);
 
-        if(form.isAdmin_role()) {
-            AdminUser user = new AdminUser(username, email, phone, password);
-            this.userService.addUser(user);
-        } else {
-            RegularUser user = new RegularUser(username, email, phone, password);
-            this.userService.addUser(user);
+            String username = form.getUsername();
+            String password = PasswordHash.toHexString(PasswordHash.getSha(form.getPassword()));
+            String email = form.getEmail();
+            long phone = form.getPhone();
+
+            if(form.isAdmin_role()) {
+                AdminUser user = new AdminUser(username, email, phone, password);
+                this.userService.addUser(user);
+            } else {
+                RegularUser user = new RegularUser(username, email, phone, password);
+                this.userService.addUser(user);
+            }
+
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
 
         return "redirect:/user/list";
@@ -47,86 +59,145 @@ public class UserDataController {
 
     @GetMapping("/list")
     public String listUsers(Model m) {
-        m.addAttribute("users", this.userService.getAllUsers());
-        m.addAttribute("admins", this.userService.getAllAdmins());
-        m.addAttribute("regular_users", this.userService.getAllRegUsers());
-        return "/user/list";
+        try {
+            m.addAttribute("users", this.userService.getAllUsers());
+            m.addAttribute("admins", this.userService.getAllAdmins());
+            m.addAttribute("regular_users", this.userService.getAllRegUsers());
+
+            return "/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/name")
     public String updateUsername(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<User> op = this.userService.getUser(id);
-        model.addAttribute("editForm", new UserForm());
-        if (op.isPresent()) {
-            model.addAttribute("user", op.get());
-            return "user/updateUsername";
+        try {
+            Optional<User> op = this.userService.getUser(id);
+            model.addAttribute("editForm", new UserForm());
+
+            if (op.isPresent()) {
+                model.addAttribute("user", op.get());
+                return "user/updateUsername";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-        return "redirect:/user/list";
+
     }
 
     @PostMapping("/edit/name")
-    public String updateUsername(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
-        model.addAttribute("editForm", form);
-        String username = form.getUsername();
-        userService.updateUsername(id, username);
-        return "redirect:/user/list";
+    public String updateUsername(@RequestParam(name="id", required = true) int id,
+                                 @ModelAttribute UserForm form, Model model) {
+        try {
+            model.addAttribute("editForm", form);
+
+            String username = form.getUsername();
+            userService.updateUsername(id, username);
+
+            return "redirect:/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/email")
     public String updateEmail(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<User> op = this.userService.getUser(id);
-        model.addAttribute("editForm", new UserForm());
-        if (op.isPresent()) {
-            model.addAttribute("user", op.get());
-            return "user/updatePassword";
+        try {
+            Optional<User> op = this.userService.getUser(id);
+            model.addAttribute("editForm", new UserForm());
+
+            if (op.isPresent()) {
+                model.addAttribute("user", op.get());
+                return "user/updatePassword";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-        return "redirect:/user/list";
     }
 
     @PostMapping("/edit/email")
-    public String updateEmail(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
-        model.addAttribute("editForm", form);
-        String email = form.getUsername();
-        userService.updateEmail(id, email);
-        return "redirect:/user/list";
+    public String updateEmail(@RequestParam(name="id", required = true) int id,
+                              @ModelAttribute UserForm form, Model model) {
+        try {
+            model.addAttribute("editForm", form);
+
+            String email = form.getUsername();
+            userService.updateEmail(id, email);
+
+            return "redirect:/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
     @GetMapping("/edit/phone")
     public String updatePhone(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<User> op = this.userService.getUser(id);
-        model.addAttribute("editForm", new UserForm());
-        if (op.isPresent()) {
-            model.addAttribute("user", op.get());
-            return "user/updatePhone";
+        try {
+            Optional<User> op = this.userService.getUser(id);
+            model.addAttribute("editForm", new UserForm());
+
+            if (op.isPresent()) {
+                model.addAttribute("user", op.get());
+                return "user/updatePhone";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-        return "redirect:/user/list";
     }
 
     @PostMapping("/edit/phone")
-    public String updatePhone(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
-        model.addAttribute("editForm", form);
-        long phone = form.getPhone();
-        userService.updatePhone(id, phone);
-        return "redirect:/user/list";
+    public String updatePhone(@RequestParam(name="id", required = true) int id,
+                              @ModelAttribute UserForm form, Model model) {
+        try {
+            model.addAttribute("editForm", form);
+
+            long phone = form.getPhone();
+            userService.updatePhone(id, phone);
+
+            return "redirect:/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+
     }
 
     @GetMapping("/edit/password")
     public String updatePassword(@RequestParam(name="id", required = true) int id, Model model) {
-        Optional<User> op = this.userService.getUser(id);
-        model.addAttribute("editForm", new UserForm());
-        if (op.isPresent()) {
-            model.addAttribute("user", op.get());
-            return "user/updatePassword";
+        try {
+            Optional<User> op = this.userService.getUser(id);
+            model.addAttribute("editForm", new UserForm());
+
+            if (op.isPresent()) {
+                model.addAttribute("user", op.get());
+                return "user/updatePassword";
+            }
+
+            return "redirect:/error/";
+        } catch (Exception e) {
+            return "redirect:/error/";
         }
-        return "redirect:/user/list";
     }
 
     @PostMapping("/edit/password")
-    public String updatePassword(@RequestParam(name="id", required = true) int id, @ModelAttribute UserForm form, Model model) {
-        model.addAttribute("editForm", form);
-        long phone = form.getPhone();
-        userService.updatePhone(id, phone);
-        return "redirect:/user/list";
+    public String updatePassword(@RequestParam(name="id", required = true) int id,
+                                 @ModelAttribute UserForm form, Model model) {
+        try {
+            model.addAttribute("editForm", form);
+
+            long phone = form.getPhone();
+            userService.updatePhone(id, phone);
+
+            return "redirect:/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
     }
 
 }
