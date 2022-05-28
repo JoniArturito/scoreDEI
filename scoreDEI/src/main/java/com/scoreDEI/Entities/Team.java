@@ -28,7 +28,7 @@ public class Team {
     private List<Game> homeGames;
     @OneToMany(mappedBy = "visitorTeam")
     private List<Game> visitorGames;
-    @OneToMany(mappedBy = "playerId")
+    @OneToMany(mappedBy = "team")
     private List<Player> players;
 
     public Team() {
