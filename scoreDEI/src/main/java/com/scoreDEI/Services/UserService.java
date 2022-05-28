@@ -62,6 +62,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> getUser(String email, String password) {
+        return userRepository.findUserByEmailAndPassword(email, password);
+    }
+
     public void addAdmin(AdminUser user)
     {
         userRepository.save(user);

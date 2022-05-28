@@ -4,13 +4,20 @@ import com.scoreDEI.Entities.*;
 import com.scoreDEI.Forms.*;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
+import com.scoreDEI.filters.AuthenticationFilter;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
@@ -46,6 +53,63 @@ public class DatabaseController {
         } catch (Exception e) {
             return "redirect:/error/";
         }
+    }
+
+    @GetMapping("/login")
+    public String login(Model m) {
+        m.addAttribute("userForm", new UserForm());
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                        .getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute("user", null);
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute UserForm form) {
+        try {
+            String email = form.getEmail();
+            String password = PasswordHash.toHexString(PasswordHash.getSha(form.getPassword()));
+
+            Optional<User> user = userService.getUser(email, password);
+
+            HttpServletRequest request =
+                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                            .getRequest();
+            HttpSession session = request.getSession();
+
+            if(user.isPresent()) {
+                session.setAttribute("user", user.get());
+            } else {
+                session.setAttribute("user", null);
+
+            }
+
+            return "redirect:/game/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @Bean
+    public FilterRegistrationBean<AuthenticationFilter> authFilter() {
+        FilterRegistrationBean<AuthenticationFilter> bean = new FilterRegistrationBean<>();
+
+        bean.setFilter(new AuthenticationFilter());
+        bean.addUrlPatterns("/user/*");
+        bean.addUrlPatterns("/team/*");
+        bean.addUrlPatterns("/game/register");
+
+        bean.setOrder(1);
+        return bean;
     }
 
     @GetMapping({"/createData"})

@@ -17,7 +17,7 @@
 
             <div class="header">
                 <h1 class="headerTitle">List of players per team</h1>
-                <a href="/player/register">Register player</a>
+                <a th:if="${session.user?.getType()==1}" href="/player/register">Register player</a>
             </div>
 
             <div class="users_info">

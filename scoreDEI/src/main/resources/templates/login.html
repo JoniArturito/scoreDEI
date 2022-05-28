@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEI</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div th:replace="navbar.html"></div>
+  <div class="body">
+
+    <div class="container">
+
+      <div class="header">
+        <h2 class="headerTitle">Login</h2>
+        <p class="headerSubtitle">Fill the fields to login.</p>
+      </div>
+
+      <div class="form">
+
+        <form action="#" th:action="@{/login}" th:object="${userForm}" method="post">
+
+          <div class="row">
+            <div class="col-25">
+              <label for="email">Email:</label>
+            </div>
+            <div class="col-75">
+              <input type="email" id="email" name="email" placeholder="Enter the email..." required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-25">
+              <label for="password">Password:</label>
+            </div>
+            <div class="col-75">
+              <input type="password" id="password" name="password" placeholder="Enter the password..." value="" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <input style={padding-top:250px} type="submit" value="Register">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
