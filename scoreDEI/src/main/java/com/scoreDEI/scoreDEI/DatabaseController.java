@@ -17,6 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -84,9 +85,23 @@ public class DatabaseController {
         FilterRegistrationBean<AuthenticationFilter> bean = new FilterRegistrationBean<>();
 
         bean.setFilter(new AuthenticationFilter());
+
         bean.addUrlPatterns("/user/*");
-        bean.addUrlPatterns("/team/*");
-        bean.addUrlPatterns("/game/register");
+
+        List<String> teamUrlPatterns = Arrays.asList("register", "edit/*", "delete");
+        for (String urlPattern : teamUrlPatterns) {
+            bean.addUrlPatterns(String.format("/team/%s", urlPattern));
+        }
+
+        List<String> gameUrlPatterns = Arrays.asList("register", "edit/*", "delete");
+        for (String urlPattern : gameUrlPatterns) {
+            bean.addUrlPatterns(String.format("/game/%s", urlPattern));
+        }
+
+        List<String> playerUrlPatterns = Arrays.asList("register", "edit/*", "delete");
+        for (String urlPattern : playerUrlPatterns) {
+            bean.addUrlPatterns(String.format("/player/%s", urlPattern));
+        }
 
         bean.setOrder(1);
         return bean;

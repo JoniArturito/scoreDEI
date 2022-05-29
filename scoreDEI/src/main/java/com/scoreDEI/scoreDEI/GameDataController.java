@@ -294,7 +294,7 @@ public class GameDataController {
     public String deleteGameConfirm(@RequestParam(name = "id", required = true) int id, Model model){
         try{
             this.gameService.deleteGame(id);
-            return "redirect:/player/list";
+            return "redirect:/game/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }

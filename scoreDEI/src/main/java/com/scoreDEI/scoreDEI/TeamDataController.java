@@ -57,8 +57,8 @@ public class TeamDataController {
             redirAttrs.addFlashAttribute("success", String.format("Team %s registered!", dbTeam.getName()));
             return "redirect:/team/list";
         } catch (Exception e) {
-            redirAttrs.addFlashAttribute("error", "Failed to register user!");
-            return "redirect:/user/list";
+            redirAttrs.addFlashAttribute("error", "Failed to register team!");
+            return "redirect:/team/list";
         }
     }
 

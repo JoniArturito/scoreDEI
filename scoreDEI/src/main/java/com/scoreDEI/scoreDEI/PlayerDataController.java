@@ -51,7 +51,7 @@ public class PlayerDataController {
                     redirAttrs.addFlashAttribute("error", "Failed to register player!");
                 } else{
                     this.playerService.addPlayer(dbPlayer);
-                    redirAttrs.addFlashAttribute("success", String.format("Team %s registered!", playerName));
+                    redirAttrs.addFlashAttribute("success", String.format("Player %s registered!", playerName));
                 }
 
                 return "redirect:/player/list";
