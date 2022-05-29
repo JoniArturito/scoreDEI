@@ -40,4 +40,7 @@ public interface EventRepository extends CrudRepository<GameEvent, Integer> {
 
     @Query("SELECT t FROM GameEvent t WHERE t.game = ?1 AND t.eventDate < ?2 ORDER BY t.eventDate DESC")
     public List<GameEvent> getNextDayEvents(Game game, Time begin);
+
+    @Query("SELECT t FROM GameEvent t WHERE t.game = ?1 AND t.eventDate >= ?2 ORDER BY t.eventDate DESC")
+    public List<GameEvent> getTodayEvents(Game game, Time begin);
 }
