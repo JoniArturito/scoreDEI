@@ -226,10 +226,15 @@ public class EventController {
 
                 Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
                 if (opPlayer.isPresent()) {
-                    Goal dbGoal = new Goal(dateAndTime, form.getGame(), opPlayer.get());
-                    this.eventService.addGoalEvent(dbGoal);
-                    redirAttrs.addFlashAttribute("success", "Event registered!");
-                } else redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                    if(this.eventService.hasRedCard(opGame.get(), opPlayer.get())) {
+                        redirAttrs.addFlashAttribute("error", String.format("Player %s has already received a red card!", opPlayer.get().getName()));
+                    } else {
+                        Goal dbGoal = new Goal(dateAndTime, form.getGame(), opPlayer.get());
+                        this.eventService.addGoalEvent(dbGoal);
+                        redirAttrs.addFlashAttribute("success", String.format("Goal from %s registered!", opPlayer.get().getName()));
+                    }
+
+                } else redirAttrs.addFlashAttribute("error", "Failed to register goal!");
             } else redirAttrs.addFlashAttribute("error", "Game does not exist!");
 
             return "redirect:/event/register";
@@ -247,7 +252,7 @@ public class EventController {
                 Game game = opGame.get();
 
                 if (this.eventService.endingGameExists(game)){
-                    redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                    redirAttrs.addFlashAttribute("error", "Failed to appoint card!");
                     return "redirect:/event/register";
                 }
 
@@ -255,7 +260,7 @@ public class EventController {
                 if (this.eventService.beginningGameExists(game)) {
                     interval = getInterval(game);
                 } else {
-                    redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                    redirAttrs.addFlashAttribute("error", "Failed to appoint card!");
 
                     return "redirect:/event/register";
                 }
@@ -287,11 +292,20 @@ public class EventController {
 
                 Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
                 if (opPlayer.isPresent()) {
-                    Card dbCard = new Card(dateAndTime, form.getGame(), form.isYellow(), opPlayer.get());
-                    this.eventService.addCardEvent(dbCard);
-                    redirAttrs.addFlashAttribute("success", "Event registered!");
+                    boolean feedback = this.eventService.validateCard(dateAndTime, opGame.get(), form.isYellow(), opPlayer.get());
+                    if(feedback) {
+                        Card dbCard = new Card(dateAndTime, form.getGame(), form.isYellow(), opPlayer.get());
+                        this.eventService.addCardEvent(dbCard);
+                        if(this.eventService.hasRedCard(opGame.get(), opPlayer.get())) {
+                            redirAttrs.addFlashAttribute("success", String.format("Yellow and red cards appointed to %s!", opPlayer.get().getName()));
+                        } else {
+                            redirAttrs.addFlashAttribute("success", String.format("Yellow card appointed to %s!", opPlayer.get().getName()));
+                        }
+                    } else {
+                        redirAttrs.addFlashAttribute("error", String.format("Player %s has received a red card!", opPlayer.get().getName()));
+                    }
 
-                } else redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                } else redirAttrs.addFlashAttribute("error", "Failed to appoint card!");
 
             } else redirAttrs.addFlashAttribute("error", "Game does not exist!");
 
@@ -347,7 +361,7 @@ public class EventController {
     }
 
     @GetMapping("/delete")
-    public String deleteGame(@RequestParam(name = "id") int id, Model model) {
+    public String deleteEvent(@RequestParam(name = "id") int id, Model model) {
         try {
             model.addAttribute("id", id);
             return "game/delete";
@@ -357,11 +371,13 @@ public class EventController {
     }
 
     @PostMapping("/delete")
-    public String deleteGameConfirm(@RequestParam(name = "id") int id){
+    public String deleteEventConfirm(@RequestParam(name = "id") int id, RedirectAttributes redirAttrs){
         try{
-            this.gameService.deleteGame(id);
+            this.eventService.deleteEvent(id);
+            redirAttrs.addFlashAttribute("success", "Event deleted!");
             return "redirect:/game/list";
         } catch (Exception e) {
+            redirAttrs.addFlashAttribute("error", "Failed to delete event!");
             return "redirect:/error/";
         }
     }

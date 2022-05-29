@@ -15,12 +15,12 @@ public class GameEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "event_gen")
     @Column(name = "gameEventId", nullable = false)
-    private int gameEventId;
+    protected int gameEventId;
     @Column(name = "eventdate", nullable = false)
-    private Time eventDate;
+    protected Time eventDate;
     @ManyToOne
     @JoinColumn(name = "gameId", nullable = false)
-    private Game game;
+    protected Game game;
 
     public GameEvent() {
     }

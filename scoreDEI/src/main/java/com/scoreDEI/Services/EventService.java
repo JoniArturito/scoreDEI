@@ -2,9 +2,11 @@ package com.scoreDEI.Services;
 
 import com.scoreDEI.Entities.*;
 import com.scoreDEI.Repositories.EventRepository;
+import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,5 +90,39 @@ public class EventService {
             return today;
         }
         return new ArrayList<>();
+    }
+
+    @Transactional
+    public boolean deleteEvent(int id) {
+        Optional<GameEvent> event = eventRepository.findById(id);
+        if (event.isPresent()) {
+            eventRepository.delete(event.get());
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean hasRedCard(Game game, Player player) {
+        System.out.println(eventRepository.redCardExists(game, player));
+        return eventRepository.redCardExists(game, player) != 0;
+    }
+
+    @Transactional
+    public boolean validateCard(Time dateAndTime, Game game, boolean isYellow, Player player) {
+        int red_count = eventRepository.yellowCardExists(game, player);
+        int yellow_count = eventRepository.redCardExists(game, player);
+
+        System.out.println(red_count + " " + yellow_count);
+
+        if(red_count > 0) return false;
+        if(isYellow && yellow_count == 1) {
+            Card redCard = new Card(dateAndTime, game, false, player);
+            this.addCardEvent(redCard);
+            return true;
+        }
+
+        if(yellow_count < 2) return true;
+        return false;
     }
 }
