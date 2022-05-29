@@ -18,6 +18,7 @@
             <div class="header">
                 <h1 class="headerTitle">Games</h1>
                 <a th:if="${session.user?.getType()==1}" href="/game/register">Register game.</a>
+                <a th:if="${session.user?.getType()>=0}" href="/event/register">Register event.</a>
             </div>
 
             <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>

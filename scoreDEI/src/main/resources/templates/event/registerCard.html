@@ -22,22 +22,23 @@
 
             <div class="form">
 
-                <form action="#" th:action="@{/registerGoal}" th:object="${GoalForm}" method="post">
+                <form action="#" th:action="@{/event/register/card}" th:object="${CardForm}" method="post">
 
                     <div class="row">
                         <div class="col-25">
                             <label for="playerName">Player:</label>
-                            <input type="hidden" id="gameIdString" name="gameIdString" th:value="${GoalForm.gameIdString}">
+                            <input type="hidden" id="gameIdString" name="gameIdString" th:value="${CardForm.gameIdString}">
+                            <input type="hidden" id="isYellowString" name="isYellowString" th:value="${CardForm.isYellowString}">
                         </div>
                         <div class="col-75">
-                            <select name="playerName" id="playerName">
-                                <optgroup th:label="${GoalForm.getGame().getHomeTeam().getName()}">
-                                    <tr th:each="s : ${GoalForm.getGame().getHomeTeam().getPlayers()}">
+                            <select name="playerName" id="playerName" required>
+                                <optgroup th:label="${CardForm.getGame().getHomeTeam().getName()}" label="">
+                                    <tr th:each="s : ${CardForm.getGame().getHomeTeam().getPlayers()}">
                                         <option th:text="${s.name}"> name </option>
                                     </tr>
                                 </optgroup>
-                                <optgroup th:label="${GoalForm.getGame().getVisitorTeam().getName()}">
-                                    <tr th:each="s : ${GoalForm.getGame().getVisitorTeam().getPlayers()}">
+                                <optgroup th:label="${CardForm.getGame().getVisitorTeam().getName()}" label="">
+                                    <tr th:each="s : ${CardForm.getGame().getVisitorTeam().getPlayers()}">
                                         <option th:text="${s.name}"> name </option>
                                     </tr>
                                 </optgroup>
@@ -50,7 +51,7 @@
                             <label for="beginDate">Time of Event:</label>
                         </div>
                         <div class="col-75">
-                            <input type="time" id="beginDate" name="beginDate" step = "1" th:min="${minHour}" th:max="${maxHour}">
+                            <input type="time" id="beginDate" name="beginDate" step = "1" th:min="${minHour}" th:max="${maxHour}" required>
                         </div>
                     </div>
 

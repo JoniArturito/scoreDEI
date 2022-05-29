@@ -22,7 +22,7 @@
 
             <div class="form">
 
-                <form action="#" th:action="@{/registerGameStatus}" th:object="${GameStatusForm}" method="post">
+                <form action="#" th:action="@{/event/register/gameStatus}" th:object="${GameStatusForm}" method="post">
 
                     <div class="row">
                         <div class="col-25">
@@ -31,7 +31,7 @@
                             <input type="hidden" id="typeString" name="typeString" th:value="${GameStatusForm.typeString}">
                         </div>
                         <div class="col-75">
-                            <input type="time" id="eventDate" name="eventDate" step = "1" th:min="${minHour}" th:max="${maxHour}">
+                            <input type="time" id="eventDate" name="eventDate" step = "1" th:min="${minHour}" th:max="${maxHour}" required>
                         </div>
                     </div>
 

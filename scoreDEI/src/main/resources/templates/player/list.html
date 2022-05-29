@@ -20,6 +20,9 @@
                 <a th:if="${session.user?.getType()==1}" href="/player/register">Register player</a>
             </div>
 
+            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+
             <div class="players">
                 <div th:if="${teams.isEmpty()}">
                     <h4>There isn't any team.</h4>
