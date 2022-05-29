@@ -1,9 +1,7 @@
 package com.scoreDEI.Services;
 
 import com.scoreDEI.Entities.Game;
-import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
-import com.scoreDEI.Others.Sorts.SortTeamsByScore;
 import com.scoreDEI.Repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,5 +119,11 @@ public class GameService {
             return true;
         }
         return false;
+    }
+
+    public int[] getScore(Game game){
+        int homeScore = gameRepository.getTeamScore(game, game.getHomeTeam());
+        int visitorScore = gameRepository.getTeamScore(game, game.getVisitorTeam());
+        return new int[]{homeScore, visitorScore};
     }
 }

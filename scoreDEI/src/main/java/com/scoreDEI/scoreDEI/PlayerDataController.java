@@ -80,11 +80,12 @@ public class PlayerDataController {
     @GetMapping("/profile")
     public String playerProfile(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
-            Optional<Player> p = this.playerService.getPlayer(id);
+            Optional<Player> opP = this.playerService.getPlayer(id);
 
-            if(p.isPresent()) {
-                model.addAttribute("player", p.get());
-                //model.addAttribute("team", p.get().getTeam().getName());
+            if(opP.isPresent()) {
+                Player op = opP.get();
+                model.addAttribute("player", op);
+                //model.addAttribute("team", op.getTeam().getName());
                 return "/player/profile";
             }
 

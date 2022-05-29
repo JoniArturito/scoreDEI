@@ -75,4 +75,18 @@ public class EventService {
         if (nextDays.size() == 0) return Optional.ofNullable(query.get(0).getEventDate());
         else return Optional.ofNullable(nextDays.get(0).getEventDate());
     }
+
+    public List<GameEvent> getChronologicEvents(Game game){
+        Optional<Time> opTime = getBeginningOfGame(game);
+        if (opTime.isPresent()){
+            Time time = opTime.get();
+            List<GameEvent> today = eventRepository.getTodayEvents(game, time);
+            List<GameEvent> tomorrow = eventRepository.getNextDayEvents(game, time);
+            //tomorrow.addAll(today);
+            today.addAll(tomorrow);
+            //return tomorrow;
+            return today;
+        }
+        return new ArrayList<>();
+    }
 }

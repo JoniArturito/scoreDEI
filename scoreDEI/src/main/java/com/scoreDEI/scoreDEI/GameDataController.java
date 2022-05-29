@@ -1,8 +1,10 @@
 package com.scoreDEI.scoreDEI;
 
 import com.scoreDEI.Entities.Game;
+import com.scoreDEI.Entities.GameEvent;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Forms.GameForm;
+import com.scoreDEI.Services.EventService;
 import com.scoreDEI.Services.GameService;
 import com.scoreDEI.Services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +25,9 @@ public class GameDataController {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    EventService eventService;
 
     @GetMapping("/register")
     public String registerGameForm(Model model) {
@@ -90,7 +96,11 @@ public class GameDataController {
             Optional<Game> p = this.gameService.getGame(id);
 
             if(p.isPresent()) {
-                model.addAttribute("game", p.get());
+                Game g = p.get();
+                List<GameEvent> gameEvents = eventService.getChronologicEvents(g);
+                model.addAttribute("game", g);
+                model.addAttribute("events", gameEvents);
+                model.addAttribute("score", gameService.getScore(g));
                 return "/game/profile";
             }
 

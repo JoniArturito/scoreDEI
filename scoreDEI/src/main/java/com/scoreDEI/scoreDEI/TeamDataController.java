@@ -65,7 +65,8 @@ public class TeamDataController {
     @GetMapping("/list")
     public String listTeams(Model model) {
         try {
-            model.addAttribute("teams", this.teamService.getAllTeams());
+            model.addAttribute("teams", this.teamService.getOrderedTeams());
+            model.addAttribute("Eusebio", this.playerService.getBestScorer());
 
             return "/team/list";
         } catch (Exception e) {

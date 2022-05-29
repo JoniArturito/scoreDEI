@@ -25,6 +25,15 @@ public class TeamService {
         return allTeams;
     }
 
+    @Transactional
+    public List<Team> getOrderedTeams(){
+        List<Team> allTeams = new ArrayList<>();
+        teamRepository.findAll().forEach(allTeams::add);
+        allTeams.sort(new SortTeamsByScore());
+        return allTeams;
+    }
+
+
     public void addTeam(Team team){
         teamRepository.save(team);
     }
@@ -41,14 +50,6 @@ public class TeamService {
             System.out.println("-> " + t.getName());
         }
         return Optional.ofNullable(query.get(0));
-    }
-
-    @Transactional
-    public List<Team> getOrderedTeams(){
-        List<Team> allTeams = new ArrayList<>();
-        teamRepository.findAll().forEach(allTeams::add);
-        allTeams.sort(new SortTeamsByScore());
-        return allTeams;
     }
 
     public void clearAllTeams(){
@@ -114,4 +115,8 @@ public class TeamService {
         return false;
     }
 
+    @Transactional
+    public void updateStatistic(Team team, int difference) {
+        team.addNewResult(difference);
+    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>scoreDEi</title>
@@ -38,6 +38,45 @@
             <div class="date">
                 <h3>Date:</h3>
                 <p th:text="${game.getBeginDate()}"></p>
+            </div>
+
+            <div class="events">
+                <div th:if="${events.isEmpty()}">
+                    <h4>The game hasn't started.</h4>
+                </div>
+
+                <div th:if="${!events.isEmpty()}">
+                    <h3>Score:</h3>
+                    <p th:text="${score[0] + ' - ' + score[1]}"></p>
+                    <h3>Events:</h3>
+                    <table border="1">
+                        <tr>
+                            <th>Time</th>
+                            <th>Type</th>
+                        </tr>
+                        <tr th:each="event : ${events}">
+                            <td><a style="{color:black; font-size: 18px}" th:text="${event.eventDate.toString()}">Time</a></td>
+                            <td>
+                                <div th:if="${event?.getTypeEvent()==0}">
+                                    <a style="{color:black; font-size: 18px}" text="Default message">Default. </a>
+                                </div>
+                                <div th:if="${event?.getTypeEvent()==1}">
+                                    <a style="{color:black; font-size: 18px}" th:if="${event.isYellow()}">Yellow Card </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${!event.isYellow()}">Red Card </a>
+                                </div>
+                                <div th:if="${event?.getTypeEvent()==2}">
+                                    <a style="{color:black; font-size: 18px}" th:if="${event.getType()==0}">Game Started </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${event.getType()==1}">Game Ended </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${event.getType()==2}">Game Interrupted </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${event.getType()==3}">Game Resumed </a>
+                                </div>
+                                <div th:if="${event?.getTypeEvent()==3}">
+                                    <a style="{color:black; font-size: 18px}" th:if="${event?.getTypeEvent()==3}" text="Goal Event">Goal Event </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
         </div>

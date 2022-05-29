@@ -151,6 +151,11 @@ public class EventController {
 
                 GameStatus dbGameStatus = new GameStatus(dateAndTime, form.getGame(), form.getType());
                 this.eventService.addGameEvent(dbGameStatus);
+                if (form.getType() == 1) {
+                    int[] scores = gameService.getScore(form.getGame());
+                    teamService.updateStatistic(form.getGame().getHomeTeam(), scores[0]-scores[1]);
+                    teamService.updateStatistic(form.getGame().getVisitorTeam(), scores[1]-scores[0]);
+                }
 
                 redirAttrs.addFlashAttribute("success", "Event registered!");
             } else redirAttrs.addFlashAttribute("error", "Game does not exist!");

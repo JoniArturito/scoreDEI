@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>scoreDEi</title>
@@ -20,6 +20,26 @@
         <a th:if="${session.user?.getType()==1}" href="/team/register">Register team</a>
       </div>
 
+      <div class="scorer">
+        <h2>Best Scorer</h2>
+        <table border="1">
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Birthday</th>
+            <th>Number Of Goals</th>
+            <th>Team Name</th>
+          </tr>
+          <tr>
+            <td><a style="{color:black; font-size: 18px}" th:href="@{/player/profile(id=${Eusebio.getPlayerId()})}" th:text="${Eusebio.name}">name</a></td>
+            <td><a style="{color:black; font-size: 18px}" th:text="${Eusebio.getPosition()}">position</a></td>
+            <td><a style="{color:black; font-size: 18px}" th:text="${Eusebio.getBirthday()}">birthday</a></td>
+            <td><a style="{color:black; font-size: 18px}" th:text="${Eusebio.getNumberGoals()}">goals</a></td>
+            <td><a style="{color:black; font-size: 18px}" th:href="@{profile(id=${Eusebio.getTeam().getTeamId()})}" th:text="${Eusebio.getTeam().getName()}">goals</a></td>
+          </tr>
+        </table>
+      </div>
+
       <div class="teams">
         <h2>Teams</h2>
 
@@ -32,10 +52,18 @@
             <tr>
               <th>Logo</th>
               <th>Name</th>
+              <th>Number of Games</th>
+              <th>Wins</th>
+              <th>Draws</th>
+              <th>Losses</th>
             </tr>
             <tr th:each="team : ${teams}">
               <td><img th:src="@{logo(id=${team.getTeamId()})}" alt="This team has no logo."></td>
               <td><a style="{color:black; font-size: 18px}" th:text="${team.getName()}" th:href="@{profile(id=${team.getTeamId()})}">Name</a></td>
+              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberGames}">Games</a></td>
+              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberWins}">Wins</a></td>
+              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberDraws}">Draws</a></td>
+              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberLosses}">Losses</a></td>
             </tr>
           </table>
         </div>

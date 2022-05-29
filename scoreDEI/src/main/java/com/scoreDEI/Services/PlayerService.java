@@ -20,24 +20,32 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
 
+    @Transactional
     public List<Player> getAllPlayers(){
         List<Player> allPlayers = new ArrayList<>();
         playerRepository.findAll().forEach(allPlayers::add);
         return allPlayers;
     }
 
+    @Transactional
     public void addPlayer(Player player){
         playerRepository.save(player);
     }
 
+    @Transactional
     public Optional<Player> getPlayer(int id){
         return playerRepository.findById(id);
     }
 
+    @Transactional
     public Player getBestScorer()
     {
         List<Player> allPlayers = new ArrayList<>();
         playerRepository.findAll().forEach(allPlayers::add);
+        for (Player player: allPlayers)
+        {
+            System.out.printf("%s -> %d\n", player, player.getNumberGoals());
+        }
         allPlayers.sort(new SortPlayersByScore());
         for (Player player: allPlayers)
         {

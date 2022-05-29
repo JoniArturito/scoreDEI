@@ -114,38 +114,6 @@ public class Game {
         this.events = events;
     }
 
-    public int[] getScore() {
-        int[] score = new int[2];
-        for (GameEvent event: events) {
-            if (event.getTypeEvent() == 3) {
-                Goal goalEvent = (Goal) event;
-                String teamName = goalEvent.getPlayer().getTeam().getName();
-                if (teamName.equals(homeTeam.getName())) {
-                    score[0]++;
-                }
-                else if (teamName.equals(visitorTeam.getName())) {
-                    score[1]++;
-                }
-            }
-        }
-        return score;
-    }
-
-    public int isWinner(Team team) {
-        int[] score = getScore();
-        int index = -1;
-        if (team.getName().equals(homeTeam.getName())) {
-            index = 0;
-        }
-        else if (team.getName().equals(visitorTeam.getName())){
-            index = 1;
-        }
-        else return -2;
-        if (score[index] > score[1-index]) return 1;
-        else if (score[index] < score[1-index]) return -1;
-        else return 0;
-    }
-
     @Override
     public String toString() {
         return "Game{" +

@@ -2,6 +2,7 @@ package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.scoreDEI.Others.Sorts.SortPlayersByScore;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -31,6 +32,15 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<Player> players;
 
+    @Column(name="number_games")
+    private int numberGames;
+    @Column(name="wins")
+    private int numberWins;
+    @Column(name="draws")
+    private int numberDraws;
+    @Column(name="losses")
+    private int numberLosses;
+
     public Team() {
     }
 
@@ -40,6 +50,10 @@ public class Team {
         homeGames = new ArrayList<>();
         visitorGames = new ArrayList<>();
         players = new ArrayList<>();
+        numberGames = 0;
+        numberWins = 0;
+        numberDraws = 0;
+        numberLosses = 0;
     }
 
     public int getTeamId() {
@@ -50,6 +64,7 @@ public class Team {
         this.teamId = teamId;
     }
 
+    @Transactional
     public String getName() {
         return name;
     }
@@ -105,44 +120,43 @@ public class Team {
         this.players = players;
     }
 
-    public int[] getGamesInfo()
-    {
-        /*
-            0 -> numero de jogos
-            1 -> vitorias
-            2 -> empates
-            3 -> derrotas
-         */
-        int[] info = new int[4];
-        info[0] = homeGames.size() + visitorGames.size();
-        int error = 0;
-        for (Game game: homeGames) {
-            switch (game.isWinner(this)) {
-                case 1 -> info[1]++;
-                case 0 -> info[2]++;
-                case -1 -> info[3]++;
-                default -> error++;
-            }
-        }
-        for (Game game: visitorGames) {
-            switch (game.isWinner(this)) {
-                case 1 -> info[1]++;
-                case 0 -> info[2]++;
-                case -1 -> info[3]++;
-                default -> error++;
-            }
-        }
-        return info;
+    public int getNumberGames() {
+        return numberGames;
     }
 
-    public Player getBestScorer()
-    {
-        players.sort(new SortPlayersByScore());
-        for (Player player: players)
-        {
-            System.out.printf("%s -> %d\n", player, player.getNumberGoals());
-        }
-        return players.get(0);
+    public void setNumberGames(int numberGames) {
+        this.numberGames = numberGames;
+    }
+
+    public int getNumberWins() {
+        return numberWins;
+    }
+
+    public void setNumberWins(int numberWins) {
+        this.numberWins = numberWins;
+    }
+
+    public int getNumberDraws() {
+        return numberDraws;
+    }
+
+    public void setNumberDraws(int numberDraws) {
+        this.numberDraws = numberDraws;
+    }
+
+    public int getNumberLosses() {
+        return numberLosses;
+    }
+
+    public void setNumberLosses(int numberLosses) {
+        this.numberLosses = numberLosses;
+    }
+
+    public void addNewResult(int type){
+        if (type > 0) numberWins++;
+        else if (type < 0) numberLosses++;
+        else numberDraws++;
+        numberGames++;
     }
 
     @Override

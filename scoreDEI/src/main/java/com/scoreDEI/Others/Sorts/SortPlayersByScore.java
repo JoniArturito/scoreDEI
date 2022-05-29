@@ -7,6 +7,6 @@ import java.util.Comparator;
 public class SortPlayersByScore implements Comparator<Player> {
     @Override
     public int compare(Player o1, Player o2) {
-        return Integer.compare(o1.getNumberGoals(), o2.getNumberGoals());
+        return Integer.compare(o2.getNumberGoals(), o1.getNumberGoals());
     }
 }

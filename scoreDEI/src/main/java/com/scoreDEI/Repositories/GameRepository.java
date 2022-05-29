@@ -2,6 +2,7 @@ package com.scoreDEI.Repositories;
 
 import com.scoreDEI.Entities.Game;
 
+import com.scoreDEI.Entities.Team;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,4 +20,7 @@ public interface GameRepository extends CrudRepository<Game, Integer> {
     @Modifying
     @Query("DELETE FROM GameEvent e WHERE e.game = ?1")
     public void deleteEvents(Game game);
+
+    @Query("SELECT COUNT(t) FROM Goal t WHERE t.game = ?1 AND t.player.team = ?2")
+    public int getTeamScore(Game game, Team team);
 }
