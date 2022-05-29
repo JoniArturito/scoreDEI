@@ -51,27 +51,50 @@ public class PlayerService {
     }
 
     @Transactional
-    public void updateName(int id, String name) {
-        Optional<Player> p = this.getPlayer(id);
-        p.ifPresent(player -> player.setName(name));
+    public boolean updateName(int id, String name) {
+        Optional<Player> player = this.getPlayer(id);
+        if(player.isPresent()) {
+            player.get().setName(name);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updatePosition(int id, String position) {
-        Optional<Player> p = this.getPlayer(id);
-        p.ifPresent(player -> player.setPosition(position));
+    public boolean updatePosition(int id, String position) {
+        Optional<Player> player = this.getPlayer(id);
+
+        if(player.isPresent()) {
+            player.get().setPosition(position);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updateBirthday(int id, Date birthday) {
-        Optional<Player> p = this.getPlayer(id);
-        p.ifPresent(player -> player.setBirthday(birthday));
+    public boolean updateBirthday(int id, Date birthday) {
+        Optional<Player> player = this.getPlayer(id);
+
+        if(player.isPresent()) {
+            player.get().setBirthday(birthday);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updateTeam(int id, Team team) {
-        Optional<Player> p = this.getPlayer(id);
-        p.ifPresent(player -> player.setTeam(team));
+    public boolean updateTeam(int id, Team team) {
+        Optional<Player> player = this.getPlayer(id);
+
+        if(player.isPresent()) {
+            player.get().setTeam(team);
+            return true;
+        }
+
+        return false;
     }
 
     public List<Player> findPlayerByName(String chars) {

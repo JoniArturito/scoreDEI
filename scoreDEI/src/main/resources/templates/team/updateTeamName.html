@@ -16,7 +16,7 @@
         <div class="container">
 
             <div class="header">
-                <h2 class="headerTitle">Update team logo.</h2>
+                <h2 th:text="${team.getName()}" class="headerTitle"></h2>
             </div>
 
             <div class="form">
@@ -34,7 +34,7 @@
 
                     <div class="row">
                         <input style={padding-top:250px} type="submit" value="Save">
-                        <a class="cancel" href="/team/list"> Cancel </a>
+                        <a class="cancel" th:href="@{team/profile(id=${team.getTeamId()})}"> Cancel </a>
                     </div>
 
                 </form>

@@ -25,9 +25,11 @@
 
             <div class="game_info">
                 <h2>Games</h2>
+
                 <div th:if="${games.isEmpty()}">
-                    <p>There are no games to display.</p>
+                    <h4>There isn't any game.</h4>
                 </div>
+
                 <div th:if="${!games.isEmpty()}">
                     <table border="1">
                         <tr>
@@ -43,8 +45,11 @@
                         </tr>
                     </table>
                 </div>
+
             </div>
+
         </div>
+
     </div>
 </div>
 </body>

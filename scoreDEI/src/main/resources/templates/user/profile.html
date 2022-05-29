@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scoreDEi</title>
+  <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  <link th:href="@{/css/team.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+  <div th:replace="navbar.html"></div>
+  <div class="body">
+
+    <div class = "container">
+
+      <div th:if="${session.user?.getType()==1}" class="header">
+        <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${user.getUserId()})}">Change username</a>
+        <a style="{color:black; font-size: 18px}" th:href="@{edit/email(id=${user.getUserId()})}">Change email</a>
+        <a style="{color:black; font-size: 18px}" th:href="@{edit/phone(id=${user.getUserId()})}">Change phone number</a>
+        <a style="{color:black; font-size: 18px}" th:href="@{edit/password(id=${user.getUserId()})}">Change password</a>
+        <a th:href="@{delete(id=${user.getUserId()})}">Delete</a>
+      </div>
+
+      <!--
+      <div>
+        <img th:src="@{logo(id=${team.getTeamId()})}" alt="This team has no logo.">
+        <h1 class="headerTitle" th:text="${team.getName()}"></h1>
+      </div>
+      -->
+
+      <div>
+        <h1 class="headerTitle" th:text="${user.getName()}"></h1>
+      </div>
+
+      <div class="email">
+        <h3>Email:</h3>
+        <p th:text="${user.getEmail()}"></p>
+      </div>
+
+      <div class="birthday">
+        <h3>Phone number:</h3>
+        <p th:text="${user.getPhone()}"></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

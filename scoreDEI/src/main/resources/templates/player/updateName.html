@@ -16,7 +16,7 @@
         <div class="container">
 
             <div class="header">
-                <h2 class="headerTitle">Update player's name</h2>
+                <h2 th:text="${player.getName()}" class="headerTitle"></h2>
             </div>
 
             <div class="form">
@@ -25,7 +25,7 @@
 
                     <div class="row">
                         <div class="col-25">
-                            <label for="name">Player Name:</label>
+                            <label for="name">Player name:</label>
                         </div>
                         <div class="col-75">
                             <input type="text" id="name" name="name" placeholder="Enter the player name..." value="" required>
@@ -34,7 +34,7 @@
 
                     <div class="row">
                         <input style={padding-top:250px} type="submit" value="Save">
-                        <a class="cancel" href="/player/list"> Cancel </a>
+                        <a class="cancel" th:href="@{player/profile(id=${player.getPlayerId()})}"> Cancel </a>
                     </div>
 
                 </form>

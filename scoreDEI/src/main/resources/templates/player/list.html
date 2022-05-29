@@ -16,29 +16,44 @@
         <div class = "container">
 
             <div class="header">
-                <h1 class="headerTitle">List of players per team</h1>
+                <h1 class="headerTitle">Players by team</h1>
                 <a th:if="${session.user?.getType()==1}" href="/player/register">Register player</a>
             </div>
 
-            <div class="users_info">
-                <ul th:each="team : ${teams}">
+            <div class="players">
+                <div th:if="${teams.isEmpty()}">
+                    <h4>There isn't any team.</h4>
+                </div>
+
+                <ul th:if="${!teams.isEmpty()}" th:each="team : ${teams}">
                     <br>
                     <h2 th:href="@{/team/profile(id=${team.getTeamId()})}" th:text="${team.getName()}"></h2>
-                    <table border="1">
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Birthday</th>
-                        </tr>
-                        <tr th:each="player : ${team.getPlayers()}">
-                            <td><a style="{color:black; font-size: 18px}" th:href="@{profile(id=${player.getPlayerId()})}" th:text="${player.name}">name</a></td>
-                            <td><a style="{color:black; font-size: 18px}" th:text="${player.position}">position</a></td>
-                            <td><a style="{color:black; font-size: 18px}" th:text="${player.birthday}">birthday</a></td>
-                        </tr>
-                    </table>
+
+                    <div th:if="${games.isEmpty()}">
+                        <h4>This team does not have players.</h4>
+                    </div>
+
+                    <div th:if="${!games.isEmpty()}">
+                        <table border="1">
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Birthday</th>
+                            </tr>
+                            <tr th:each="player : ${team.getPlayers()}">
+                                <td><a style="{color:black; font-size: 18px}" th:href="@{profile(id=${player.getPlayerId()})}" th:text="${player.name}">name</a></td>
+                                <td><a style="{color:black; font-size: 18px}" th:text="${player.getPosition()}">position</a></td>
+                                <td><a style="{color:black; font-size: 18px}" th:text="${player.getBirthday()}">birthday</a></td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </ul>
+
             </div>
+
         </div>
+
     </div>
 </div>
 </body>

@@ -16,14 +16,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.Option;
-import javax.transaction.Transactional;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -84,18 +79,6 @@ public class DatabaseController {
         }
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                        .getRequest();
-        HttpSession session = request.getSession();
-        session.setAttribute("user", null);
-
-        return "redirect:/game/list";
-    }
-
     @Bean
     public FilterRegistrationBean<AuthenticationFilter> authFilter() {
         FilterRegistrationBean<AuthenticationFilter> bean = new FilterRegistrationBean<>();
@@ -107,6 +90,18 @@ public class DatabaseController {
 
         bean.setOrder(1);
         return bean;
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                        .getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute("user", null);
+
+        return "redirect:/game/list";
     }
 
     @GetMapping({"/createData"})

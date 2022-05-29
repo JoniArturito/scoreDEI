@@ -17,7 +17,6 @@
 
             <div class="header">
                 <h2 class="headerTitle">Player registration</h2>
-                <p class="headerSubtitle">Fill the form to create a player.</p>
             </div>
 
             <div class="form">
@@ -70,8 +69,8 @@
                         </div>
                         <div class="col-75">
                             <select name="teamName" id="team" required>
-                                <tr th:each="s : ${teams}">
-                                    <option th:text="${s.name}"> name </option>
+                                <tr th:each="team : ${teams}">
+                                    <option th:text="${team.getName()}"> name </option>
                                 </tr>
                             </select>
                         </div>

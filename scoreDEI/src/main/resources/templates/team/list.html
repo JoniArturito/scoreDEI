@@ -16,25 +16,36 @@
     <div class = "container">
 
       <div class="header">
-        <h1 class="headerTitle">List of teams</h1>
-        <a href="/team/register"> Register new team. </a>
+        <h1 class="headerTitle">Teams</h1>
+        <a th:if="${session.user?.getType()==1}" href="/team/register">Register team</a>
       </div>
 
-      <div class="team_info">
+      <div class="teams">
         <h2>Teams</h2>
-        <table border="1">
-          <tr>
-            <th>Logo</th>
-            <th>Name</th>
-          </tr>
-          <tr th:each="s : ${teams}">
-            <td><img th:src="@{logo(id=${s.teamId})}" alt="This team has no logo."></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.name}" th:href="@{profile(id=${s.teamId})}">Name.</a></td>
-          </tr>
-        </table>
+
+        <div th:if="${teams.isEmpty()}">
+          <h4>There isn't any team.</h4>
+        </div>
+
+        <div th:if="${!teams.isEmpty()}">
+          <table border="1">
+            <tr>
+              <th>Logo</th>
+              <th>Name</th>
+            </tr>
+            <tr th:each="team : ${teams}">
+              <td><img th:src="@{logo(id=${team.getTeamId()})}" alt="This team has no logo."></td>
+              <td><a style="{color:black; font-size: 18px}" th:text="${team.getName()}" th:href="@{profile(id=${team.getTeamId()})}">Name</a></td>
+            </tr>
+          </table>
+        </div>
+
       </div>
+
     </div>
+
   </div>
+
 </div>
 </body>
 </html>

@@ -29,8 +29,8 @@
                         </div>
                         <div class="col-75">
                             <select name="visitorTeam" id="visitorTeam">
-                                <tr th:each="s : ${teams}">
-                                    <option th:text="${s.name}"> name </option>
+                                <tr th:each="team : ${teams}">
+                                    <option th:text="${team.getName()}"> name </option>
                                 </tr>
                             </select>
                         </div>

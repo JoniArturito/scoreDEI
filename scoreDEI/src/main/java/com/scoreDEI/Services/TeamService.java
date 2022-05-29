@@ -66,15 +66,27 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateTeamLogo(int id, byte[] new_logo) {
-        Optional<Team> t = this.getTeam(id);
-        t.ifPresent(team -> team.setLogo(new_logo));
+    public boolean updateTeamLogo(int id, byte[] new_logo) {
+        Optional<Team> team = this.getTeam(id);
+
+        if(team.isPresent()) {
+            team.get().setLogo(new_logo);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updateTeamName(int id, String name) {
-        Optional<Team> t = this.getTeam(id);
-        t.ifPresent(team -> team.setName(name));
+    public boolean updateTeamName(int id, String name) {
+        Optional<Team> team = this.getTeam(id);
+
+        if(team.isPresent()) {
+            team.get().setName(name);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional

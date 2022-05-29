@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -46,16 +47,18 @@ public class TeamDataController {
     }
 
     @PostMapping("/register")
-    public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model) {
+    public String registerTeamSubmit(@ModelAttribute TeamForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("TeamForm", form);
 
             Team dbTeam = new Team(form.getName(), form.getMultipartFile().getBytes());
             this.teamService.addTeam(dbTeam);
 
+            redirAttrs.addFlashAttribute("success", String.format("Team %s registered!", dbTeam.getName()));
             return "redirect:/team/list";
         } catch (Exception e) {
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Failed to register user!");
+            return "redirect:/user/list";
         }
     }
 
@@ -71,7 +74,7 @@ public class TeamDataController {
     }
 
     @GetMapping("/profile")
-    public String teamProfile(@RequestParam(name="id") int id, Model model) {
+    public String teamProfile(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Team> t = this.teamService.getTeam(id);
 
@@ -80,16 +83,17 @@ public class TeamDataController {
                 model.addAttribute("team", t.get());
                 model.addAttribute("players", players);
                 return "/team/profile";
-            } else {
-                return "redirect:/error/";
             }
+
+            redirAttrs.addFlashAttribute("error", "Team does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/logo")
-    public String getTeamLogo(@RequestParam(name="id") int id, HttpServletResponse response) {
+    public String getTeamLogo(@RequestParam(name="id") int id, HttpServletResponse response, RedirectAttributes redirAttrs) {
         try {
             response.setContentType("image/png");
 
@@ -102,14 +106,15 @@ public class TeamDataController {
                 return null;
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Team does not exist!");
+            return "redirect:/team/list";
         } catch (IOException e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/logo")
-    public String updateTeamLogo(@RequestParam(name="id") int id, Model model) {
+    public String updateTeamLogo(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Team> t = this.teamService.getTeam(id);
 
@@ -120,7 +125,8 @@ public class TeamDataController {
                 return "team/updateLogo";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Team does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -128,22 +134,25 @@ public class TeamDataController {
 
     @PostMapping("/edit/logo")
     public String updateTeamLogo(@RequestParam(name="id") int id,
-                                 @ModelAttribute TeamForm form, Model model){
+                                 @ModelAttribute TeamForm form, Model model, RedirectAttributes redirAttrs){
 
         try {
             model.addAttribute("teamForm", form);
 
             byte[] new_logo = form.getMultipartFile().getBytes();
-            this.teamService.updateTeamLogo(id, new_logo);
+            boolean feedback = this.teamService.updateTeamLogo(id, new_logo);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", "Team logo changed!");
+            } else redirAttrs.addFlashAttribute("error", "Failed to team logo!");
 
-            return "redirect:/team/list";
+            return String.format("redirect:/team/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/name")
-    public String updateTeamName(@RequestParam(name="id") int id, Model model) {
+    public String updateTeamName(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Team> t = this.teamService.getTeam(id);
 
@@ -154,7 +163,8 @@ public class TeamDataController {
                 return "team/updateTeamName";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Team does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -162,14 +172,17 @@ public class TeamDataController {
 
     @PostMapping("/edit/name")
     public String updateTeamName(@RequestParam(name="id") int id,
-                                 @ModelAttribute TeamForm form, Model model) {
+                                 @ModelAttribute TeamForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("teamForm", form);
 
             String name = form.getName();
-            this.teamService.updateTeamName(id, name);
+            boolean feedback = this.teamService.updateTeamName(id, name);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", String.format("Team name changed to %s!", name));
+            } else redirAttrs.addFlashAttribute("error", "Failed to change team name!");
 
-            return "redirect:/team/list";
+            return String.format("redirect:/team/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }

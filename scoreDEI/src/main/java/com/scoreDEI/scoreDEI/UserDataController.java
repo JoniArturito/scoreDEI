@@ -1,8 +1,6 @@
 package com.scoreDEI.scoreDEI;
 
-import com.scoreDEI.Entities.AdminUser;
-import com.scoreDEI.Entities.RegularUser;
-import com.scoreDEI.Entities.User;
+import com.scoreDEI.Entities.*;
 import com.scoreDEI.Forms.UserForm;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.UserService;
@@ -72,8 +70,25 @@ public class UserDataController {
         }
     }
 
+    @GetMapping("/profile")
+    public String userProfile(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
+        try {
+            Optional<User> user = this.userService.getUser(id);
+
+            if(user.isPresent()) {
+                model.addAttribute("user", user.get());
+                return "/user/profile";
+            }
+
+            redirAttrs.addFlashAttribute("error", "User does not exist!");
+            return "redirect:/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
     @GetMapping("/edit/name")
-    public String updateUsername(@RequestParam(name="id", required = true) int id, Model model) {
+    public String updateUsername(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<User> op = this.userService.getUser(id);
             model.addAttribute("editForm", new UserForm());
@@ -83,7 +98,8 @@ public class UserDataController {
                 return "user/updateUsername";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "User does not exist!");
+            return "redirect:/user/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -91,54 +107,62 @@ public class UserDataController {
     }
 
     @PostMapping("/edit/name")
-    public String updateUsername(@RequestParam(name="id", required = true) int id,
-                                 @ModelAttribute UserForm form, Model model) {
+    public String updateUsername(@RequestParam(name="id") int id,
+                                 @ModelAttribute UserForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("editForm", form);
 
             String username = form.getUsername();
-            userService.updateUsername(id, username);
+            boolean feedback = userService.updateUsername(id, username);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", String.format("Username changed to %s!", username));
+            } else redirAttrs.addFlashAttribute("error", "Failed to change username!");
 
-            return "redirect:/user/list";
+            return String.format("redirect:/user/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/email")
-    public String updateEmail(@RequestParam(name="id", required = true) int id, Model model) {
+    public String updateEmail(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<User> op = this.userService.getUser(id);
             model.addAttribute("editForm", new UserForm());
 
             if (op.isPresent()) {
                 model.addAttribute("user", op.get());
-                return "user/updatePassword";
+                return "user/updateEmail";
             }
 
-            return "redirect:/error/";
-        } catch (Exception e) {
-            return "redirect:/error/";
-        }
-    }
-
-    @PostMapping("/edit/email")
-    public String updateEmail(@RequestParam(name="id", required = true) int id,
-                              @ModelAttribute UserForm form, Model model) {
-        try {
-            model.addAttribute("editForm", form);
-
-            String email = form.getUsername();
-            userService.updateEmail(id, email);
-
+            redirAttrs.addFlashAttribute("error", "User does not exist!");
             return "redirect:/user/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
+    @PostMapping("/edit/email")
+    public String updateEmail(@RequestParam(name="id") int id,
+                              @ModelAttribute UserForm form, Model model, RedirectAttributes redirAttrs) {
+        try {
+            model.addAttribute("editForm", form);
+
+            String email = form.getUsername();
+            boolean feedback = userService.updateEmail(id, email);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", String.format("Email changed to %s!", email));
+            } else redirAttrs.addFlashAttribute("error", "Failed to change username!");
+
+
+            return String.format("redirect:/user/profile?id=%d", id);
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
     @GetMapping("/edit/phone")
-    public String updatePhone(@RequestParam(name="id", required = true) int id, Model model) {
+    public String updatePhone(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<User> op = this.userService.getUser(id);
             model.addAttribute("editForm", new UserForm());
@@ -148,22 +172,26 @@ public class UserDataController {
                 return "user/updatePhone";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "User does not exist!");
+            return "redirect:/user/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @PostMapping("/edit/phone")
-    public String updatePhone(@RequestParam(name="id", required = true) int id,
-                              @ModelAttribute UserForm form, Model model) {
+    public String updatePhone(@RequestParam(name="id") int id,
+                              @ModelAttribute UserForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("editForm", form);
 
             long phone = form.getPhone();
-            userService.updatePhone(id, phone);
+            boolean feedback = userService.updatePhone(id, phone);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", String.format("Phone changed to %d!", phone));
+            } else redirAttrs.addFlashAttribute("error", "Failed to change phone number!");
 
-            return "redirect:/user/list";
+            return String.format("redirect:/user/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -171,7 +199,7 @@ public class UserDataController {
     }
 
     @GetMapping("/edit/password")
-    public String updatePassword(@RequestParam(name="id", required = true) int id, Model model) {
+    public String updatePassword(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<User> op = this.userService.getUser(id);
             model.addAttribute("editForm", new UserForm());
@@ -181,7 +209,8 @@ public class UserDataController {
                 return "user/updatePassword";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "User does not exist!");
+            return "redirect:/user/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -189,14 +218,17 @@ public class UserDataController {
 
     @PostMapping("/edit/password")
     public String updatePassword(@RequestParam(name="id", required = true) int id,
-                                 @ModelAttribute UserForm form, Model model) {
+                                 @ModelAttribute UserForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("editForm", form);
 
             long phone = form.getPhone();
-            userService.updatePhone(id, phone);
+            boolean feedback = userService.updatePhone(id, phone);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", "Password changed!");
+            } else redirAttrs.addFlashAttribute("error", "Failed to change password!");
 
-            return "redirect:/user/list";
+            return String.format("redirect:/user/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }

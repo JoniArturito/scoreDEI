@@ -16,7 +16,7 @@
 
       <div class="header">
         <h1 class="headerTitle">Users</h1>
-        <a href="/user/register"> Register new user. </a>
+        <a th:if="${session.user?.getType()==1}" href="/user/register"> Register new user. </a>
       </div>
 
       <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
@@ -24,44 +24,46 @@
 
       <div class="users_info">
         <h2>Admins</h2>
-        <table border="1">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-          <tr th:each="s : ${admins}">
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.name}" th:href="@{edit/name(id=${s.userId})}">name</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.email}" th:href="@{edit/email(id=${s.userId})}">email</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.phone}" th:href="@{edit/phone(id=${s.userId})}">phone</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:href="@{edit/password(id=${s.userId})}">Edit password</a></td>
-            <td><a th:href="@{delete(id=${s.userId})}">Delete</a></td>
-          </tr>
-        </table>
+
+        <div th:if="${admins.isEmpty()}">
+          <h4>There isn't any admin user.</h4>
+        </div>
+
+        <div th:if="${!admins.isEmpty()}">
+          <table border="1">
+            <tr>
+              <th>Username</th>
+            </tr>
+            <tr th:each="user : ${admins}">
+              <td><a style="{color:black; font-size: 18px}" th:text="${user.getName()}" th:href="@{profile(id=${user.getUserId()})}">name</a></td>
+            </tr>
+          </table>
+        </div>
+
       </div>
 
       <div class="users_info">
         <h2>Users</h2>
-        <table border="1">
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-          <tr th:each="s : ${regular_users}">
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.name}" th:href="@{name(id=${s.userId})}">name</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.email}" th:href="@{email(id=${s.userId})}">email</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${s.phone}" th:href="@{edit/phone(id=${s.userId})}">phone</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:href="@{edit/password(id=${s.userId})}">Edit password</a></td>
-            <td><a th:href="@{delete(id=${s.userId})}">Delete</a></td>
-          </tr>
-        </table>
+
+        <div th:if="${regular_users.isEmpty()}">
+          <h4>There isn't any user.</h4>
+        </div>
+
+        <div th:if="${!regular_users.isEmpty()}">
+          <table border="1">
+            <tr>
+              <th>Username</th>
+            </tr>
+            <tr th:each="user : ${regular_users}">
+              <td><a style="{color:black; font-size: 18px}" th:text="${user.getName()}" th:href="@{profile(id=${user.getUserId()})}">name</a></td>
+            </tr>
+          </table>
+        </div>
+
       </div>
 
     </div>
-
   </div>
-
 </div>
 </body>
 </html>

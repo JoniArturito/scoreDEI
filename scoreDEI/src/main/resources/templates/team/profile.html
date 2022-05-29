@@ -15,10 +15,10 @@
 
         <div class = "container">
 
-            <div class="header">
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${team.getTeamId()})}">Change team name.</a></td>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/logo(id=${team.getTeamId()})}">Change team logo.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${team.getTeamId()})}">Delete team.</a>
+            <div th:if="${session.user?.getType()==1}" class="header">
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${team.getTeamId()})}">Change team name</a></td>
+                <a style="{color:black; font-size: 18px}" th:href="@{edit/logo(id=${team.getTeamId()})}">Change team logo</a>
+                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${team.getTeamId()})}">Delete</a>
             </div>
 
             <div>
@@ -27,17 +27,17 @@
             </div>
 
             <div class="players">
-                <h2>Players</h2>
+                <h2 th:text="${team.getName() + '\'s players'}"></h2>
                 <table border="1">
                     <tr>
-                        <th>Logo</th>
                         <th>Name</th>
+                        <th>Position</th>
                         <th>Birthday</th>
                     </tr>
-                    <tr th:each="s : ${players}">
-                        <td><a style="{color:black; font-size: 18px}" th:href="@{/player/profile(id=${s.getPlayerId()})}" th:text="${s.name}">name</a></td>
-                        <td><a style="{color:black; font-size: 18px}" th:text="${s.position}">position</a></td>
-                        <td><a style="{color:black; font-size: 18px}" th:text="${s.birthday}">birthday</a></td>
+                    <tr th:each="player : ${players}">
+                        <td><a style="{color:black; font-size: 18px}" th:href="@{/player/profile(id=${player.getPlayerId()})}" th:text="${player.getName()}">name</a></td>
+                        <td><a style="{color:black; font-size: 18px}" th:text="${player.getPosition()}">position</a></td>
+                        <td><a style="{color:black; font-size: 18px}" th:text="${player.getBirthday()}">birthday</a></td>
                     </tr>
                 </table>
             </div>
@@ -45,7 +45,6 @@
         </div>
 
     </div>
-
 </div>
 </body>
 </html>

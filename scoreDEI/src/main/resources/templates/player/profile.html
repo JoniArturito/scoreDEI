@@ -39,7 +39,7 @@
 
             <div class="team">
                 <h3>Team:</h3>
-                <a style="{color:black}" th:href="@{/team/profile(id=${player.getTeam().getTeamId()})}">Hello</a>
+                <a style="{color:black}" th:text="${team.getName()}" th:href="@{/team/profile(id=${team.getTeamId()})}">team name</a>
                 <p th:text="${player.getPosition()}"></p>
             </div>
 

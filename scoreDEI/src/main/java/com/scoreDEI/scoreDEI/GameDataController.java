@@ -51,8 +51,8 @@ public class GameDataController {
                 String location = form.getLocation();
 
                 if (this.gameService.isStadiumOccupied(location, dateAndTime)){
-                    System.out.println("Stadium is already reserved");
-                    return "redirect:/error/";
+                    redirAttrs.addFlashAttribute("error", "Failed to create game!");
+                    return "redirect:/game/list";
                 }
 
                 if (homeTeam.isPresent() && visitorTeam.isPresent()) {

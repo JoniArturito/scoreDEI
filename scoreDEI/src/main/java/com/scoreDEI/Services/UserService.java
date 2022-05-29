@@ -104,30 +104,50 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUsername(int id, String username) {
+    public boolean updateUsername(int id, String username) {
         Optional<User> u = this.getUser(id);
 
-        u.ifPresent(user -> user.setName(username));
+        if(u.isPresent()) {
+            u.get().setName(username);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updateEmail(int id, String email) {
+    public boolean updateEmail(int id, String email) {
         Optional<User> u = this.getUser(id);
 
-        u.ifPresent(user -> user.setEmail(email));
+        if(u.isPresent()) {
+            u.get().setEmail(email);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updatePhone(int id, long phone) {
+    public boolean updatePhone(int id, long phone) {
         Optional<User> u = this.getUser(id);
 
-        u.ifPresent(user -> user.setPhone(phone));
+        if(u.isPresent()) {
+            u.get().setPhone(phone);
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional
-    public void updatePassword(int id, String password) {
+    public boolean updatePassword(int id, String password) {
         Optional<User> u = this.getUser(id);
 
-        u.ifPresent(user -> user.setPassword(password));
+        if(u.isPresent()) {
+            u.get().setPassword(password);
+            return true;
+        }
+
+        return false;
     }
 }

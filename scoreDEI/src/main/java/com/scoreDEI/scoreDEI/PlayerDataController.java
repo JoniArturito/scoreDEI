@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Date;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class PlayerDataController {
     }
 
     @PostMapping("/register")
-    public String registerPlayerSubmit(@ModelAttribute PlayerForm form, Model model){
+    public String registerPlayerSubmit(@ModelAttribute PlayerForm form, Model model, RedirectAttributes redirAttrs){
         try {
             model.addAttribute("PlayerForm", form);
 
@@ -47,19 +48,21 @@ public class PlayerDataController {
             if (playerTeam.isPresent()) {
                 Player dbPlayer = new Player(playerName, playerPosition, playerBirthday, playerTeam.get());
                 if (this.playerService.isPlayerExist(dbPlayer)){
-                    System.out.println("Already exists");
-                    return "redirect:/error/";
-                }
-                else{
+                    redirAttrs.addFlashAttribute("error", "Failed to register player!");
+                } else{
                     this.playerService.addPlayer(dbPlayer);
+                    redirAttrs.addFlashAttribute("success", String.format("Team %s registered!", playerName));
                 }
+
+                return "redirect:/player/list";
             } else {
-                return "redirect:/error/";
+                redirAttrs.addFlashAttribute("error", "Failed to register player!");
+                return "redirect:/player/list";
             }
 
-            return "redirect:/player/list";
         } catch (Exception e) {
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Failed to register player!");
+            return "redirect:/player/list";
         }
     }
 
@@ -75,23 +78,25 @@ public class PlayerDataController {
     }
 
     @GetMapping("/profile")
-    public String playerProfile(@RequestParam(name="id") int id, Model model) {
+    public String playerProfile(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Player> p = this.playerService.getPlayer(id);
 
             if(p.isPresent()) {
                 model.addAttribute("player", p.get());
+                model.addAttribute("team", p.get().getTeam());
                 return "/player/profile";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Player does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/name")
-    public String updatePlayerName(@RequestParam(name="id") int id, Model model) {
+    public String updatePlayerName(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Player> p = this.playerService.getPlayer(id);
 
@@ -102,7 +107,8 @@ public class PlayerDataController {
                 return "player/updateName";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Player does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -110,21 +116,24 @@ public class PlayerDataController {
 
     @PostMapping("/edit/name")
     public String updatePlayerName(@RequestParam(name="id") int id,
-                                   @ModelAttribute PlayerForm form, Model model) {
+                                   @ModelAttribute PlayerForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("playerForm", form);
 
             String name = form.getName();
-            this.playerService.updateName(id, name);
+            boolean feedback = this.playerService.updateName(id, name);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", "Team logo changed!");
+            } else redirAttrs.addFlashAttribute("error", "Failed to team logo!");
 
-            return "redirect:/player/list";
+            return String.format("redirect:/player/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/position")
-    public String updatePosition(@RequestParam(name="id") int id, Model model) {
+    public String updatePosition(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Player> p = this.playerService.getPlayer(id);
 
@@ -135,7 +144,8 @@ public class PlayerDataController {
                 return "player/updatePosition";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Player does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -143,21 +153,24 @@ public class PlayerDataController {
 
     @PostMapping("/edit/position")
     public String updatePosition(@RequestParam(name="id") int id,
-                                 @ModelAttribute PlayerForm form, Model model) {
+                                 @ModelAttribute PlayerForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("playerForm", form);
 
             String position = form.getPosition();
-            this.playerService.updatePosition(id, position);
+            boolean feedback = this.playerService.updatePosition(id, position);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", "Player's position changed!");
+            } else redirAttrs.addFlashAttribute("error", "Failed to player's position!");
 
-            return "redirect:/player/list";
+            return String.format("redirect:/player/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/birthday")
-    public String updateBirthday(@RequestParam(name="id") int id, Model model) {
+    public String updateBirthday(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Player> p = this.playerService.getPlayer(id);
 
@@ -168,7 +181,8 @@ public class PlayerDataController {
                 return "player/updateBirthday";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Player does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -176,21 +190,24 @@ public class PlayerDataController {
 
     @PostMapping("/edit/birthday")
     public String updateBirthday(@RequestParam(name="id") int id,
-                                 @ModelAttribute PlayerForm form, Model model) {
+                                 @ModelAttribute PlayerForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("playerForm", form);
 
             Date birthday = form.getBirthday();
-            this.playerService.updateBirthday(id, birthday);
+            boolean feedback = this.playerService.updateBirthday(id, birthday);
+            if(feedback) {
+                redirAttrs.addFlashAttribute("success", "Player's birthday changed!");
+            } else redirAttrs.addFlashAttribute("error", "Failed to change player's birthday!");
 
-            return "redirect:/player/list";
+            return String.format("redirect:/player/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
     }
 
     @GetMapping("/edit/team")
-    public String updatePlayerTeam(@RequestParam(name="id") int id, Model model) {
+    public String updatePlayerTeam(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
         try {
             Optional<Player> p = this.playerService.getPlayer(id);
 
@@ -202,7 +219,8 @@ public class PlayerDataController {
                 return "player/updateTeam";
             }
 
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Player does not exist!");
+            return "redirect:/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
@@ -210,13 +228,21 @@ public class PlayerDataController {
 
     @PostMapping("/edit/team")
     public String updatePlayerTeam(@RequestParam(name="id") int id,
-                                   @ModelAttribute PlayerForm form, Model model) {
+                                   @ModelAttribute PlayerForm form, Model model, RedirectAttributes redirAttrs) {
         try {
             model.addAttribute("playerForm", form);
             Optional<Team> playerTeam = this.teamService.getTeam(form.getTeamName());
-            playerTeam.ifPresent(team -> this.playerService.updateTeam(id, team));
 
-            return "redirect:/player/list";
+            if(playerTeam.isPresent()) {
+
+                boolean feedback = this.playerService.updateTeam(id, playerTeam.get());
+                if(feedback) {
+                    redirAttrs.addFlashAttribute("success", "Player's team changed!");
+                } else redirAttrs.addFlashAttribute("error", "Failed to change player's team!");
+            }
+
+            redirAttrs.addFlashAttribute("error", "Player does not have a team!");
+            return String.format("redirect:/player/profile?id=%d", id);
         } catch (Exception e) {
             return "redirect:/error/";
         }
