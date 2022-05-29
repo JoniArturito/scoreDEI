@@ -29,11 +29,11 @@
                     <br>
                     <h2 th:href="@{/team/profile(id=${team.getTeamId()})}" th:text="${team.getName()}"></h2>
 
-                    <div th:if="${games.isEmpty()}">
+                    <div th:if="${team.getPlayers().isEmpty()}">
                         <h4>This team does not have players.</h4>
                     </div>
 
-                    <div th:if="${!games.isEmpty()}">
+                    <div th:if="${!team.getPlayers().isEmpty()}">
                         <table border="1">
                             <tr>
                                 <th>Name</th>

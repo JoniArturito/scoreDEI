@@ -3,6 +3,7 @@ package com.scoreDEI.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class Player {
         this.birthday = birthday;
     }
 
+    @Transactional
     public Team getTeam() {
         return team;
     }

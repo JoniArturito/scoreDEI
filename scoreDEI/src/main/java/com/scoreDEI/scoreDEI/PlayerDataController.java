@@ -84,7 +84,7 @@ public class PlayerDataController {
 
             if(p.isPresent()) {
                 model.addAttribute("player", p.get());
-                model.addAttribute("team", p.get().getTeam());
+                //model.addAttribute("team", p.get().getTeam().getName());
                 return "/player/profile";
             }
 
