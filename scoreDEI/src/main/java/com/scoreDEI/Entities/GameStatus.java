@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
+import java.sql.Time;
 
 @Entity
 @JsonIgnoreProperties({"game_status"})
@@ -17,7 +17,7 @@ public class GameStatus extends GameEvent{
     public GameStatus() {
     }
 
-    public GameStatus(Timestamp eventDate, Game game, int type) {
+    public GameStatus(Time eventDate, Game game, int type) {
         super(eventDate, game);
         this.type = type;
     }

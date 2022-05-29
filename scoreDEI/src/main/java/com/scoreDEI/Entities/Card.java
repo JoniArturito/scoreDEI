@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
+import java.sql.Time;
 
 @Entity
 @JsonIgnoreProperties({"cards"})
@@ -22,7 +22,7 @@ public class Card extends GameEvent{
     public Card() {
     }
 
-    public Card(Timestamp eventDate, Game game, boolean isYellow, Player player) {
+    public Card(Time eventDate, Game game, boolean isYellow, Player player) {
         super(eventDate, game);
         this.isYellow = isYellow;
         this.player = player;

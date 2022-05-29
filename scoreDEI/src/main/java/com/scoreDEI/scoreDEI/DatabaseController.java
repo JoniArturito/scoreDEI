@@ -24,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,8 +221,9 @@ public class DatabaseController {
             System.out.println(form.getType());
             //System.out.println(form.getEventDate());
 
-            String newDateTimeLocal = (form.getEventDate().replace("T", " ")).concat(":00");
-            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            //String newDateTimeLocal = (form.getEventDate().replace("T", " ")).concat(":00");
+            //Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            Time dateAndTime = Time.valueOf(form.getEventDate().concat(":00"));
 
             GameStatus dbGameStatus = new GameStatus(dateAndTime, form.getGame(), form.getType());
             this.eventService.addGameEvent(dbGameStatus);
@@ -249,8 +251,9 @@ public class DatabaseController {
         if (opGame.isPresent()) {
             System.out.println(opGame.get());
             form.setGame(opGame.get());
-            String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
-            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            //String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
+            //Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            Time dateAndTime = Time.valueOf(form.getBeginDate().concat(":00"));
 
             Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
             if (opPlayer.isPresent()) {
@@ -280,8 +283,9 @@ public class DatabaseController {
         if (opGame.isPresent()) {
             form.setGame(opGame.get());
             form.setYellow(Boolean.parseBoolean(form.getIsYellowString()));
-            String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
-            Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            //String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
+            //Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
+            Time dateAndTime = Time.valueOf(form.getBeginDate().concat(":00"));
 
             Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
             if (opPlayer.isPresent()) {

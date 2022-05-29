@@ -19,7 +19,7 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "game_gen")
     @Column(name = "gameId", nullable = false)
     private int gameId;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "begindate", nullable = false)
     private Timestamp beginDate;
