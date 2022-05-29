@@ -80,12 +80,11 @@ public class GameService {
             if (homeTeam) {
                 if(game.get().getVisitorTeam().getName().equals(team.getName())) return false;
                 game.get().setHomeTeam(team);
-                return true;
             } else {
                 if(game.get().getHomeTeam().getName().equals(team.getName())) return false;
                 game.get().setVisitorTeam(team);
-                return true;
             }
+            return true;
         }
 
         return false;
