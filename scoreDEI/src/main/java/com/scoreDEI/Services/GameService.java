@@ -109,6 +109,7 @@ public class GameService {
             game.get().setBeginDate(beginDate);
             return true;
         }
+        return false;
     }
 
     @Transactional
