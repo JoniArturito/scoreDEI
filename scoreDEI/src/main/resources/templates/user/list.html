@@ -15,9 +15,12 @@
     <div class = "container">
 
       <div class="header">
-        <h1 class="headerTitle">List of users</h1>
+        <h1 class="headerTitle">Users</h1>
         <a href="/user/register"> Register new user. </a>
       </div>
+
+      <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+      <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
 
       <div class="users_info">
         <h2>Admins</h2>

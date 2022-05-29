@@ -5,7 +5,6 @@ import com.scoreDEI.Forms.*;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
 import com.scoreDEI.filters.AuthenticationFilter;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +15,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
@@ -26,8 +24,6 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Controller
@@ -62,18 +58,6 @@ public class DatabaseController {
         return "login";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                        .getRequest();
-        HttpSession session = request.getSession();
-        session.setAttribute("user", null);
-
-        return "redirect:/login";
-    }
-
     @PostMapping("/login")
     public String login(@ModelAttribute UserForm form) {
         try {
@@ -98,6 +82,18 @@ public class DatabaseController {
         } catch (Exception e) {
             return "redirect:/error/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                        .getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute("user", null);
+
+        return "redirect:/game/list";
     }
 
     @Bean
@@ -127,7 +123,7 @@ public class DatabaseController {
         try {
             AdminUser[] admins = {
                     new AdminUser("Rui", "abcdefgh@gmail.com", 123456789L, PasswordHash.toHexString(PasswordHash.getSha("bruh"))),
-                    new AdminUser("Joao", "ijklmnop@gmail.com", 123456788L, PasswordHash.toHexString(PasswordHash.getSha("ananas")))
+                    new AdminUser("Joao", "admin@mail.com", 123456788L, PasswordHash.toHexString(PasswordHash.getSha("123")))
             };
             RegularUser[] users = {
                     new RegularUser("Paula", "qrstuvwx@gmail.com", 111111111L, PasswordHash.toHexString(PasswordHash.getSha("1234"))),

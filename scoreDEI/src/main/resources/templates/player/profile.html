@@ -15,7 +15,7 @@
 
         <div class = "container">
 
-            <div class="header">
+            <div th:if="${session.user?.getType()==1}" class="header">
                 <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${player.getPlayerId()})}">Change name.</a>
                 <a style="{color:black; font-size: 18px}" th:href="@{edit/position(id=${player.getPlayerId()})}">Change position.</a>
                 <a style="{color:black; font-size: 18px}" th:href="@{edit/birthday(id=${player.getPlayerId()})}">Change birthday.</a>

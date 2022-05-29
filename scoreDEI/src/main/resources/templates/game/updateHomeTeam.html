@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scoreDEi</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div class="main">
+    <div th:replace="navbar.html"></div>
+    <div class="body">
+
+        <div class="container">
+
+            <div class="header">
+                <h2 th:text="${game.getHomeTeam().getName() + '-' + game.getVisitorTeam().getName()}" class="headerTitle"></h2>
+            </div>
+
+            <div class="form">
+
+                <form action="#" th:action="@{/game/edit/homeTeam(id=${game.getGameId()})}" th:object="${gameForm}" method="post">
+
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="homeTeam">Home Team:</label>
+                        </div>
+                        <div class="col-75">
+                            <select name="homeTeam" id="homeTeam">
+                                <tr th:each="s : ${teams}">
+                                    <option th:text="${s.name}"> name </option>
+                                </tr>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <input style={padding-top:250px} type="submit" value="Save">
+                        <a class="cancel" th:href="@{game/profile(id=${game.getGameId()})}"> Cancel </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

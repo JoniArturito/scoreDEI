@@ -16,24 +16,33 @@
         <div class = "container">
 
             <div class="header">
-                <h1 class="headerTitle">List of games</h1>
-                <a href="/game/register"> Register new game. </a>
+                <h1 class="headerTitle">Games</h1>
+                <a th:if="${session.user?.getType()==1}" href="/game/register">Register game.</a>
             </div>
+
+            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
 
             <div class="game_info">
                 <h2>Games</h2>
-                <table border="1">
-                    <tr>
-                        <th>Game</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                    </tr>
-                    <tr th:each="game : ${games}">
-                        <td><a style="{color:black; font-size: 18px}" th:text="${game.getHomeTeam().getName() + ' - ' + game.getVisitorTeam().getName()}" th:href="@{profile(id=${game.getGameId()})}">Name.</a></td>
-                        <td><a style="{color:black; font-size: 18px}" th:text="${game.getLocation()}">Location.</a></td>
-                        <td><a style="{color:black; font-size: 18px}" th:text="${game.getBeginDate()}">Date.</a></td>
-                    </tr>
-                </table>
+                <div th:if="${games.isEmpty()}">
+                    <p>There are no games to display.</p>
+                </div>
+                <div th:if="${!games.isEmpty()}">
+                    <table border="1">
+                        <tr>
+                            <th>Game</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                        </tr>
+                        <tr th:each="game : ${games}">
+                            <td><a style="{color:black; font-size: 18px}" th:text="${game.getHomeTeam().getName() + ' - ' +
+                            game.getVisitorTeam().getName()}" th:href="@{profile(id=${game.getGameId()})}">Name.</a></td>
+                            <td><a style="{color:black; font-size: 18px}" th:text="${game.getLocation()}">Location.</a></td>
+                            <td><a style="{color:black; font-size: 18px}" th:text="${game.getBeginDate()}">Date.</a></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

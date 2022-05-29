@@ -1,6 +1,7 @@
 package com.scoreDEI.Services;
 
 import com.scoreDEI.Entities.Game;
+import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Others.Sorts.SortTeamsByScore;
 import com.scoreDEI.Repositories.GameRepository;
@@ -70,5 +71,45 @@ public class GameService {
         String maxHour = maxTime.split("\\.")[0];;
 
         return new String[]{minHour, maxHour};
+    }
+
+    @Transactional
+    public boolean updateTeam(int gameId, Team team, boolean homeTeam) {
+        Optional<Game> game = this.getGame(gameId);
+        if(game.isPresent()) {
+            if (homeTeam) {
+                if(game.get().getVisitorTeam().getName().equals(team.getName())) return false;
+                game.get().setHomeTeam(team);
+                return true;
+            } else {
+                if(game.get().getHomeTeam().getName().equals(team.getName())) return false;
+                game.get().setVisitorTeam(team);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public boolean updateLocation(int gameId, String location) {
+        Optional<Game> game = this.getGame(gameId);
+        if(game.isPresent()) {
+            game.get().setLocation(location);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public boolean updateDate(int gameId, Timestamp beginDate) {
+        Optional<Game> game = this.getGame(gameId);
+        if(game.isPresent()) {
+            game.get().setBeginDate(beginDate);
+            return true;
+        }
+
+        return false;
     }
 }

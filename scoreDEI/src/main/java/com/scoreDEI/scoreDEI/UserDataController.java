@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class UserDataController {
     }
 
     @PostMapping("/register")
-    public String registerUserSubmit(@ModelAttribute UserForm form, Model model) {
+    public String registerUserSubmit(@ModelAttribute UserForm form, Model model, RedirectAttributes redirAttrs) {
 
         try {
             model.addAttribute("registerForm", form);
@@ -50,11 +51,12 @@ public class UserDataController {
                 this.userService.addUser(user);
             }
 
+            redirAttrs.addFlashAttribute("success", String.format("User %s registered!", username));
+            return "redirect:/user/list";
         } catch (Exception e) {
-            return "redirect:/error/";
+            redirAttrs.addFlashAttribute("error", "Failed to register user!");
+            return "redirect:/user/list";
         }
-
-        return "redirect:/user/list";
     }
 
     @GetMapping("/list")
