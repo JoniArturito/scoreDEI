@@ -46,7 +46,13 @@ public class PlayerDataController {
 
             if (playerTeam.isPresent()) {
                 Player dbPlayer = new Player(playerName, playerPosition, playerBirthday, playerTeam.get());
-                this.playerService.addPlayer(dbPlayer);
+                if (this.playerService.isPlayerExist(dbPlayer)){
+                    System.out.println("Already exists");
+                    return "redirect:/error/";
+                }
+                else{
+                    this.playerService.addPlayer(dbPlayer);
+                }
             } else {
                 return "redirect:/error/";
             }

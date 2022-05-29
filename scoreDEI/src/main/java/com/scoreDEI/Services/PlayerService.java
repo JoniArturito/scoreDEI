@@ -78,8 +78,7 @@ public class PlayerService {
     }
 
     @Transactional
-    public Optional<Player> getPlayer(String name)
-    {
+    public Optional<Player> getPlayer(String name) {
         List<Player> query = playerRepository.findPlayerByName(name);
         System.out.println();
         for(Player q: query)
@@ -88,5 +87,12 @@ public class PlayerService {
         }
         System.out.println();
         return Optional.ofNullable(query.get(0));
+    }
+
+    @Transactional
+    public boolean isPlayerExist(Player p)
+    {
+        List<Player> list = playerRepository.playerExist(p.getName(), p.getPosition(), p.getBirthday(), p.getTeam());
+        return list.size() != 0;
     }
 }

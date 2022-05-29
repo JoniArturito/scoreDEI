@@ -48,8 +48,12 @@ public class GameDataController {
                 Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
                 String location = form.getLocation();
 
-                if (homeTeam.isPresent() && visitorTeam.isPresent())
-                {
+                if (this.gameService.isStadiumOccupied(location, dateAndTime)){
+                    System.out.println("Stadium is already reserved");
+                    return "redirect:/error/";
+                }
+
+                if (homeTeam.isPresent() && visitorTeam.isPresent()) {
                     Team hTeam = homeTeam.get();
                     Team vTeam = visitorTeam.get();
                     Game dbGame = new Game(dateAndTime, location, hTeam, vTeam);

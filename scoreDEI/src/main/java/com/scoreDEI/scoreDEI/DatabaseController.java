@@ -186,12 +186,6 @@ public class DatabaseController {
         return "registerEvent";
     }
 
-    /*@GetMapping("/registerGameStatus")
-    public String registerGameStatusForm(Model model) {
-        model.addAttribute("GameStatusForm", new GameStatusForm());
-        return "registerGameStatus";
-    }*/
-
     @GetMapping("/registerGameStatus")
     public String registerGameStatusForm(@RequestParam(name="name", required=true) String name, @RequestParam(name="type", required=true) int type, Model model) {
         System.out.println(name);
@@ -200,7 +194,44 @@ public class DatabaseController {
         Optional<Game> opGame = this.gameService.getGame(name);
         if (opGame.isPresent()) {
             System.out.println(opGame.get());
-            model.addAttribute("GameStatusForm", new GameStatusForm(opGame.get(), type));
+            Game game = opGame.get();
+            if (this.eventService.endingGameExists(game)){
+                return "registerEvent";
+            }
+            final long threeHours = ((3*60)*60)*1000;
+            String[] interval;
+            if (this.eventService.beginningGameExists(game)) {
+                if (type == 0) {
+                    return "registerEvent";
+                }
+                Optional<Time> opBeginTime = this.eventService.getBeginningOfGame(game);
+                if (opBeginTime.isPresent()) {
+                    Time beginTime = opBeginTime.get();
+                    Time maxTime = new Time(beginTime.getTime() + threeHours);
+                    Optional<Time> opMostRecent = this.eventService.getMostRecentEventOfGame(game, beginTime);
+                    if (opMostRecent.isPresent()) {
+                        Time mostRecent = opMostRecent.get();
+                        interval = new String[]{mostRecent.toString(), maxTime.toString()};
+                    }
+                    else{
+                        interval = new String[]{beginTime.toString(), maxTime.toString()};
+                    }
+                }
+                else{
+                    interval = this.gameService.getTimeInterval(game.getBeginDate());
+                }
+            }
+            else{
+                if (type == 0){
+                    interval = this.gameService.getTimeInterval(game.getBeginDate());
+                }
+                else{
+                    return "registerEvent";
+                }
+            }
+            model.addAttribute("minHour", interval[0]);
+            model.addAttribute("maxHour", interval[1]);
+            model.addAttribute("GameStatusForm", new GameStatusForm(game, type));
             return "registerGameStatus";
         }
 
@@ -223,7 +254,7 @@ public class DatabaseController {
 
             //String newDateTimeLocal = (form.getEventDate().replace("T", " ")).concat(":00");
             //Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
-            Time dateAndTime = Time.valueOf(form.getEventDate().concat(":00"));
+            Time dateAndTime = Time.valueOf(form.getEventDate());
 
             GameStatus dbGameStatus = new GameStatus(dateAndTime, form.getGame(), form.getType());
             this.eventService.addGameEvent(dbGameStatus);
@@ -237,7 +268,36 @@ public class DatabaseController {
         Optional<Game> opGame = this.gameService.getGame(name);
         if (opGame.isPresent()) {
             System.out.println(opGame.get());
-            model.addAttribute("GoalForm", new GoalForm(opGame.get()));
+            Game game = opGame.get();
+            if (this.eventService.endingGameExists(game)){
+                return "registerEvent";
+            }
+            final long threeHours = ((3*60)*60)*1000;
+            String[] interval;
+            if (this.eventService.beginningGameExists(game)) {
+                Optional<Time> opBeginTime = this.eventService.getBeginningOfGame(game);
+                if (opBeginTime.isPresent()) {
+                    Time beginTime = opBeginTime.get();
+                    Time maxTime = new Time(beginTime.getTime() + threeHours);
+                    Optional<Time> opMostRecent = this.eventService.getMostRecentEventOfGame(game, beginTime);
+                    if (opMostRecent.isPresent()) {
+                        Time mostRecent = opMostRecent.get();
+                        interval = new String[]{mostRecent.toString(), maxTime.toString()};
+                    }
+                    else{
+                        interval = new String[]{beginTime.toString(), maxTime.toString()};
+                    }
+                }
+                else{
+                    interval = this.gameService.getTimeInterval(game.getBeginDate());
+                }
+            }
+            else{
+                return "registerEvent";
+            }
+            model.addAttribute("minHour", interval[0]);
+            model.addAttribute("maxHour", interval[1]);
+            model.addAttribute("GoalForm", new GoalForm(game));
             return "registerGoal";
         }
 
@@ -253,7 +313,7 @@ public class DatabaseController {
             form.setGame(opGame.get());
             //String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
             //Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
-            Time dateAndTime = Time.valueOf(form.getBeginDate().concat(":00"));
+            Time dateAndTime = Time.valueOf(form.getBeginDate());
 
             Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
             if (opPlayer.isPresent()) {
@@ -270,7 +330,36 @@ public class DatabaseController {
         Optional<Game> opGame = this.gameService.getGame(name);
         if (opGame.isPresent()) {
             System.out.println(opGame.get());
-            model.addAttribute("CardForm", new CardForm(opGame.get(), isYellow));
+            Game game = opGame.get();
+            if (this.eventService.endingGameExists(game)){
+                return "registerEvent";
+            }
+            final long threeHours = ((3*60)*60)*1000;
+            String[] interval;
+            if (this.eventService.beginningGameExists(game)) {
+                Optional<Time> opBeginTime = this.eventService.getBeginningOfGame(game);
+                if (opBeginTime.isPresent()) {
+                    Time beginTime = opBeginTime.get();
+                    Time maxTime = new Time(beginTime.getTime() + threeHours);
+                    Optional<Time> opMostRecent = this.eventService.getMostRecentEventOfGame(game, beginTime);
+                    if (opMostRecent.isPresent()) {
+                        Time mostRecent = opMostRecent.get();
+                        interval = new String[]{mostRecent.toString(), maxTime.toString()};
+                    }
+                    else{
+                        interval = new String[]{beginTime.toString(), maxTime.toString()};
+                    }
+                }
+                else{
+                    interval = this.gameService.getTimeInterval(game.getBeginDate());
+                }
+            }
+            else{
+                return "registerEvent";
+            }
+            model.addAttribute("minHour", interval[0]);
+            model.addAttribute("maxHour", interval[1]);
+            model.addAttribute("CardForm", new CardForm(game, isYellow));
             return "registerCard";
         }
         return "registerEvent";
@@ -285,7 +374,7 @@ public class DatabaseController {
             form.setYellow(Boolean.parseBoolean(form.getIsYellowString()));
             //String newDateTimeLocal = (form.getBeginDate().replace("T", " ")).concat(":00");
             //Timestamp dateAndTime = Timestamp.valueOf(newDateTimeLocal);
-            Time dateAndTime = Time.valueOf(form.getBeginDate().concat(":00"));
+            Time dateAndTime = Time.valueOf(form.getBeginDate());
 
             Optional<Player> opPlayer = this.playerService.getPlayer(form.getPlayerName());
             if (opPlayer.isPresent()) {

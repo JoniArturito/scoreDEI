@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +42,7 @@ public class GameService {
     }
 
     @Transactional
-    public Optional<Game> getGame(String name)
-    {
+    public Optional<Game> getGame(String name) {
         List<Game> query = gameRepository.findGameByName(name);
         System.out.println();
         for(Game q: query)
@@ -51,5 +51,24 @@ public class GameService {
         }
         System.out.println();
         return Optional.ofNullable(query.get(0));
+    }
+
+    @Transactional
+    public boolean isStadiumOccupied(String location, Timestamp t){
+        List<Game> query = gameRepository.stadiumOccupied(location, t);
+        return query.size() != 0;
+    }
+
+    public String[] getTimeInterval(Timestamp event){
+        long threeHours = ((3*60)*60)*1000;
+        Timestamp maxDuration = new Timestamp(event.getTime() + threeHours);
+
+        String minTime = event.toString().split(" ")[1];
+        String maxTime = maxDuration.toString().split(" ")[1];
+
+        String minHour = minTime.split("\\.")[0];
+        String maxHour = maxTime.split("\\.")[0];;
+
+        return new String[]{minHour, maxHour};
     }
 }

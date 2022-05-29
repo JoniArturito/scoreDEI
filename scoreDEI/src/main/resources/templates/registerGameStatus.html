@@ -31,7 +31,7 @@
                             <input type="hidden" id="typeString" name="typeString" th:value="${GameStatusForm.typeString}">
                         </div>
                         <div class="col-75">
-                            <input type="time" id="eventDate" name="eventDate">
+                            <input type="time" id="eventDate" name="eventDate" step = "1" th:min="${minHour}" th:max="${maxHour}">
                         </div>
                     </div>
 
