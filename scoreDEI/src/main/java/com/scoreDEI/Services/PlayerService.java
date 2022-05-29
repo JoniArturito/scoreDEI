@@ -3,6 +3,7 @@ package com.scoreDEI.Services;
 import com.scoreDEI.Entities.Game;
 import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
+import com.scoreDEI.Entities.User;
 import com.scoreDEI.Others.Sorts.SortPlayersByScore;
 import com.scoreDEI.Repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,9 +91,21 @@ public class PlayerService {
     }
 
     @Transactional
-    public boolean isPlayerExist(Player p)
-    {
+    public boolean isPlayerExist(Player p) {
         List<Player> list = playerRepository.playerExist(p.getName(), p.getPosition(), p.getBirthday(), p.getTeam());
         return list.size() != 0;
+    }
+
+    @Transactional
+    public boolean deletePlayer(int id){
+        Optional<Player> opPlayer = playerRepository.findById(id);
+        if (opPlayer.isPresent()) {
+            Player player = opPlayer.get();
+            playerRepository.deleteGoals(player);
+            playerRepository.deleteCards(player);
+            playerRepository.delete(player);
+            return true;
+        }
+        return false;
     }
 }

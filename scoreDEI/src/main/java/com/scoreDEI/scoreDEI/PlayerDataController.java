@@ -221,4 +221,24 @@ public class PlayerDataController {
             return "redirect:/error/";
         }
     }
+
+    @GetMapping("/delete")
+    public String deletePlayer(@RequestParam(name = "id", required = true) int id, Model model) {
+        try {
+            model.addAttribute("id", id);
+            return "player/delete";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @PostMapping("/delete")
+    public String deletePlayerConfirm(@RequestParam(name = "id", required = true) int id, Model model){
+        try{
+            this.playerService.deletePlayer(id);
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
 }

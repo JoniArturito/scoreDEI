@@ -1,5 +1,7 @@
 package com.scoreDEI.Services;
 
+import com.scoreDEI.Entities.Game;
+import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Others.Sorts.SortTeamsByScore;
 import com.scoreDEI.Repositories.TeamRepository;
@@ -73,6 +75,31 @@ public class TeamService {
     public void updateTeamName(int id, String name) {
         Optional<Team> t = this.getTeam(id);
         t.ifPresent(team -> team.setName(name));
+    }
+
+    @Transactional
+    public boolean deleteTeam(int id){
+        Optional<Team> opTeam = teamRepository.findById(id);
+        if (opTeam.isPresent()) {
+            Team team = opTeam.get();
+            for (Game g: team.getHomeGames()) {
+                teamRepository.deleteGameEvents(g);
+            }
+            for (Game g: team.getVisitorGames()) {
+                teamRepository.deleteGameEvents(g);
+            }
+            teamRepository.deleteGames(team);
+
+            for (Player p: team.getPlayers()) {
+                teamRepository.deleteGoals(p);
+                teamRepository.deleteCards(p);
+            }
+            teamRepository.deletePlayers(team);
+
+            teamRepository.delete(team);
+            return true;
+        }
+        return false;
     }
 
 }

@@ -2,6 +2,7 @@ package com.scoreDEI.Repositories;
 
 import com.scoreDEI.Entities.Game;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,4 +15,8 @@ public interface GameRepository extends CrudRepository<Game, Integer> {
 
     @Query("SELECT t FROM Game t WHERE t.location = ?1 AND t.beginDate = ?2")
     public List<Game> stadiumOccupied(String location, Timestamp t);
+
+    @Modifying
+    @Query("DELETE FROM GameEvent e WHERE e.game = ?1")
+    public void deleteEvents(Game game);
 }

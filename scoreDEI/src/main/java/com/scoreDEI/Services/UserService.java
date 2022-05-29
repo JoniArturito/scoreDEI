@@ -81,6 +81,17 @@ public class UserService {
     }
 
     @Transactional
+    public boolean deleteUser(int id) {
+        Optional<User> opUser = userRepository.findById(id);
+        if (opUser.isPresent()) {
+            User user = opUser.get();
+            userRepository.delete(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
     public void changeUser(int id, User user) {
         Optional<User> u = this.getUser(id);
 

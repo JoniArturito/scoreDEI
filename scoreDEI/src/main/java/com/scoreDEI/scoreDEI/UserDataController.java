@@ -202,4 +202,24 @@ public class UserDataController {
         }
     }
 
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam(name = "id", required = true) int id, Model model) {
+        try {
+            model.addAttribute("id", id);
+            return "user/delete";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @PostMapping("/delete")
+    public String deleteUserConfirm(@RequestParam(name = "id", required = true) int id, Model model){
+        try{
+            this.userService.deleteUser(id);
+            return "redirect:/user/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
 }

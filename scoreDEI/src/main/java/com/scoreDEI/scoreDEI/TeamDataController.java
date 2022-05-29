@@ -3,6 +3,9 @@ package com.scoreDEI.scoreDEI;
 import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Forms.TeamForm;
+import com.scoreDEI.Services.EventService;
+import com.scoreDEI.Services.GameService;
+import com.scoreDEI.Services.PlayerService;
 import com.scoreDEI.Services.TeamService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,15 @@ import java.util.Optional;
 public class TeamDataController {
     @Autowired
     TeamService teamService;
+
+    @Autowired
+    PlayerService playerService;
+
+    @Autowired
+    GameService gameService;
+
+    @Autowired
+    EventService eventService;
 
     @GetMapping("/register")
     public String registerTeamForm(Model model) {
@@ -158,6 +170,26 @@ public class TeamDataController {
             this.teamService.updateTeamName(id, name);
 
             return "redirect:/team/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @GetMapping("/delete")
+    public String deleteTeam(@RequestParam(name = "id", required = true) int id, Model model) {
+        try {
+            model.addAttribute("id", id);
+            return "team/delete";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @PostMapping("/delete")
+    public String deleteTeamConfirm(@RequestParam(name = "id", required = true) int id, Model model){
+        try{
+            this.teamService.deleteTeam(id);
+            return "redirect:/player/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }

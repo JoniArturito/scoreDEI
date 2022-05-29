@@ -279,4 +279,24 @@ public class GameDataController {
             return "redirect:/error/";
         }
     }
+
+    @GetMapping("/delete")
+    public String deleteGame(@RequestParam(name = "id", required = true) int id, Model model) {
+        try {
+            model.addAttribute("id", id);
+            return "game/delete";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @PostMapping("/delete")
+    public String deleteGameConfirm(@RequestParam(name = "id", required = true) int id, Model model){
+        try{
+            this.gameService.deleteGame(id);
+            return "redirect:/player/list";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
 }

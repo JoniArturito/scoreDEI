@@ -105,11 +105,21 @@ public class GameService {
     @Transactional
     public boolean updateDate(int gameId, Timestamp beginDate) {
         Optional<Game> game = this.getGame(gameId);
-        if(game.isPresent()) {
+        if (game.isPresent()) {
             game.get().setBeginDate(beginDate);
             return true;
         }
+    }
 
+    @Transactional
+    public boolean deleteGame(int id){
+        Optional<Game> opGame = gameRepository.findById(id);
+        if (opGame.isPresent()) {
+            Game game = opGame.get();
+            gameRepository.deleteEvents(game);
+            gameRepository.delete(game);
+            return true;
+        }
         return false;
     }
 }
