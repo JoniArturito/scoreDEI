@@ -2,6 +2,7 @@ package com.scoreDEI.Services;
 
 import com.scoreDEI.Entities.Game;
 import com.scoreDEI.Entities.Team;
+import com.scoreDEI.Others.Sorts.SortGamesByDate;
 import com.scoreDEI.Repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,13 @@ public class GameService {
     public List<Game> getAllGames(){
         List<Game> allGames = new ArrayList<>();
         gameRepository.findAll().forEach(allGames::add);
+        return allGames;
+    }
+
+    public List<Game> getOrderedGames(){
+        List<Game> allGames = new ArrayList<>();
+        gameRepository.findAll().forEach(allGames::add);
+        allGames.sort(new SortGamesByDate());
         return allGames;
     }
 

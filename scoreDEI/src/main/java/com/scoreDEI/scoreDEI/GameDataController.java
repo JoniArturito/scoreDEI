@@ -82,7 +82,7 @@ public class GameDataController {
     @GetMapping("/list")
     public String listGames(Model model) {
         try {
-            model.addAttribute("games", this.gameService.getAllGames());
+            model.addAttribute("games", this.gameService.getOrderedGames());
 
             return "/game/list";
         } catch (Exception e) {
