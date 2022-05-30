@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"APIFiles"},{"l":"com.scoreDEI.Entities"},{"l":"com.scoreDEI.filters"},{"l":"com.scoreDEI.Forms"},{"l":"com.scoreDEI.Others"},{"l":"com.scoreDEI.Others.Sorts"},{"l":"com.scoreDEI.Repositories"},{"l":"com.scoreDEI.scoreDEI"},{"l":"com.scoreDEI.Services"}];updateSearchResults();

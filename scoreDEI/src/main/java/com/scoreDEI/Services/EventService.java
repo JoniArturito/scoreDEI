@@ -43,7 +43,7 @@ public class EventService {
      * If the event exists, return it, otherwise return null.
      *
      * @param id The id of the event you want to get.
-     * @return Optional<GameEvent>
+     * @return Optional<GameEvent> GameEvent to return
      */
     public Optional<GameEvent> getGameEvent(int id){
         return eventRepository.findById(id);
