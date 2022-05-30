@@ -50,6 +50,14 @@ public class DatabaseController {
     @GetMapping("/")
     public String redirect(){
         try {
+            HttpServletRequest request =
+                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                            .getRequest();
+            HttpSession session = request.getSession();
+
+            session.setAttribute("login", true);
+            session.setAttribute("logout", null);
+
             return "redirect:/game/list";
         } catch (Exception e) {
             return "redirect:/error/";
@@ -102,7 +110,11 @@ public class DatabaseController {
             if(user.isPresent()) {
                 session.setAttribute("user", user.get());
                 if(user.get().getType() == 1) session.setAttribute("admin", user.get());
-                else session.setAttribute("admin", null);
+                else {
+                    session.setAttribute("admin", null);
+                    session.setAttribute("login", true);
+                    session.setAttribute("logout", null);
+                }
             } else {
                 session.setAttribute("user", null);
 
@@ -206,6 +218,8 @@ public class DatabaseController {
                         .getRequest();
         HttpSession session = request.getSession();
         session.setAttribute("user", null);
+        session.setAttribute("login", true);
+        session.setAttribute("logout", null);
 
         return "redirect:/game/list";
     }

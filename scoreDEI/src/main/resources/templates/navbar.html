@@ -19,8 +19,8 @@
             <a href="/game/list">Games</a>
             <a href="/team/list">Teams</a>
             <a href="/player/list">Players</a>
-            <a th:if="${session.user?.getType() >= 0}" href="/logout">Logout</a>
-            <a th:if="${session.isEmpty()}" href="/login">Login</a>
+            <a th:if="${session.logout}" href="/logout">Logout</a>
+            <a th:if="${session.login}" href="/login">Login</a>
         </div>
     </body>
 </html>
