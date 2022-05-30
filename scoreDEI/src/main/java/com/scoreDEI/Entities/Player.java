@@ -24,6 +24,10 @@ public class Player {
     private String position;
     @Column(name = "birthday", nullable = false)
     private Date birthday;
+
+    @Column(name = "urlPhoto")
+    private String urlPhoto;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
     @OneToMany(mappedBy = "player")
@@ -81,6 +85,14 @@ public class Player {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getUrlPhoto() {
+        return urlPhoto;
+    }
+
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 
     @Transactional

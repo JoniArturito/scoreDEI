@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/event")
-public class EventController {
+public class EventDataController {
     @Autowired
     TeamService teamService;
 
