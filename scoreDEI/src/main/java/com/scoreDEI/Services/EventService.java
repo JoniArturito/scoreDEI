@@ -84,9 +84,7 @@ public class EventService {
             Time time = opTime.get();
             List<GameEvent> today = eventRepository.getTodayEvents(game, time);
             List<GameEvent> tomorrow = eventRepository.getNextDayEvents(game, time);
-            //tomorrow.addAll(today);
             today.addAll(tomorrow);
-            //return tomorrow;
             return today;
         }
         return new ArrayList<>();
@@ -104,16 +102,13 @@ public class EventService {
 
     @Transactional
     public boolean hasRedCard(Game game, Player player) {
-        System.out.println(eventRepository.redCardExists(game, player));
         return eventRepository.redCardExists(game, player) != 0;
     }
 
     @Transactional
     public boolean validateCard(Time dateAndTime, Game game, boolean isYellow, Player player) {
-        int red_count = eventRepository.yellowCardExists(game, player);
-        int yellow_count = eventRepository.redCardExists(game, player);
-
-        System.out.println(red_count + " " + yellow_count);
+        int yellow_count = eventRepository.yellowCardExists(game, player);
+        int red_count = eventRepository.redCardExists(game, player);
 
         if(red_count > 0) return false;
         if(isYellow && yellow_count == 1) {

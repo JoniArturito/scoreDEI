@@ -78,16 +78,14 @@ public class EventController {
                 Game game = opGame.get();
 
                 if (this.eventService.endingGameExists(game)){
-                    redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                    redirAttrs.addFlashAttribute("error", "Game has already ended!");
                     return "redirect:/event/register";
                 }
 
                 String[] interval;
                 if (this.eventService.beginningGameExists(game)) {
-                    System.out.println("Failed to register event!");
                     if (type == 0) {
-                        redirAttrs.addFlashAttribute("error", "Failed to register event!");
-                        System.out.println("Hello!");
+                        redirAttrs.addFlashAttribute("error", "Game has already begun!");
                         return "redirect:/event/register";
                     }
                     interval = getInterval(game);
@@ -174,7 +172,7 @@ public class EventController {
             Game game = opGame.get();
 
             if (this.eventService.endingGameExists(game)){
-                redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                redirAttrs.addFlashAttribute("error", "Game has already ended!");
                 return "redirect:/event/register";
             }
 
@@ -200,7 +198,7 @@ public class EventController {
                     interval = this.gameService.getTimeInterval(game.getBeginDate());
                 }
             } else {
-                redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                redirAttrs.addFlashAttribute("error", "Game hasn't begun!");
 
                 return "redirect:/event/register";
             }
@@ -252,7 +250,7 @@ public class EventController {
                 Game game = opGame.get();
 
                 if (this.eventService.endingGameExists(game)){
-                    redirAttrs.addFlashAttribute("error", "Failed to appoint card!");
+                    redirAttrs.addFlashAttribute("error", "Game has already ended!");
                     return "redirect:/event/register";
                 }
 
@@ -260,7 +258,7 @@ public class EventController {
                 if (this.eventService.beginningGameExists(game)) {
                     interval = getInterval(game);
                 } else {
-                    redirAttrs.addFlashAttribute("error", "Failed to appoint card!");
+                    redirAttrs.addFlashAttribute("error", "Game hasn't begun!");
 
                     return "redirect:/event/register";
                 }
