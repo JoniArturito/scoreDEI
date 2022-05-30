@@ -72,6 +72,7 @@ public class TeamDataController {
                 model.addAttribute("Eusebio", scorer);
                 return "/team/list";
             }
+            return "redirect:/error/";
         } catch (Exception e) {
             return "redirect:/error/";
         }
