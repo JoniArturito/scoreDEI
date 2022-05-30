@@ -2,9 +2,10 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -15,42 +16,61 @@
 
         <div class = "container">
 
-            <div th:if="${session.user?.getType()==1}" class="header">
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/homeTeam(id=${game.getGameId()})}">Change home team.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/visitorTeam(id=${game.getGameId()})}">Change visitor team.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/location(id=${game.getGameId()})}">Change location.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/date(id=${game.getGameId()})}">Change date.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${game.getGameId()})}">Delete game.</a>
-            </div>
-
-            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-
-            <div>
+            <div  class="header">
                 <h1 class="headerTitle" th:text="${game.getHomeTeam().getName() + ' - ' + game.getVisitorTeam().getName()}"></h1>
+                <div class="userOptions" th:if="${session.user?.getType()==1}">
+                    <a style="{color:black; font-size: 18px}" th:href="@{edit/homeTeam(id=${game.getGameId()})}">Change home team.</a>
+                    <a style="{color:black; font-size: 18px}" th:href="@{edit/visitorTeam(id=${game.getGameId()})}">Change visitor team.</a>
+                    <a style="{color:black; font-size: 18px}" th:href="@{edit/location(id=${game.getGameId()})}">Change location.</a>
+                    <a style="{color:black; font-size: 18px}" th:href="@{edit/date(id=${game.getGameId()})}">Change date.</a>
+                    <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${game.getGameId()})}">Delete game.</a>
+                </div>
             </div>
 
-            <div class="location">
-                <h3>Location:</h3>
-                <p th:text="${game.getLocation()}"></p>
-            </div>
+            <div class="content">
+                <div class="sucessAlert" role="alert" th:text="${success}" th:if="${success}"></div>
+                <div class="errorAlert" role="alert" th:text="${error}" th:if="${error}"></div>
 
-            <div class="date">
-                <h3>Date:</h3>
-                <p th:text="${game.getBeginDate()}"></p>
-            </div>
-
-            <div class="events">
-                <div th:if="${events.isEmpty()}">
-                    <h4>The game hasn't started.</h4>
+                <div class="contentElement">
+                    <table class="default_table">
+                        <caption>Game info</caption>
+                        <tr>
+                            <th>Location</th>
+                            <th>Date</th>
+                        </tr>
+                        <tr>
+                            <td th:text="${game.getLocation()}"></td>
+                            <td th:text="${game.getBeginDate()}"></td>
+                        </tr>
+                    </table>
                 </div>
 
-                <div th:if="${!events.isEmpty()}">
-                    <h3>Score:</h3>
-                    <p th:text="${score[0] + ' - ' + score[1]}"></p>
-                    <h3>Events:</h3>
-                    <table border="1">
+                <div class="contentElement">
+                    <table class="default_table">
+                        <caption>Score</caption>
                         <tr>
+                            <th th:text="${game.getHomeTeam().getName()}">Home team</th>
+                            <th th:text="${game.getVisitorTeam().getName()}">Visitor team</th>
+                        </tr>
+                        <tr>
+                            <td th:text="${score[0]}"></td>
+                            <td th:text="${score[1]}"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="contentElement" th:if="${events.isEmpty()}">
+                    <table class="default_table">
+                        <caption>Events</caption>
+                        <tr>
+                            <td>The game hasn't started!</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="contentElement" th:if="${!events.isEmpty()}">
+                    <table class="default_table">
+                        <caption>Events</caption><tr>
                             <th>Time</th>
                             <th>Type</th>
                         </tr>

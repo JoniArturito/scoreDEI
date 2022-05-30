@@ -1,55 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>scoreDEi</title>
-    <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/team.css}" rel="stylesheet"/>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="João Artur & Rui Marques">
+        <title>scoreDEI</title>
+        <link th:href="@{/css/base.css}" rel="stylesheet"/>
+        <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    </head>
 
-<body>
+    <body>
+        <div class="main">
+            <div th:replace="navbar.html"></div>
+            <div class="body">
+                <div class = "container">
 
-<div class="main">
-    <div th:replace="navbar.html"></div>
-    <div class="body">
+                    <div class="header">
+                        <h1 th:text="${team.getName()}"></h1>
+                        <div th:if="${session.user?.getType()==1}" class="userOptions">
+                            <a th:href="@{edit/name(id=${team.getTeamId()})}">Change team name</a></td>
+                            <a th:href="@{edit/logo(id=${team.getTeamId()})}">Change team logo</a>
+                            <a th:href="@{delete(id=${team.getTeamId()})}">Delete</a>
+                        </div>
+                    </div>
 
-        <div class = "container">
+                    <div class="content">
 
-            <div th:if="${session.user?.getType()==1}" class="header">
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${team.getTeamId()})}">Change team name</a></td>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/logo(id=${team.getTeamId()})}">Change team logo</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${team.getTeamId()})}">Delete</a>
+                        <div class = "contentElement">
+                            <img th:src="@{logo(id=${team.getTeamId()})}" alt="This team has no logo.">
+                        </div>
+
+                        <div class="contentElement">
+                            <table class="default_table">
+                                <caption>Statistics</caption>
+                                <tr>
+                                    <th>Games</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                    <th>Draws</th>
+                                </tr>
+                                <tr>
+                                    <td th:text="${team.getNumberGames()}">Games</td>
+                                    <td th:text="${team.getNumberWins()}">Wins</td>
+                                    <td th:text="${team.getNumberLosses()}">Losses</td>
+                                    <td th:text="${team.getNumberDraws()}">Draws</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="contentElement" th:if="${players.isEmpty()}">
+                            <table class="default_table">
+                                <caption>Squad</caption>
+                                <tr>
+                                    <td>No registered players.</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="contentElement" th:if="${!players.isEmpty()}">
+                            <table class="default_table">
+                                <caption>Squad</caption>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Birthday</th>
+                                </tr>
+                                <tr th:each="player : ${players}">
+                                    <td><a th:href="@{/player/profile(id=${player.getPlayerId()})}" th:text="${player.getName()}">name</a></td>
+                                    <td><a th:text="${player.getPosition()}">position</a></td>
+                                    <td><a th:text="${player.getBirthday()}">birthday</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div>
-                <img th:src="@{logo(id=${team.getTeamId()})}" alt="This team has no logo.">
-                <h1 class="headerTitle" th:text="${team.getName()}"></h1>
-            </div>
-
-            <div class="Game">
-                <h3>Game Statistics:</h3>
-                <p th:text="${'Games: ' + team.getNumberGames() + '   Wins: ' + team.getNumberWins() + '   Draws: ' + team.getNumberDraws() + '   Losses: ' + team.getNumberLosses()}"></p>
-            </div>
-
-            <div class="players">
-                <h2 th:text="${team.getName() + '`s players'}"></h2>
-                <table border="1">
-                    <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Birthday</th>
-                    </tr>
-                    <tr th:each="player : ${players}">
-                        <td><a style="{color:black; font-size: 18px}" th:href="@{/player/profile(id=${player.getPlayerId()})}" th:text="${player.getName()}">name</a></td>
-                        <td><a style="{color:black; font-size: 18px}" th:text="${player.getPosition()}">position</a></td>
-                        <td><a style="{color:black; font-size: 18px}" th:text="${player.getBirthday()}">birthday</a></td>
-                    </tr>
-                </table>
-            </div>
-
         </div>
-
-    </div>
-</div>
-</body>
+    </body>
 </html>

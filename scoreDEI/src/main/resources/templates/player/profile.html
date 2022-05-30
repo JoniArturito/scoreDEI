@@ -2,9 +2,10 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/team.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -15,48 +16,57 @@
 
         <div class = "container">
 
-            <div th:if="${session.user?.getType()==1}" class="header">
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/name(id=${player.getPlayerId()})}">Change name.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/position(id=${player.getPlayerId()})}">Change position.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/birthday(id=${player.getPlayerId()})}">Change birthday.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{edit/team(id=${player.getPlayerId()})}">Change team.</a>
-                <a style="{color:black; font-size: 18px}" th:href="@{delete(id=${player.getPlayerId()})}">Delete player.</a>
-            </div>
-
-            <div>
+            <div class="header">
                 <h1 class="headerTitle" th:text="${player.getName()}"></h1>
+                <div th:if="${session.user?.getType()==1}" class="userOptions">
+                    <a th:href="@{edit/name(id=${player.getPlayerId()})}">Change name.</a>
+                    <a th:href="@{edit/position(id=${player.getPlayerId()})}">Change position.</a>
+                    <a th:href="@{edit/birthday(id=${player.getPlayerId()})}">Change birthday.</a>
+                    <a th:href="@{edit/team(id=${player.getPlayerId()})}">Change team.</a>
+                    <a th:href="@{delete(id=${player.getPlayerId()})}">Delete player.</a>
+                </div>
             </div>
 
-            <div class="photo" th:if="${player.urlPhoto != null}">
-                <img th:src="${player.urlPhoto}" th:alt="${player.name + '´s photo'}">
+            <div class="content">
+                <div class="contentElement" th:if="${player.urlPhoto != null}">
+                    <img th:src="${player.urlPhoto}" th:alt="${player.name + '´s photo'}">
+                </div>
+
+                <div class="contentElement">
+                    <table class="default_table">
+                        <caption>Player info</caption>
+                        <tr>
+                            <th>Position</th>
+                            <th>Birthday</th>
+                            <th>Team</th>
+                        </tr>
+                        <tr>
+                            <td th:text="${player.getPosition()}">Position</td>
+                            <td th:text="${player.getBirthday()}">Birthday</td>
+                            <td><a style="{color:black}" th:text="${teamName}" th:href="@{/team/profile(id=${player.getTeam().getTeamId()})}">Team</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="contentElement">
+                    <table class="default_table">
+                        <caption>Player's statistics</caption>
+                        <tr>
+                            <th>Goals</th>
+                            <th>Yellow cards</th>
+                            <th>Red Cards</th>
+                        </tr>
+                        <tr>
+                            <td th:text="${statistic[0]}">Goals</td>
+                            <td th:text="${statistic[1]}">Yellow cards</td>
+                            <td th:text="${statistic[2]}">Red Cards</td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
-
-            <div class="position">
-                <h3>Position:</h3>
-                <p th:text="${player.getPosition()}"></p>
-            </div>
-
-            <div class="birthday">
-                <h3>Birthday:</h3>
-                <p th:text="${player.getBirthday()}"></p>
-            </div>
-
-            <div class="Statistics">
-                <h3>Statistics:</h3>
-                <p th:text="${'Goals: ' + statistic[0] + '   Yellow Cards: ' + statistic[1] + '   Red Cards: ' + statistic[2]}"></p>
-            </div>
-
-
-            <div class="team">
-                <h3>Team:</h3>
-                <a style="{color:black}" th:text="${teamName}" th:href="@{/team/profile(id=${player.getTeam().getTeamId()})}">team name</a>
-            </div>
-
-
         </div>
-
     </div>
-
 </div>
 </body>
 </html>
