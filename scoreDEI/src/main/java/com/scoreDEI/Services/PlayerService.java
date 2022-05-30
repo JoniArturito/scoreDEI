@@ -38,7 +38,7 @@ public class PlayerService {
     }
 
     @Transactional
-    public Player getBestScorer()
+    public Optional<Player> getBestScorer()
     {
         List<Player> allPlayers = new ArrayList<>();
         playerRepository.findAll().forEach(allPlayers::add);
@@ -51,7 +51,7 @@ public class PlayerService {
         {
             System.out.printf("%s -> %d\n", player, player.getNumberGoals());
         }
-        return allPlayers.get(0);
+        return Optional.ofNullable(allPlayers.get(0));
     }
 
     public void clearAllPlayers(){

@@ -65,10 +65,13 @@ public class TeamDataController {
     @GetMapping("/list")
     public String listTeams(Model model) {
         try {
-            model.addAttribute("teams", this.teamService.getOrderedTeams());
-            model.addAttribute("Eusebio", this.playerService.getBestScorer());
-
-            return "/team/list";
+            Optional<Player> opScorer = this.playerService.getBestScorer();
+            if (opScorer.isPresent()) {
+                Player scorer = opScorer.get();
+                model.addAttribute("teams", this.teamService.getOrderedTeams());
+                model.addAttribute("Eusebio", scorer);
+                return "/team/list";
+            }
         } catch (Exception e) {
             return "redirect:/error/";
         }
