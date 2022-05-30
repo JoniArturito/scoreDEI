@@ -129,4 +129,9 @@ public class EventService {
         if(yellow_count < 2) return true;
         return false;
     }
+
+    @Transactional
+    public int[] getPlayerStatistic(Player p) {
+        return new int[]{eventRepository.playerGoals(p), eventRepository.playerYellowCards(p), eventRepository.playerRedCards(p)};
+    }
 }

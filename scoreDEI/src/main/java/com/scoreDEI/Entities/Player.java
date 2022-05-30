@@ -108,9 +108,25 @@ public class Player {
         this.goals = goals;
     }
 
+    @Transactional
     public int getNumberGoals()
     {
         return goals.size();
+    }
+
+    @Transactional
+    public int[] getNumberCards(){
+        int yellow = 0;
+        int red = 0;
+        for (Card c: cards) {
+            if (c.isYellow()){
+                yellow++;
+            }
+            else{
+                red++;
+            }
+        }
+        return new int[]{yellow, red};
     }
 
     @Override

@@ -43,4 +43,13 @@ public interface EventRepository extends CrudRepository<GameEvent, Integer> {
 
     @Query("SELECT t FROM GameEvent t WHERE t.game = ?1 AND t.eventDate >= ?2 ORDER BY t.eventDate ASC")
     public List<GameEvent> getTodayEvents(Game game, Time begin);
+
+    @Query("SELECT COUNT(t) FROM Card t WHERE t.player = ?1 AND t.isYellow IS true")
+    public int playerYellowCards(Player player);
+
+    @Query("SELECT COUNT(t) FROM Card t WHERE t.player = ?1 AND t.isYellow IS false")
+    public int playerRedCards(Player player);
+
+    @Query("SELECT COUNT(t) FROM Goal t WHERE t.player = ?1")
+    public int playerGoals(Player player);
 }

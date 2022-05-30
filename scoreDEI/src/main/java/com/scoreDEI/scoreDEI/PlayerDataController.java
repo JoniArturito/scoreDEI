@@ -3,6 +3,7 @@ package com.scoreDEI.scoreDEI;
 import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Forms.PlayerForm;
+import com.scoreDEI.Services.EventService;
 import com.scoreDEI.Services.PlayerService;
 import com.scoreDEI.Services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class PlayerDataController {
 
     @Autowired
     PlayerService playerService;
+
+    @Autowired
+    EventService eventService;
 
     @GetMapping("/register")
     public String registerPlayerForm(Model model) {
@@ -85,6 +89,8 @@ public class PlayerDataController {
             if(opP.isPresent()) {
                 Player op = opP.get();
                 model.addAttribute("player", op);
+                model.addAttribute("statistic", eventService.getPlayerStatistic(op));
+                model.addAttribute("teamName", playerService.getTeam(op.getPlayerId()));
                 //model.addAttribute("team", op.getTeam().getName());
                 return "/player/profile";
             }

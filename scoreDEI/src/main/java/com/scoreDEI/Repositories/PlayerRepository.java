@@ -23,4 +23,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
     @Modifying
     @Query("DELETE FROM Card c WHERE c.player = ?1")
     public void deleteCards(Player p);
+
+    @Query("SELECT p.team.name FROM Player p WHERE p.playerId = ?1")
+    public List<String> getTeam(int id);
 }

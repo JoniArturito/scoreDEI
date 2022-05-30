@@ -37,13 +37,17 @@
                 <p th:text="${player.getBirthday()}"></p>
             </div>
 
-            <!--
+            <div class="Statistics">
+                <h3>Statistics:</h3>
+                <p th:text="${'Goals: ' + statistic[0] + '   Yellow Cards: ' + statistic[1] + '   Red Cards: ' + statistic[2]}"></p>
+            </div>
+
+
             <div class="team">
                 <h3>Team:</h3>
-                <a style="{color:black}" th:text="${team}" th:href="@{/team/profile(id=${player.getTeam().getTeamId()})}">team name</a>
-                <p th:text="${player.getPosition()}"></p>
+                <a style="{color:black}" th:text="${teamName}" th:href="@{/team/profile(id=${player.getTeam().getTeamId()})}">team name</a>
             </div>
-            -->
+
 
         </div>
 

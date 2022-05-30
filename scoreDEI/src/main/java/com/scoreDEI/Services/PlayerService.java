@@ -140,4 +140,11 @@ public class PlayerService {
         }
         return false;
     }
+
+    @Transactional
+    public String getTeam(int id){
+        List<String> query = playerRepository.getTeam(id);
+        if (query.size() == 0) return null;
+        return query.get(0);
+    }
 }
