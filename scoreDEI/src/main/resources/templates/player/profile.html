@@ -27,6 +27,10 @@
                 <h1 class="headerTitle" th:text="${player.getName()}"></h1>
             </div>
 
+            <div class="photo" th:if="${player.urlPhoto != null}">
+                <img th:src="${player.urlPhoto}" th:alt="${player.name + '´s photo'}">
+            </div>
+
             <div class="position">
                 <h3>Position:</h3>
                 <p th:text="${player.getPosition()}"></p>
