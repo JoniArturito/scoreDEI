@@ -1,0 +1,46 @@
+.default_table {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    border-collapse: collapse;
+    padding-top: 40px;
+}
+
+.default_table caption {
+    caption-side: top;
+    border: 1px solid #ddd;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    background-color: #2d5986;
+    color: white;
+}
+
+.default_table tr:nth-child(even){background-color: #f2f2f2}
+
+.default_table tr:hover td{background-color: #ddd}
+
+.default_table td, .default_table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.default_table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #3973ac;
+    color: white;
+}
+
+.default_table a {
+    text-align: center;
+    color: #404040;
+}
+
+.default_table img {
+    border-radius: 4px;
+    padding: 5px;
+    width: 100px;
+}

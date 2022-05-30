@@ -1,79 +1,86 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>scoreDEi</title>
-  <link th:href="@{/css/base.css}" rel="stylesheet"/>
-  <link th:href="@{/css/team.css}" rel="stylesheet"/>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+  </head>
 
-<body>
+  <body>
+    <div class="main">
+      <div th:replace="navbar.html"></div>
+      <div class="body">
+        <div class = "container">
 
-<div class="main">
-  <div th:replace="navbar.html"></div>
-  <div class="body">
+          <div class="header">
+            <h1>Teams</h1>
+            <div class="userOptions">
+              <a th:if="${session.user?.getType()==1}" href="/team/register">Register team</a>
+            </div>
+          </div>
 
-    <div class = "container">
+          <div class="content">
 
-      <div class="header">
-        <h1 class="headerTitle">Teams</h1>
-        <a th:if="${session.user?.getType()==1}" href="/team/register">Register team</a>
-      </div>
+            <div class="sucessAlert" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="errorAlert" role="alert" th:text="${error}" th:if="${error}"></div>
 
-      <div class="scorer" th:if="${Eusebio != null}">
-        <h2>Best Scorer</h2>
-        <table border="1">
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Birthday</th>
-            <th>Number Of Goals</th>
-            <th>Team Name</th>
-          </tr>
-          <tr>
-            <td><a style="{color:black; font-size: 18px}" th:href="@{/player/profile(id=${Eusebio.getPlayerId()})}" th:text="${Eusebio.name}">name</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${Eusebio.getPosition()}">position</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${Eusebio.getBirthday()}">birthday</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:text="${Eusebio.getNumberGoals()}">goals</a></td>
-            <td><a style="{color:black; font-size: 18px}" th:href="@{profile(id=${Eusebio.getTeam().getTeamId()})}" th:text="${Eusebio.getTeam().getName()}">goals</a></td>
-          </tr>
-        </table>
-      </div>
+            <div class="contentElement" th:if="${Eusebio != null}">
+              <h2>Best Scorer</h2>
+              <table class="default_table">
+                <caption>Best scorer</caption>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Birthday</th>
+                  <th>Goals</th>
+                  <th>Team</th>
+                </tr>
+                <tr>
+                  <td><a th:href="@{/player/profile(id=${Eusebio.getPlayerId()})}" th:text="${Eusebio.name}">name</a></td>
+                  <td><a th:text="${Eusebio.getPosition()}">position</a></td>
+                  <td><a th:text="${Eusebio.getBirthday()}">birthday</a></td>
+                  <td><a th:text="${Eusebio.getNumberGoals()}">goals</a></td>
+                  <td><a th:href="@{profile(id=${Eusebio.getTeam().getTeamId()})}" th:text="${Eusebio.getTeam().getName()}">goals</a></td>
+                </tr>
+              </table>
+            </div>
 
-      <div class="teams">
-        <h2>Teams</h2>
+            <div class="contentElement" th:if="${teams.isEmpty()}">
+              <table class="default_table">
+                <caption>Teams</caption>
+                <tr>
+                  <td>No registered teams.</td>
+                </tr>
+              </table>
+            </div>
 
-        <div th:if="${teams.isEmpty()}">
-          <h4>There isn't any team.</h4>
+            <div class="contentElement" th:if="${!teams.isEmpty()}">
+              <table class="default_table">
+                <caption>Teams</caption>
+                <tr>
+                  <th>Logo</th>
+                  <th>Name</th>
+                  <th>Games</th>
+                  <th>Wins</th>
+                  <th>Draws</th>
+                  <th>Losses</th>
+                </tr>
+                <tr th:each="team : ${teams}">
+                  <td><img th:src="@{logo(id=${team.getTeamId()})}" alt="No logo."></td>
+                  <td><a th:text="${team.getName()}" th:href="@{profile(id=${team.getTeamId()})}">Name</a></td>
+                  <td><a th:text="${team.numberGames}">Games</a></td>
+                  <td><a th:text="${team.numberWins}">Wins</a></td>
+                  <td><a th:text="${team.numberDraws}">Draws</a></td>
+                  <td><a th:text="${team.numberLosses}">Losses</a></td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
         </div>
-
-        <div th:if="${!teams.isEmpty()}">
-          <table border="1">
-            <tr>
-              <th>Logo</th>
-              <th>Name</th>
-              <th>Number of Games</th>
-              <th>Wins</th>
-              <th>Draws</th>
-              <th>Losses</th>
-            </tr>
-            <tr th:each="team : ${teams}">
-              <td><img th:src="@{logo(id=${team.getTeamId()})}" alt="This team has no logo."></td>
-              <td><a style="{color:black; font-size: 18px}" th:text="${team.getName()}" th:href="@{profile(id=${team.getTeamId()})}">Name</a></td>
-              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberGames}">Games</a></td>
-              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberWins}">Wins</a></td>
-              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberDraws}">Draws</a></td>
-              <td><a style="{color:black; font-size: 18px}" th:text="${team.numberLosses}">Losses</a></td>
-            </tr>
-          </table>
-        </div>
-
       </div>
-
     </div>
-
-  </div>
-
-</div>
-</body>
+  </body>
 </html>

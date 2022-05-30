@@ -43,15 +43,7 @@ public class PlayerService {
         List<Player> allPlayers = new ArrayList<>();
         playerRepository.findAll().forEach(allPlayers::add);
         if (allPlayers.size() == 0) return Optional.empty();
-        for (Player player: allPlayers)
-        {
-            System.out.printf("%s -> %d\n", player, player.getNumberGoals());
-        }
         allPlayers.sort(new SortPlayersByScore());
-        for (Player player: allPlayers)
-        {
-            System.out.printf("%s -> %d\n", player, player.getNumberGoals());
-        }
         return Optional.ofNullable(allPlayers.get(0));
     }
 
@@ -113,12 +105,6 @@ public class PlayerService {
     @Transactional
     public Optional<Player> getPlayer(String name) {
         List<Player> query = playerRepository.findPlayerByName(name);
-        System.out.println();
-        for(Player q: query)
-        {
-            System.out.println(q);
-        }
-        System.out.println();
         return Optional.ofNullable(query.get(0));
     }
 

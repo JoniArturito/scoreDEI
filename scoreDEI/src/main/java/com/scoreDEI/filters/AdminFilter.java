@@ -18,7 +18,6 @@ import java.util.logging.LogRecord;
 @Component
 @Order(2)
 public class AdminFilter implements java.util.logging.Filter, javax.servlet.Filter {
-    private UserService userService;
 
     @Override
     public boolean isLoggable(LogRecord record) {

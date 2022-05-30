@@ -97,7 +97,6 @@ public class TeamDataController {
             redirAttrs.addFlashAttribute("error", "Team does not exist!");
             return "redirect:/team/list";
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return "redirect:/error/";
         }
     }

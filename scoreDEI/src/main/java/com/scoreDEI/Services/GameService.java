@@ -51,12 +51,6 @@ public class GameService {
     @Transactional
     public Optional<Game> getGame(String name) {
         List<Game> query = gameRepository.findGameByName(name);
-        System.out.println();
-        for(Game q: query)
-        {
-            System.out.println(q);
-        }
-        System.out.println();
         return Optional.ofNullable(query.get(0));
     }
 

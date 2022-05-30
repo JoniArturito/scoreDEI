@@ -1,69 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>scoreDEi</title>
-  <link th:href="@{/css/base.css}" rel="stylesheet" />
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+  </head>
 
-<body>
+  <body>
 
-<div class="main">
-  <div th:replace="navbar.html"></div>
-  <div class="body">
+    <div class="main">
+      <div th:replace="navbar.html"></div>
+      <div class="body">
+        <div class = "container">
 
-    <div class = "container">
+          <div class="header">
+            <h1>Users</h1>
+            <div class="userOptions">
+              <a th:if="${session.user?.getType()==1}" href="/user/register"> Register user</a>
+            </div>
+          </div>
 
-      <div class="header">
-        <h1 class="headerTitle">Users</h1>
-        <a th:if="${session.user?.getType()==1}" href="/user/register"> Register new user. </a>
+          <div class="content">
+
+            <div class="sucessAlert" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="errorAlert" role="alert" th:text="${error}" th:if="${error}"></div>
+
+            <div class="contentElement" th:if="${admins.isEmpty()}">
+              <table class="default_table">
+                <caption>Admins</caption>
+                <tr>
+                  <td>No registered admin users.</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="contentElement" th:if="${!admins.isEmpty()}">
+              <table class="default_table">
+                <caption>Admins</caption>
+                <tr th:each="user : ${admins}">
+                  <td><a th:text="${user.getName()}"
+                         th:href="@{profile(id=${user.getUserId()})}">name</a></td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="contentElement" th:if="${regular_users.isEmpty()}">
+              <table class="default_table">
+                <caption>Users</caption>
+                <tr>
+                  <td>No registered users.</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="contentElement" th:if="${!regular_users.isEmpty()}">
+              <table class="default_table">
+                <caption>Users</caption>
+                <tr th:each="user : ${regular_users}">
+                  <td><a th:text="${user.getName()}"
+                         th:href="@{profile(id=${user.getUserId()})}">name</a></td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+        </div>
       </div>
-
-      <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-      <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-
-      <div class="users_info">
-        <h2>Admins</h2>
-
-        <div th:if="${admins.isEmpty()}">
-          <h4>There isn't any admin user.</h4>
-        </div>
-
-        <div th:if="${!admins.isEmpty()}">
-          <table border="1">
-            <tr>
-              <th>Username</th>
-            </tr>
-            <tr th:each="user : ${admins}">
-              <td><a style="{color:black; font-size: 18px}" th:text="${user.getName()}" th:href="@{profile(id=${user.getUserId()})}">name</a></td>
-            </tr>
-          </table>
-        </div>
-
-      </div>
-
-      <div class="users_info">
-        <h2>Users</h2>
-
-        <div th:if="${regular_users.isEmpty()}">
-          <h4>There isn't any user.</h4>
-        </div>
-
-        <div th:if="${!regular_users.isEmpty()}">
-          <table border="1">
-            <tr>
-              <th>Username</th>
-            </tr>
-            <tr th:each="user : ${regular_users}">
-              <td><a style="{color:black; font-size: 18px}" th:text="${user.getName()}" th:href="@{profile(id=${user.getUserId()})}">name</a></td>
-            </tr>
-          </table>
-        </div>
-
-      </div>
-
     </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>

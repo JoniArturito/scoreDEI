@@ -46,9 +46,6 @@ public class TeamService {
     @Transactional
     public Optional<Team> getTeam(String name) {
         List<Team> query = teamRepository.findTeamByName(name);
-        for(Team t: query) {
-            System.out.println("-> " + t.getName());
-        }
         return Optional.ofNullable(query.get(0));
     }
 
