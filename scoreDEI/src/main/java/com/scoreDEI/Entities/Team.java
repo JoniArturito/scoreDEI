@@ -1,6 +1,7 @@
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.scoreDEI.Others.Sorts.SortGamesByDate;
 import com.scoreDEI.Others.Sorts.SortPlayersByScore;
 import org.hibernate.annotations.Type;
 
@@ -157,6 +158,14 @@ public class Team {
         else if (type < 0) numberLosses++;
         else numberDraws++;
         numberGames++;
+    }
+
+    public List<Game> getAllGames() {
+        List<Game> allGames = new ArrayList<>();
+        allGames.addAll(homeGames);
+        allGames.addAll(visitorGames);
+        allGames.sort(new SortGamesByDate());
+        return allGames;
     }
 
     @Override

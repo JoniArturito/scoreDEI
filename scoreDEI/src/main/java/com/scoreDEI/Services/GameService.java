@@ -134,4 +134,12 @@ public class GameService {
         int visitorScore = gameRepository.getTeamScore(game, game.getVisitorTeam());
         return new int[]{homeScore, visitorScore};
     }
+
+    public List<int[]> getAllScores(List<Game> games) {
+        List<int[]> toReturn = new ArrayList<>();
+        for (Game g: games){
+            toReturn.add(getScore(g));
+        }
+        return toReturn;
+    }
 }

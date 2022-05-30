@@ -1,5 +1,6 @@
 package com.scoreDEI.scoreDEI;
 
+import com.scoreDEI.Entities.Game;
 import com.scoreDEI.Entities.Player;
 import com.scoreDEI.Entities.Team;
 import com.scoreDEI.Forms.TeamForm;
@@ -86,8 +87,9 @@ public class TeamDataController {
             Optional<Team> t = this.teamService.getTeam(id);
 
             if(t.isPresent()) {
-                List<Player> players = t.get().getPlayers();
-                model.addAttribute("team", t.get());
+                Team proT = t.get();
+                List<Player> players = proT.getPlayers();
+                model.addAttribute("team", proT);
                 model.addAttribute("players", players);
                 return "/team/profile";
             }
@@ -95,6 +97,7 @@ public class TeamDataController {
             redirAttrs.addFlashAttribute("error", "Team does not exist!");
             return "redirect:/team/list";
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "redirect:/error/";
         }
     }

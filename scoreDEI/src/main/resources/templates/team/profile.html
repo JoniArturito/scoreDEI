@@ -26,6 +26,11 @@
                 <h1 class="headerTitle" th:text="${team.getName()}"></h1>
             </div>
 
+            <div class="Game">
+                <h3>Game Statistics:</h3>
+                <p th:text="${'Games: ' + team.getNumberGames() + '   Wins: ' + team.getNumberWins() + '   Draws: ' + team.getNumberDraws() + '   Losses: ' + team.getNumberLosses()}"></p>
+            </div>
+
             <div class="players">
                 <h2 th:text="${team.getName() + '`s players'}"></h2>
                 <table border="1">
