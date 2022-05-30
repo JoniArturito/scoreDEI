@@ -1,83 +1,75 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>scoreDEI</title>
-    <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
-</head>
 
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="João Artur & Rui Marques">
+        <title>scoreDEI</title>
+        <link th:href="@{/css/base.css}" rel="stylesheet"/>
+        <link th:href="@{/css/table.css}" rel="stylesheet"/>
+        <link th:href="@{/css/register.css}" rel="stylesheet"/>
+    </head>
 
-<div class="main">
-    <div th:replace="navbar.html"></div>
-    <div class="body">
+    <body>
+        <div class="main">
+            <div th:replace="navbar.html"></div>
+            <div class="body">
+                <div class="container">
 
-        <div class="container">
-
-            <div class="header">
-                <h2 class="headerTitle">Event Registration</h2>
-                <p class="headerSubtitle">Choose the type of event.</p>
-            </div>
-
-            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-
-            <div class="form">
-
-                <form action="#" th:action="@{/event/register}" th:object="${EventForm}" method="post">
-
-                    <div class="row">
-                        <div class="col-25">
-                            <label>Which game?</label>
-                        </div>
-                        <div class="col-75">
-                            <select name="game" id="game" required>
-                                <tr th:each="game : ${games}">
-                                    <option th:text="${game.getName()}"> name </option>
-                                </tr>
-                            </select>
-                        </div>
+                    <div class="header">
+                        <h1>Event Registration</h1>
+                        <p>Choose the type of event.</p>
                     </div>
 
-                    <div class="row">
-                        <fieldset>
-                            <div class="col-25">
+
+                    <div class="content">
+                        <div class="successAlert" role="alert" th:text="${success}" th:if="${success}"></div>
+                        <div class="errorAlert" role="alert" th:text="${error}" th:if="${error}"></div>
+
+                        <form action="#" th:action="@{/event/register}" th:object="${EventForm}" method="post">
+
+                            <div class="dataField">
+                                <label>Which game?</label>
+                                <select name="game" id="game" required>
+                                    <tr th:each="game : ${games}">
+                                        <option th:text="${game.getName()}"> name </option>
+                                    </tr>
+                                </select>
+                            </div>
+
+                            <div class="dataField">
                                 <label>Type of Event:</label>
+                                <fieldset>
+                                    <label for="begin">Game begin</label><br>
+                                    <input type="radio" id="begin" name="typeEvent" value=0>
+
+                                    <label for="end">Game ending</label><br>
+                                    <input type="radio" id="end" name="typeEvent" value=1>
+
+                                    <label for="score">Goal</label>
+                                    <input type="radio" id="score" name="typeEvent" value=2>
+
+                                    <label for="yellow">Yellow Card</label>
+                                    <input type="radio" id="yellow" name="typeEvent" value=3>
+
+                                    <label for="red">Red Card</label>
+                                    <input type="radio" id="red" name="typeEvent" value=4>
+
+                                    <label for="interruption">Game interrupted</label>
+                                    <input type="radio" id="interruption" name="typeEvent" value=5>
+
+                                    <label for="resumed">Game resumed</label>
+                                    <input type="radio" id="resumed" name="typeEvent" value=6>
+                                </fieldset>
                             </div>
 
-                            <div class="col-75">
-                                <input type="radio" id="begin" name="typeEvent" value=0>
-                                <label for="begin">Game begin</label><br>
-
-                                <input type="radio" id="end" name="typeEvent" value=1>
-                                <label for="end">Game ending</label><br>
-
-                                <input type="radio" id="score" name="typeEvent" value=2>
-                                <label for="score">Goal</label>
-
-                                <input type="radio" id="yellow" name="typeEvent" value=3>
-                                <label for="yellow">Yellow Card</label>
-
-                                <input type="radio" id="red" name="typeEvent" value=4>
-                                <label for="red">Red Card</label>
-
-                                <input type="radio" id="interruption" name="typeEvent" value=5>
-                                <label for="interruption">Game interrupted</label>
-
-                                <input type="radio" id="resumed" name="typeEvent" value=6>
-                                <label for="resumed">Game resumed</label>
+                            <div class="formCommands">
+                                <input type="submit" value="Register">
                             </div>
-                        </fieldset>
+                        </form>
                     </div>
-
-                    <div class="row">
-                        <input style={padding-top:250px} type="submit" value="Register">
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>

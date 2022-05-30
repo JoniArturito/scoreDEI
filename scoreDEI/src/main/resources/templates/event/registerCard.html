@@ -1,67 +1,60 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>scoreDEI</title>
-    <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
-</head>
 
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="João Artur & Rui Marques">
+        <title>scoreDEI</title>
+        <link th:href="@{/css/base.css}" rel="stylesheet"/>
+        <link th:href="@{/css/table.css}" rel="stylesheet"/>
+        <link th:href="@{/css/register.css}" rel="stylesheet"/>
+    </head>
 
-<div class="main">
-    <div th:replace="navbar.html"></div>
-    <div class="body">
+    <body>
+        <div class="main">
+            <div th:replace="navbar.html"></div>
+            <div class="body">
+                <div class="container">
 
-        <div class="container">
-
-            <div class="header">
-                <h2 th:if="${yellow}" class="headerTitle">Yellow card appointment</h2>
-                <h2 th:if="${red}" class="headerTitle">Red card appointment</h2>
-            </div>
-
-            <div class="form">
-
-                <form action="#" th:action="@{/event/register/card}" th:object="${CardForm}" method="post">
-
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="playerName">Player:</label>
-                            <input type="hidden" id="gameIdString" name="gameIdString" th:value="${CardForm.gameIdString}">
-                            <input type="hidden" id="isYellowString" name="isYellowString" th:value="${CardForm.isYellowString}">
-                        </div>
-                        <div class="col-75">
-                            <select name="playerName" id="playerName" required>
-                                <optgroup th:label="${CardForm.getGame().getHomeTeam().getName()}" label="">
-                                    <tr th:each="s : ${CardForm.getGame().getHomeTeam().getPlayers()}">
-                                        <option th:text="${s.name}"> name </option>
-                                    </tr>
-                                </optgroup>
-                                <optgroup th:label="${CardForm.getGame().getVisitorTeam().getName()}" label="">
-                                    <tr th:each="s : ${CardForm.getGame().getVisitorTeam().getPlayers()}">
-                                        <option th:text="${s.name}"> name </option>
-                                    </tr>
-                                </optgroup>
-                            </select>
-                        </div>
+                    <div class="header">
+                        <h1 th:if="${yellow}" class="headerTitle">Yellow card appointment</h1>
+                        <h1 th:if="${red}" class="headerTitle">Red card appointment</h1>
                     </div>
 
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="beginDate">Time of Event:</label>
-                        </div>
-                        <div class="col-75">
-                            <input type="time" id="beginDate" name="beginDate" step = "1" th:min="${minHour}" th:max="${maxHour}" required>
-                        </div>
-                    </div>
+                    <div class="content">
 
-                    <div class="row">
-                        <input style={padding-top:250px} type="submit" value="Register">
+                        <form action="#" th:action="@{/event/register/card}" th:object="${CardForm}" method="post">
+
+                            <div class="dataField">
+                                <label for="playerName">Player:</label>
+                                <input type="hidden" id="gameIdString" name="gameIdString" th:value="${CardForm.gameIdString}">
+                                <input type="hidden" id="isYellowString" name="isYellowString" th:value="${CardForm.isYellowString}">
+                                <select name="playerName" id="playerName" required>
+                                    <optgroup th:label="${CardForm.getGame().getHomeTeam().getName()}" label="">
+                                        <tr th:each="s : ${CardForm.getGame().getHomeTeam().getPlayers()}">
+                                            <option th:text="${s.name}"> name </option>
+                                        </tr>
+                                    </optgroup>
+                                    <optgroup th:label="${CardForm.getGame().getVisitorTeam().getName()}" label="">
+                                        <tr th:each="s : ${CardForm.getGame().getVisitorTeam().getPlayers()}">
+                                            <option th:text="${s.name}"> name </option>
+                                        </tr>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="dataField">
+                                <label for="beginDate">Time of Event:</label>
+                                <input type="time" id="beginDate" name="beginDate" step = "1" th:min="${minHour}" th:max="${maxHour}" required>
+                            </div>
+
+                            <div class="formCommands">
+                                <input type="submit" value="Register">
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>

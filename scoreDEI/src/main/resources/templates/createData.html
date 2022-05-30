@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+    <<head>
       <meta charset="UTF-8">
-      <title>Title</title>
-  </head>
-  <body>
-    <form th:action="@{/saveData}" method="post">
-        <div="form-row">
-          <button type="submit">Create Dummy Data</button>
+      <meta name="author" content="João Artur & Rui Marques">
+      <title>scoreDEI</title>
+      <link th:href="@{/css/base.css}" rel="stylesheet"/>
+      <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <div class="main">
+          <div th:replace="navbar.html"></div>
+
+          <div class="body">
+              <div class="container">
+                  <div class="header">
+                      <h1>Create users</h1>
+                  </div>
+              </div>
+
+              <div class="content">
+                  <form class="contentElement" th:action="@{/saveData}" method="post">
+                      <button type="submit">Create users</button>
+                  </form>
+              </div>
+
+          </div>
         </div>
-    </form>
-  </body>
+    </body>
 </html>

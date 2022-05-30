@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="author" content="João Artur & Rui Marques">
   <title>scoreDEI</title>
   <link th:href="@{/css/base.css}" rel="stylesheet"/>
-  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+  <link th:href="@{/css/table.css}" rel="stylesheet"/>
+  <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -12,63 +14,45 @@
 <div class="main">
   <div th:replace="navbar.html"></div>
   <div class="body">
-
     <div class="container">
 
       <div class="header">
-        <h2 class="headerTitle">Game registration</h2>
+        <h1>Game registration</h1>
       </div>
 
-      <div class="form">
-
+      <div class="content">
         <form action="#" th:action="@{/game/register}" th:object="${GameForm}" method="post">
 
-          <div class="row">
-            <div class="col-25">
-              <label for="homeTeam">Home Team:</label>
-            </div>
-            <div class="col-75">
-              <select name="homeTeam" id="homeTeam">
-                <tr th:each="s : ${teams}">
-                  <option th:text="${s.name}"> name </option>
-                </tr>
-              </select>
-            </div>
+          <div class="dataField">
+            <label for="homeTeam">Home Team:</label>
+            <select name="homeTeam" id="homeTeam">
+              <tr th:each="s : ${teams}">
+                <option th:text="${s.name}"> name </option>
+              </tr>
+            </select>
           </div>
 
-          <div class="row">
-            <div class="col-25">
-              <label for="visitorTeam">Visitor Team:</label>
-            </div>
-            <div class="col-75">
-              <select name="visitorTeam" id="visitorTeam">
-                <tr th:each="s : ${teams}">
-                  <option th:text="${s.name}"> name </option>
-                </tr>
-              </select>
-            </div>
+          <div class="dataField">
+            <label for="visitorTeam">Visitor Team:</label>
+            <select name="visitorTeam" id="visitorTeam">
+              <tr th:each="s : ${teams}">
+                <option th:text="${s.name}"> name </option>
+              </tr>
+            </select>
           </div>
 
-          <div class="row">
-            <div class="col-25">
-              <label for="location">Location:</label><br>
-            </div>
-            <div class="col-75">
-              <input type="text" id="location" name="location"><br>
-            </div>
+          <div class="dataField">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location">
           </div>
 
-          <div class="row">
-            <div class="col-25">
-              <label for="dateTime">Date and time of the game::</label>
-            </div>
-            <div class="col-75">
-              <input type="datetime-local" id="dateTime" name="dateTime">
-            </div>
+          <div class="dataField">
+            <label for="dateTime">Date and time of the game::</label>
+            <input type="datetime-local" id="dateTime" name="dateTime">
           </div>
 
-          <div class="row">
-            <input style={padding-top:250px} type="submit" value="Register">
+          <div class="formCommands">
+            <input type="submit" value="Register">
           </div>
         </form>
       </div>

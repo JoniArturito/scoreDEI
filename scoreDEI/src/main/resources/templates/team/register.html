@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="author" content="João Artur & Rui Marques">
     <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -17,32 +19,25 @@
         <div class="container">
 
             <div class="header">
-                <h2 class="headerTitle">Team registration</h2>
+                <h1 class="headerTitle">Team registration</h1>
             </div>
 
-            <div class="form">
+            <div class="content">
 
                 <form action="#" th:action="@{/team/register}" th:object="${TeamForm}" method="post" enctype="multipart/form-data">
 
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="name">Team name:</label>
-                        </div>
-                        <div class="col-75">
-                            <input type="text" id="name" name="name" placeholder="Enter the team name..." value="" required>
-                        </div>
+                    <div class="dataField">
+                        <label for="name">Team name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter the team name..." value="" required>
                     </div>
 
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="multipartFile">Select a file:</label>
-                        </div>
-                        <div class="col-75">
-                            <input type="file" id="multipartFile" name="multipartFile" accept="image/*" required>
-                        </div>
+                    <div class="dataField">
+                        <label for="multipartFile">Select a file:</label>
+                        <input type="file" id="multipartFile" name="multipartFile" accept="image/*" required>
                     </div>
-                    <div class="row">
-                        <input style={padding-top:250px} type="submit" value="Register">
+
+                    <div class="formCommands">
+                        <input type="submit" value="Register">
                     </div>
                 </form>
             </div>

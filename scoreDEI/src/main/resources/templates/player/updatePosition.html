@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -16,7 +18,7 @@
         <div class="container">
 
             <div class="header">
-                <h2 th:text="${player.getName()}" class="headerTitle"></h2>
+                <h1 th:text="${player.getName()}" class="headerTitle"></h1>
             </div>
 
             <div class="form">
@@ -24,30 +26,25 @@
                 <form action="#" th:action="@{/player/edit/position(id=${player.getPlayerId()})}" th:object="${playerForm}" method="post">
 
                     <div class="row">
+                        <label for="name">Position:</label>
+                        <input type="hidden" id="name" name="name" value="">
                         <fieldset>
-                            <div class="col-25">
-                                <input type="hidden" id="name" name="name" value="">
-                                <label for="name">Position:</label>
-                            </div>
+                            <label for="goalkeeper">Goalkeeper</label><br>
+                            <input type="radio" id="goalkeeper" name="position" value="Goalkeeper">
 
-                            <div class="col-75">
-                                <input type="radio" id="goalkeeper" name="position" value="Goalkeeper">
-                                <label for="goalkeeper">Goalkeeper</label><br>
+                            <label for="defender">Defender</label><br>
+                            <input type="radio" id="defender" name="position" value="Defender">
 
-                                <input type="radio" id="defender" name="position" value="Defender">
-                                <label for="defender">Defender</label><br>
+                            <label for="midfielder">Midfielder</label>
+                            <input type="radio" id="midfielder" name="position" value="Midfielder">
 
-                                <input type="radio" id="midfielder" name="position" value="Midfielder">
-                                <label for="midfielder">Midfielder</label>
-
-                                <input type="radio" id="forward" name="position" value="Forward">
-                                <label for="forward">Forward</label>
-                            </div>
+                            <label for="forward">Forward</label>
+                            <input type="radio" id="forward" name="position" value="Forward">
                         </fieldset>
                     </div>
 
-                    <div class="row">
-                        <input style={padding-top:250px} type="submit" value="Save">
+                    <div class="formCommands">
+                        <input type="submit" value="Save">
                         <a class="cancel" th:href="@{player/profile(id=${player.getPlayerId()})}"> Cancel </a>
                     </div>
 

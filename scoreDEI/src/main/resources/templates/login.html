@@ -1,54 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>scoreDEI</title>
-  <link th:href="@{/css/base.css}" rel="stylesheet"/>
-  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
+  </head>
 
-<body>
+  <body>
+    <div class="main">
+      <div th:replace="navbar.html"></div>
+      <div class="body">
+        <div class="container">
 
-<div class="main">
-  <div th:replace="navbar.html"></div>
-  <div class="body">
-
-    <div class="container">
-
-      <div class="header">
-        <h2 class="headerTitle">Login</h2>
-        <p class="headerSubtitle">Fill the fields to login.</p>
-      </div>
-
-      <div class="form">
-
-        <form action="#" th:action="@{/login}" th:object="${userForm}" method="post">
-
-          <div class="row">
-            <div class="col-25">
-              <label for="email">Email:</label>
-            </div>
-            <div class="col-75">
-              <input type="email" id="email" name="email" placeholder="Enter the email..." required>
-            </div>
+          <div class="header">
+            <h1>Login</h1>
           </div>
 
-          <div class="row">
-            <div class="col-25">
-              <label for="password">Password:</label>
-            </div>
-            <div class="col-75">
-              <input type="password" id="password" name="password" placeholder="Enter the password..." value="" required>
-            </div>
+          <div class="content">
+            <form action="#" th:action="@{/login}" th:object="${userForm}" method="post">
+
+              <div class="dataField">
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" name="email" placeholder="Enter the email..." required>
+              </div>
+
+              <div class="dataField">
+                  <label for="password">Password:</label>
+                  <input type="password" id="password" name="password" placeholder="Enter the password..." value="" required>
+              </div>
+
+              <div class="formCommands">
+                <input type="submit" value="Register">
+              </div>
+
+            </form>
+
           </div>
 
-          <div class="row">
-            <input style={padding-top:250px} type="submit" value="Register">
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>

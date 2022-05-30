@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -16,23 +18,19 @@
         <div class="container">
 
             <div class="header">
-                <h2 th:text="${user.getName()}" class="headerTitle"></h2>
+                <h1 th:text="${user.getName()}" class="headerTitle"></h1>
             </div>
 
-            <div class="form">
+            <div class="content">
 
                 <form action="#" th:action="@{/user/edit/name(id=${user.userId})}" th:object="${editForm}" method="post">
 
-                    <div class="row">
-                        <div class="col-25">
-                            <label style="{font-weight: bold; font-size: 18px}" for="username">Username:</label>
-                        </div>
-                        <div class="col-75">
-                            <input type="text" id="username" name="username" placeholder="Enter the new username..." required>
-                        </div>
+                    <div class="dataField">
+                        <label style="{font-weight: bold; font-size: 18px}" for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter the new username..." required>
                     </div>
 
-                    <div class="row">
+                    <div class="formCommands">
                         <input style={padding-top:250px} type="submit" value="Save">
                         <a class="cancel" th:href="@{user/profile(id=${user.getUserId()})}"> Cancel </a>
                     </div>

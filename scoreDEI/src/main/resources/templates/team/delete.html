@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -16,21 +18,17 @@
         <div class="container">
 
             <div class="header">
-                <h2 class="headerTitle">Update username</h2>
+                <h1>Delete team</h1>
             </div>
 
-            <div class="form">
+            <div class="content">
 
                 <form action="#" th:action="@{/team/delete(id=${id})}" method="post">
 
-                    <div class="row">
-                        <div class="col-25">
-                            <label style="{font-weight: bold; font-size: 18px}">Are you sure you want to delete this team (and all its players, games and events)?</label>
-                        </div>
-                        <div class="col-75">
-                            <input style={padding-top:250px} type="submit" value="Confirm">
-                            <a class="cancel" href="/team/list"> Cancel </a>
-                        </div>
+                    <div class="formCommands">
+                        <label style="{font-weight: bold; font-size: 18px}">Are you sure you want to delete this team (and all its players, games and events)?</label>
+                        <input style={padding-top:250px} type="submit" value="Confirm">
+                        <a class="cancel" href="/team/list"> Cancel </a>
                     </div>
 
                 </form>

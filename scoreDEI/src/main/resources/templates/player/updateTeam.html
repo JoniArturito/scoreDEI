@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>scoreDEi</title>
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
-    <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+    <link th:href="@{/css/table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -16,28 +18,24 @@
         <div class="container">
 
             <div class="header">
-                <h2 th:text="${player.getName()}" class="headerTitle"></h2>
+                <h1 th:text="${player.getName()}" class="headerTitle"></h1>
             </div>
 
-            <div class="form">
+            <div class="content">
 
                 <form action="#" th:action="@{/player/edit/team(id=${player.getPlayerId()})}" th:object="${playerForm}" method="post">
 
-                    <div class="row">
-                        <div class="col-25">
-                            <label for="team">Team:</label>
-                        </div>
-                        <div class="col-75">
-                            <select name="teamName" id="team" required>
-                                <tr th:each="team : ${teams}">
-                                    <option th:text="${team.getName()}"> name </option>
-                                </tr>
-                            </select>
-                        </div>
+                    <div class="dataField">
+                        <label for="team">Team:</label>
+                        <select name="teamName" id="team" required>
+                            <tr th:each="team : ${teams}">
+                                <option th:text="${team.getName()}"> name </option>
+                            </tr>
+                        </select>
                     </div>
 
-                    <div class="row">
-                        <input style={padding-top:250px} type="submit" value="Save">
+                    <div class="formCommands">
+                        <input type="submit" value="Save">
                         <a class="cancel" th:href="@{player/profile(id=${player.getPlayerId()})}"> Cancel </a>
                     </div>
 

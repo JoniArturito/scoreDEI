@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>scoreDEI</title>
-  <link th:href="@{/css/base.css}" rel="stylesheet"/>
-  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="João Artur & Rui Marques">
+    <title>scoreDEI</title>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+  </head>
 
-<body>
+  <body>
+    <div class="main">
+      <div th:replace="navbar.html"></div>
+      <div class="body">
+        <div class="container">
 
-<div class="main">
-  <div th:replace="navbar.html"></div>
-  <div class="body">
+          <div class="header">
+            <h1>Forbidden!</h1>
+          </div>
 
-    <div class="container">
-
-      <div class="header">
-        <h2 class="headerTitle">Forbidden</h2>
-        <p class="headerSubtitle">You tried to access a page without permission!</p>
-      </div>
-
+        </div>
       </div>
     </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>

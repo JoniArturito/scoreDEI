@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>scoreDEi</title>
+  <meta name="author" content="João Artur & Rui Marques">
+  <title>scoreDEI</title>
   <link th:href="@{/css/base.css}" rel="stylesheet"/>
-  <link th:href="@{/css/registerUser.css}" rel="stylesheet"/>
+  <link th:href="@{/css/table.css}" rel="stylesheet"/>
+  <link th:href="@{/css/register.css}" rel="stylesheet"/>
 </head>
 
 <body>
@@ -16,24 +18,20 @@
     <div class="container">
 
       <div class="header">
-        <h2 th:text="${team.getName()}" class="headerTitle"></h2>
+        <h1 th:text="${team.getName()}" class="headerTitle"></h1>
       </div>
 
-      <div class="form">
+      <div class="content">
 
         <form action="#" th:action="@{/team/edit/logo(id=${team.teamId})}" th:object="${teamForm}" method="post" enctype="multipart/form-data">
 
-          <div class="row">
-            <div class="col-25">
+          <div class="dataField">
               <label for="multipartFile">Select a file:</label>
-            </div>
-            <div class="col-75">
               <input type="file" id="multipartFile" name="multipartFile" accept="image/*" required>
-            </div>
           </div>
 
-          <div class="row">
-            <input style={padding-top:250px} type="submit" value="Save">
+          <div class="formCommands">
+            <input type="submit" value="Save">
             <a class="cancel" th:href="@{team/profile(id=${team.getTeamId()})}"> Cancel </a>
           </div>
 
