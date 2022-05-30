@@ -90,6 +90,18 @@ public class EventController {
                     }
                     interval = getInterval(game);
 
+                    Optional<GameEvent> opMostRecent = eventService.getMostRecentEventOfGame(game);
+                    if (opMostRecent.isPresent()){
+                        GameEvent mostRecent = opMostRecent.get();
+                        if (mostRecent.getTypeEvent() == 2) {
+                            GameStatus mRecent = (GameStatus) mostRecent;
+                            if (mRecent.getType() == 2 && type != 3){
+                                redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                                return "redirect:/event/register";
+                            }
+                        }
+                    }
+
                 } else {
 
                     if (type == 0) {
@@ -98,7 +110,6 @@ public class EventController {
                         redirAttrs.addFlashAttribute("error", "Failed to register event!");
                         return "redirect:/event/register";
                     }
-
                 }
 
                 model.addAttribute("minHour", interval[0]);
@@ -120,7 +131,7 @@ public class EventController {
         if (opBeginTime.isPresent()) {
             Time beginTime = opBeginTime.get();
             Time maxTime = new Time(beginTime.getTime() + (long) 10800000);
-            Optional<Time> opMostRecent = this.eventService.getMostRecentEventOfGame(game, beginTime);
+            Optional<Time> opMostRecent = this.eventService.getMostRecentEventTimeOfGame(game, beginTime);
             if (opMostRecent.isPresent()) {
                 Time mostRecent = opMostRecent.get();
                 interval = new String[]{mostRecent.toString(), maxTime.toString()};
@@ -185,7 +196,7 @@ public class EventController {
                     Time beginTime = opBeginTime.get();
                     Time maxTime = new Time(beginTime.getTime() + threeHours);
 
-                    Optional<Time> opMostRecent = this.eventService.getMostRecentEventOfGame(game, beginTime);
+                    Optional<Time> opMostRecent = this.eventService.getMostRecentEventTimeOfGame(game, beginTime);
                     if (opMostRecent.isPresent()) {
                         Time mostRecent = opMostRecent.get();
                         interval = new String[]{mostRecent.toString(), maxTime.toString()};
@@ -201,6 +212,18 @@ public class EventController {
                 redirAttrs.addFlashAttribute("error", "Game hasn't begun!");
 
                 return "redirect:/event/register";
+            }
+
+            Optional<GameEvent> opMostRecent = eventService.getMostRecentEventOfGame(game);
+            if (opMostRecent.isPresent()){
+                GameEvent mostRecent = opMostRecent.get();
+                if (mostRecent.getTypeEvent() == 2) {
+                    GameStatus mRecent = (GameStatus) mostRecent;
+                    if (mRecent.getType() == 2){
+                        redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                        return "redirect:/event/register";
+                    }
+                }
             }
 
             model.addAttribute("minHour", interval[0]);
@@ -261,6 +284,18 @@ public class EventController {
                     redirAttrs.addFlashAttribute("error", "Game hasn't begun!");
 
                     return "redirect:/event/register";
+                }
+
+                Optional<GameEvent> opMostRecent = eventService.getMostRecentEventOfGame(game);
+                if (opMostRecent.isPresent()){
+                    GameEvent mostRecent = opMostRecent.get();
+                    if (mostRecent.getTypeEvent() == 2) {
+                        GameStatus mRecent = (GameStatus) mostRecent;
+                        if (mRecent.getType() == 2){
+                            redirAttrs.addFlashAttribute("error", "Failed to register event!");
+                            return "redirect:/event/register";
+                        }
+                    }
                 }
 
                 model.addAttribute("minHour", interval[0]);

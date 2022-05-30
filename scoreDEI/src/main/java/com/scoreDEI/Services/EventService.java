@@ -2,7 +2,6 @@ package com.scoreDEI.Services;
 
 import com.scoreDEI.Entities.*;
 import com.scoreDEI.Repositories.EventRepository;
-import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +67,7 @@ public class EventService {
         return Optional.ofNullable(query.get(0).getEventDate());
     }
 
-    public Optional<Time> getMostRecentEventOfGame(Game game, Time firstEvent) {
+    public Optional<Time> getMostRecentEventTimeOfGame(Game game, Time firstEvent) {
         List<GameEvent> query = eventRepository.getMostRecentEvent(game);
         if (query.size() == 0) {
             return Optional.empty();
@@ -76,6 +75,16 @@ public class EventService {
         List<GameEvent> nextDays = eventRepository.getNextDayEvents(game, firstEvent);
         if (nextDays.size() == 0) return Optional.ofNullable(query.get(0).getEventDate());
         else return Optional.ofNullable(nextDays.get(0).getEventDate());
+    }
+
+    public Optional<GameEvent> getMostRecentEventOfGame(Game game) {
+        List<GameEvent> query = eventRepository.getMostRecentEvent(game);
+        if (query.size() == 0) {
+            return Optional.empty();
+        }
+        List<GameEvent> nextDays = eventRepository.getNextDayEvents(game, eventRepository.getBeginningOfGame(game).get(0).getEventDate());
+        if (nextDays.size() == 0) return Optional.ofNullable(query.get(0));
+        else return Optional.ofNullable(nextDays.get(0));
     }
 
     public List<GameEvent> getChronologicEvents(Game game){
