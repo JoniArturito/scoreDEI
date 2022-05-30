@@ -1,5 +1,8 @@
 package com.scoreDEI.filters;
 
+import com.scoreDEI.Entities.User;
+import com.scoreDEI.Services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -10,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
 @Component
-@Order(1)
-public class AuthenticationFilter implements Filter, javax.servlet.Filter {
+@Order(2)
+public class AdminFilter implements java.util.logging.Filter, javax.servlet.Filter {
+    private UserService userService;
 
     @Override
     public boolean isLoggable(LogRecord record) {
@@ -38,8 +41,9 @@ public class AuthenticationFilter implements Filter, javax.servlet.Filter {
         Object user = session.getAttribute("user");
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if(user == null) {
-            response.sendRedirect("/login");
+        User u = (User) user;
+        if(user == null || session.getAttribute("admin") == null) {
+            response.sendRedirect("/forbidden");
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

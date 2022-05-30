@@ -301,6 +301,8 @@ public class EventController {
                 model.addAttribute("minHour", interval[0]);
                 model.addAttribute("maxHour", interval[1]);
                 model.addAttribute("CardForm", new CardForm(game, isYellow));
+                model.addAttribute("yellow", isYellow);
+                model.addAttribute("red", !isYellow);
 
                 return "/event/registerCard";
             } else redirAttrs.addFlashAttribute("error", "Game does not exist!");

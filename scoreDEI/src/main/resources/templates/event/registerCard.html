@@ -16,8 +16,8 @@
         <div class="container">
 
             <div class="header">
-                <h2 class="headerTitle">Card Registration</h2>
-                <p class="headerSubtitle">Assign a card to a player.</p>
+                <h2 th:if="${yellow}" class="headerTitle">Yellow card appointment</h2>
+                <h2 th:if="${red}" class="headerTitle">Red card appointment</h2>
             </div>
 
             <div class="form">

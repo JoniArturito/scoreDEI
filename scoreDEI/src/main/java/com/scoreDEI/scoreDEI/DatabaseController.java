@@ -4,6 +4,7 @@ import com.scoreDEI.Entities.*;
 import com.scoreDEI.Forms.*;
 import com.scoreDEI.Others.PasswordHash;
 import com.scoreDEI.Services.*;
+import com.scoreDEI.filters.AdminFilter;
 import com.scoreDEI.filters.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -72,6 +73,8 @@ public class DatabaseController {
 
             if(user.isPresent()) {
                 session.setAttribute("user", user.get());
+                if(user.get().getType() == 1) session.setAttribute("admin", user.get());
+                else session.setAttribute("admin", null);
             } else {
                 session.setAttribute("user", null);
 
@@ -88,6 +91,30 @@ public class DatabaseController {
         FilterRegistrationBean<AuthenticationFilter> bean = new FilterRegistrationBean<>();
 
         bean.setFilter(new AuthenticationFilter());
+
+        List<String> eventUrlPatterns = Arrays.asList("register");
+        for (String urlPattern : eventUrlPatterns) {
+            bean.addUrlPatterns(String.format("/event/%s", urlPattern));
+        }
+
+        bean.setOrder(1);
+        return bean;
+    }
+
+    @GetMapping("/forbidden")
+    public String forbidden() {
+        try {
+            return "forbidden";
+        } catch (Exception e) {
+            return "redirect:/error/";
+        }
+    }
+
+    @Bean
+    public FilterRegistrationBean<AdminFilter> adminAccessFilter() {
+        FilterRegistrationBean<AdminFilter> bean = new FilterRegistrationBean<>();
+
+        bean.setFilter(new AdminFilter());
 
         bean.addUrlPatterns("/user/*");
 
@@ -106,7 +133,12 @@ public class DatabaseController {
             bean.addUrlPatterns(String.format("/player/%s", urlPattern));
         }
 
-        bean.setOrder(1);
+        List<String> eventUrlPatterns = Arrays.asList("delete");
+        for (String urlPattern : eventUrlPatterns) {
+            bean.addUrlPatterns(String.format("/event/%s", urlPattern));
+        }
+
+        bean.setOrder(2);
         return bean;
     }
 
