@@ -1,3 +1,6 @@
+/**
+ * It's a form that contains the fields that are needed to create a new user
+ */
 package com.scoreDEI.Forms;
 
 public class UserForm {

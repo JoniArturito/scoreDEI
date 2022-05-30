@@ -1,3 +1,6 @@
+/**
+ * It's a class that represents a goal in a game
+ */
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

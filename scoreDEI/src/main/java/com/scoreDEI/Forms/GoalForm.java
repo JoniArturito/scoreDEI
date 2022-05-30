@@ -1,3 +1,6 @@
+/**
+ * It's a form that contains a game and a player name
+ */
 package com.scoreDEI.Forms;
 
 import com.scoreDEI.Entities.Game;

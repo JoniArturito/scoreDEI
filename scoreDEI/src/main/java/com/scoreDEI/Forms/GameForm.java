@@ -1,3 +1,6 @@
+/**
+ * It's a form that represents a game
+ */
 package com.scoreDEI.Forms;
 
 public class GameForm {

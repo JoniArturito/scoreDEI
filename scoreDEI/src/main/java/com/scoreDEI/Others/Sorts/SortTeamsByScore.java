@@ -1,3 +1,7 @@
+/**
+ * It compares two teams by their total score, then by their number of wins, then by their number of draws, then by their
+ * number of games
+ */
 package com.scoreDEI.Others.Sorts;
 
 import com.scoreDEI.Entities.Team;

@@ -1,3 +1,6 @@
+/**
+ * It implements the Comparator interface and compares two players by their number of goals
+ */
 package com.scoreDEI.Others.Sorts;
 
 import com.scoreDEI.Entities.Player;

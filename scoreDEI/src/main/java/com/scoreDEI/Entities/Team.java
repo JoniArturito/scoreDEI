@@ -1,9 +1,10 @@
+/**
+ * It's a class that represents a team in a football league
+ */
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.scoreDEI.Others.Sorts.SortGamesByDate;
-import com.scoreDEI.Others.Sorts.SortPlayersByScore;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -102,11 +103,21 @@ public class Team {
         this.visitorGames = visitorGames;
     }
 
+    /**
+     * > This function adds a game to the home games list
+     *
+     * @param home The home game to be added to the list of home games.
+     */
     @Transactional
     public void addHomeGame(Game home) {
         homeGames.add(home);
     }
 
+    /**
+     * This function adds a game to the visitorGames list
+     *
+     * @param visitor The visitor object that is being added to the list.
+     */
     @Transactional
     public void addVisitorGame(Game visitor) {
         visitorGames.add(visitor);
@@ -153,6 +164,12 @@ public class Team {
         this.numberLosses = numberLosses;
     }
 
+    /**
+     * If the type is greater than 0, increment the number of wins, else if the type is less than 0, increment the number
+     * of losses, else increment the number of draws. In all cases, increment the number of games.
+     *
+     * @param type 1 for win, -1 for loss, 0 for draw
+     */
     public void addNewResult(int type){
         if (type > 0) numberWins++;
         else if (type < 0) numberLosses++;
@@ -160,6 +177,11 @@ public class Team {
         numberGames++;
     }
 
+    /**
+     * Get all the games, sort them by date, and return them.
+     *
+     * @return A list of all games played by the team.
+     */
     public List<Game> getAllGames() {
         List<Game> allGames = new ArrayList<>();
         allGames.addAll(homeGames);

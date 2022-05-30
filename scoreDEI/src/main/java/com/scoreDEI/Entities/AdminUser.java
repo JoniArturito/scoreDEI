@@ -1,3 +1,6 @@
+/**
+ * It's an Admin user
+ */
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,6 +19,11 @@ public class AdminUser extends User{
         super(name, email, phone, password);
     }
 
+    /**
+     * This function returns the type of the object.
+     *
+     * @return The type of the object.
+     */
     @Override
     public int getType() {
         return 1;

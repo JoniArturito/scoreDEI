@@ -1,3 +1,6 @@
+/**
+ * It's a class that represents a player in a football team
+ */
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -120,12 +123,23 @@ public class Player {
         this.goals = goals;
     }
 
+    /**
+     * This function returns the number of goals in the database.
+     *
+     * @return The number of goals in the goals list.
+     */
     @Transactional
     public int getNumberGoals()
     {
         return goals.size();
     }
 
+    /**
+     * This function returns an array of two integers, the first being the number of yellow cards and the second being the
+     * number of red cards.
+     *
+     * @return An array of two integers.
+     */
     @Transactional
     public int[] getNumberCards(){
         int yellow = 0;

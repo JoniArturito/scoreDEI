@@ -1,3 +1,6 @@
+/**
+ * It implements the Comparator interface and compares two GameEvent objects by their date
+ */
 package com.scoreDEI.Others.Sorts;
 
 import com.scoreDEI.Entities.GameEvent;

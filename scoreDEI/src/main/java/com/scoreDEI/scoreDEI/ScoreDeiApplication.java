@@ -1,3 +1,6 @@
+/**
+ * It's a Spring Boot application that scans the current package and all sub-packages for Spring components
+ */
 package com.scoreDEI.scoreDEI;
 
 import org.springframework.boot.SpringApplication;

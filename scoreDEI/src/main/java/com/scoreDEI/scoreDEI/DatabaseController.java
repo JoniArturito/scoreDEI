@@ -1,3 +1,7 @@
+/**
+ * It's a controller that handles the requests to the root of the application, and it also handles the login and logout
+ * requests
+ */
 package com.scoreDEI.scoreDEI;
 
 import com.scoreDEI.Entities.*;
@@ -38,6 +42,11 @@ public class DatabaseController {
     @Autowired
     EventService eventService;
 
+    /**
+     * This function redirects the user to the game list page
+     *
+     * @return A redirect to the game list page.
+     */
     @GetMapping("/")
     public String redirect(){
         try {
@@ -47,17 +56,36 @@ public class DatabaseController {
         }
     }
 
+    /**
+     * It redirects the user to the error page
+     *
+     * @return A redirect to the error page.
+     */
     @GetMapping("/error")
     public String error(){
         return "redirect:/error/";
     }
 
+    /**
+     * The function takes a Model object as a parameter, adds a new UserForm object to the model, and returns the name of
+     * the view to be rendered
+     *
+     * @param m The model object.
+     * @return A string that is the name of the html file that is being returned.
+     */
     @GetMapping("/login")
     public String login(Model m) {
         m.addAttribute("userForm", new UserForm());
         return "login";
     }
 
+    /**
+     * The function takes in a user's email and password, hashes the password, and then checks if the user exists in the
+     * database. If the user exists, the user is added to the session
+     *
+     * @param form The form object that will be used to get the parameters from the form.
+     * @return A redirect to the game list page.
+     */
     @PostMapping("/login")
     public String login(@ModelAttribute UserForm form) {
         try {
@@ -86,6 +114,15 @@ public class DatabaseController {
         }
     }
 
+    /**
+     * "Create a new filter registration bean, set the filter to be an instance of the AuthenticationFilter class, add the
+     * URL patterns that the filter should be applied to, and set the order of the filter to be 1."
+     *
+     * The first line of the function creates a new FilterRegistrationBean object. This is a Spring class that allows us to
+     * register a filter with the Spring framework
+     *
+     * @return A FilterRegistrationBean
+     */
     @Bean
     public FilterRegistrationBean<AuthenticationFilter> authFilter() {
         FilterRegistrationBean<AuthenticationFilter> bean = new FilterRegistrationBean<>();
@@ -101,6 +138,11 @@ public class DatabaseController {
         return bean;
     }
 
+    /**
+     * This function is called when the user tries to access a page that they are not authorized to access
+     *
+     * @return A string
+     */
     @GetMapping("/forbidden")
     public String forbidden() {
         try {
@@ -110,6 +152,15 @@ public class DatabaseController {
         }
     }
 
+    /**
+     * "Create a new FilterRegistrationBean, set the filter to be the AdminFilter, add the URL patterns that the filter
+     * should be applied to, and set the order to 2."
+     *
+     * The first line of the function creates a new FilterRegistrationBean. This is a Spring class that allows us to
+     * register a filter with Spring
+     *
+     * @return A FilterRegistrationBean
+     */
     @Bean
     public FilterRegistrationBean<AdminFilter> adminAccessFilter() {
         FilterRegistrationBean<AdminFilter> bean = new FilterRegistrationBean<>();
@@ -142,6 +193,11 @@ public class DatabaseController {
         return bean;
     }
 
+    /**
+     * If the user is logged in, log them out and redirect them to the game list page.
+     *
+     * @return A redirect to the game list page.
+     */
     @GetMapping("/logout")
     public String logout() {
 
@@ -154,6 +210,11 @@ public class DatabaseController {
         return "redirect:/game/list";
     }
 
+    /**
+     * This function is used to create data
+     *
+     * @return A string
+     */
     @GetMapping({"/createData"})
     public String createData() {
         try {
@@ -163,6 +224,12 @@ public class DatabaseController {
         }
     }
 
+    /**
+     * It adds two admin users and five regular users to the database
+     *
+     * @param m Model object
+     * @return A string
+     */
     @PostMapping("/saveData")
     public String saveData(Model m) {
         try {

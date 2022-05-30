@@ -1,3 +1,6 @@
+/**
+ * It's a form that contains a game and a boolean that indicates if the card is yellow or not
+ */
 package com.scoreDEI.Forms;
 
 import com.scoreDEI.Entities.Game;

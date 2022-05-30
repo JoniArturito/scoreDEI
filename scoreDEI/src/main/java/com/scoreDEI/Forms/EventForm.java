@@ -1,3 +1,6 @@
+/**
+ * It's a form that contains the game and the type of event
+ */
 package com.scoreDEI.Forms;
 
 public class EventForm {

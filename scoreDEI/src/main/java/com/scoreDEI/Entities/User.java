@@ -1,3 +1,6 @@
+/**
+ * It's a class that represents a user in the database
+ */
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -74,6 +77,11 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * This function returns 0.
+     *
+     * @return The type of the object.
+     */
     public int getType()
     {
         return 0;

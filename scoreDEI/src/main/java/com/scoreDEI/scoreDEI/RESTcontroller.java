@@ -1,3 +1,6 @@
+/**
+ * It's a REST controller that handles requests to the API
+ */
 package com.scoreDEI.scoreDEI;
 
 import com.google.gson.*;
@@ -19,9 +22,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
@@ -49,6 +50,12 @@ public class RESTcontroller {
     String x_rapidapi_host = "v3.football.api-sports.io";
     String x_rapidapi_key = "b6531a49c7eeb0a1ea6ec42eee699496";//Type here your key
 
+    /**
+     * This function is used to check the status of the API
+     *
+     * @param model This is the model object that will be used to pass data to the view.
+     * @return A JSON object containing the status of the API.
+     */
     @GetMapping(value = "/checkstatus", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String checkAPIStatus(Model model) throws Exception {
         HttpResponse<JsonNode> response = Unirest.get(host.concat("status"))
@@ -68,6 +75,14 @@ public class RESTcontroller {
         return prettyJsonString;
     }
 
+    /**
+     * It takes in a league and season, makes a request to the API, parses the response, and adds the teams to the database
+     *
+     * @param league The league ID.
+     * @param season The year of the season (e.g. 2019)
+     * @param model This is the model that will be passed to the view.
+     * @return A JSON string.
+     */
     @GetMapping(value = "getTeams", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String getTeamsFromAPI(@RequestParam(name = "league", required=true) int league, @RequestParam(name = "season", required=true) int season, Model model) throws Exception{
         String query = String.format("?league=%d&season=%d",
@@ -109,6 +124,15 @@ public class RESTcontroller {
         return prettyJsonString;
     }
 
+    /**
+     * It gets the players from the API and saves them in the database
+     *
+     * @param league The league ID.
+     * @param season The season of the league.
+     * @param page The page number of the results.
+     * @param model The model object is used to pass data from the controller to the view.
+     * @return JSON
+     */
     @GetMapping(value = "getPlayers", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String getPlayersFromAPI(@RequestParam(name = "league", required=true) int league, @RequestParam(name = "season", required=true) int season, @RequestParam(name = "page", required = true, defaultValue = "1") int page, Model model) throws Exception{
         String query = String.format("?league=%d&season=%d&page=%d",

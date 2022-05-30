@@ -1,3 +1,6 @@
+/**
+ * It reads a JSON file and prints the data to the console
+ */
 package APIFiles;
 
 import com.google.gson.*;

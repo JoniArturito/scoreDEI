@@ -1,3 +1,6 @@
+/**
+ * It's a form that contains the fields that are needed to create a new player
+ */
 package com.scoreDEI.Forms;
 
 import java.sql.Date;

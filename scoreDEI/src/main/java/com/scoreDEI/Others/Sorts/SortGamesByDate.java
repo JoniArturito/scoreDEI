@@ -1,3 +1,6 @@
+/**
+ * It implements the Comparator interface and compares two Game objects by their beginDate attribute
+ */
 package com.scoreDEI.Others.Sorts;
 
 import com.scoreDEI.Entities.Game;

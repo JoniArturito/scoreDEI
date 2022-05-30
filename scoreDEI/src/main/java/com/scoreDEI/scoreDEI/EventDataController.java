@@ -1,3 +1,6 @@
+/**
+ * This class is responsible for the event registration and edition
+ */
 package com.scoreDEI.scoreDEI;
 
 import com.scoreDEI.Entities.*;
@@ -30,6 +33,12 @@ public class EventDataController {
     @Autowired
     PlayerService playerService;
 
+    /**
+     * This function is used to register an event
+     *
+     * @param model This is the model that will be passed to the view.
+     * @return A form to register an event.
+     */
     @GetMapping("/register")
     public String registerEventForm(Model model) {
         try {
@@ -42,6 +51,12 @@ public class EventDataController {
         }
     }
 
+    /**
+     * It takes the form data from the user and redirects them to the appropriate page to register the event
+     *
+     * @param form the form that contains the information about the event
+     * @return A string
+     */
     @PostMapping("/register")
     public String registerEventSubmit(@ModelAttribute EventForm form) {
         try {
@@ -70,6 +85,16 @@ public class EventDataController {
         }
     }
 
+    /**
+     * If the game exists, and the game hasn't ended, and the game has begun, and the event type is correct, then return
+     * the form to register the event
+     *
+     * @param name the name of the game
+     * @param type 0 - beginning, 1 - ending, 2 - pause, 3 - resume
+     * @param model the model that will be used to render the view
+     * @param redirAttrs RedirectAttributes is a Spring object that allows us to pass attributes to the next request.
+     * @return A form to register a game status event.
+     */
     @GetMapping("/register/gameStatus")
     public String registerGameStatusForm(@RequestParam(name="name") String name, @RequestParam(name="type") int type, Model model, RedirectAttributes redirAttrs) {
         try {
@@ -125,6 +150,14 @@ public class EventDataController {
         }
     }
 
+    /**
+     * It gets the beginning of the game, and then gets the most recent event time of the game, and then returns the
+     * interval between the two
+     *
+     * @param game the game object that we want to get the events for
+     * @return The method returns a String array with two elements. The first element is the time of the most recent event
+     * of the game. The second element is the time of the end of the game.
+     */
     private String[] getInterval(Game game) {
         String[] interval;
         Optional<Time> opBeginTime = this.eventService.getBeginningOfGame(game);
@@ -146,6 +179,14 @@ public class EventDataController {
         return interval;
     }
 
+    /**
+     * It takes a form, checks if the game exists, and if it does, it creates a new event and adds it to the database
+     *
+     * @param form the form object that is used to collect the data from the form.
+     * @param model The model object that is used to store data that will be used by the view.
+     * @param redirAttrs RedirectAttributes is a Spring object that allows you to add attributes to the redirect.
+     * @return A string
+     */
     @PostMapping(value = "/register/gameStatus")
     public String registerGameStatusSubmit(@ModelAttribute GameStatusForm form, Model model, RedirectAttributes redirAttrs) {
         try {
@@ -176,6 +217,15 @@ public class EventDataController {
 
     }
 
+    /**
+     * If the game exists, and it hasn't ended, and it has begun, and the most recent event isn't an interruption, then show the
+     * form to register a goal
+     *
+     * @param name the name of the game
+     * @param model the model that will be used to render the view
+     * @param redirAttrs RedirectAttributes is a class that allows us to add attributes to the redirect.
+     * @return A form to register a goal event.
+     */
     @GetMapping("/register/goal")
     public String registerGoalForm(@RequestParam(name="name") String name, Model model, RedirectAttributes redirAttrs) {
         Optional<Game> opGame = this.gameService.getGame(name);
@@ -236,6 +286,15 @@ public class EventDataController {
         return "redirect:/event/register";
     }
 
+    /**
+     * It takes a form, checks if the game exists, checks if the player exists, checks if the player has already received a
+     * red card, and if all of those are true, it registers the goal
+     *
+     * @param form The form object that is used to get the data from the form.
+     * @param model The model is a Map of key-value pairs that will be passed to the view.
+     * @param redirAttrs RedirectAttributes is a Spring object that allows you to add attributes to the redirect.
+     * @return A redirect to the register page.
+     */
     @PostMapping("/register/goal")
     public String registerGoalSubmit(@ModelAttribute GoalForm form, Model model, RedirectAttributes redirAttrs) {
         try {
@@ -265,6 +324,17 @@ public class EventDataController {
 
     }
 
+    /**
+     * It gets the game name and the card color from the request parameters, checks if the game exists, if it has already
+     * ended, if it has already begun, if the last event wasn't an interruption. If
+     * all of these conditions are met, it returns the registerCard view
+     *
+     * @param name the name of the game
+     * @param isYellow boolean that indicates if the card is yellow or red
+     * @param model the model that will be used to render the view
+     * @param redirAttrs used to send a message to the user
+     * @return A form to register a card event.
+     */
     @GetMapping("/register/card")
     public String registerCardForm(@RequestParam(name="name") String name, @RequestParam(name="isYellow") boolean isYellow, Model model, RedirectAttributes redirAttrs) {
         try {
@@ -313,6 +383,14 @@ public class EventDataController {
         }
     }
 
+    /**
+     * It registers a card event.
+     *
+     * @param form the form that is used to register a card event
+     * @param model The model object that is used to pass data to the view.
+     * @param redirAttrs RedirectAttributes is a Spring object that allows you to pass attributes to the next request.
+     * @return A string
+     */
     @PostMapping("/register/card")
     public String registerCardSubmit(@ModelAttribute CardForm form, Model model, RedirectAttributes redirAttrs) {
         try {
@@ -346,73 +424,6 @@ public class EventDataController {
 
             return "redirect:/event/register";
         } catch (Exception e) {
-            return "redirect:/error/";
-        }
-    }
-
-    @GetMapping("/edit/location")
-    public String updateLocation(@RequestParam(name="id") int id, Model model, RedirectAttributes redirAttrs) {
-        try {
-            Optional<Game> game = this.gameService.getGame(id);
-
-            if(game.isPresent()) {
-                model.addAttribute("gameForm", new GameForm());
-                model.addAttribute("game", game.get());
-
-                return "game/updateLocation";
-            }
-
-            redirAttrs.addFlashAttribute("error", "The game does not exist!");
-            return "redirect:/game/list";
-        } catch (Exception e) {
-            return "redirect:/error/";
-        }
-    }
-
-    @PostMapping("/edit/location")
-    public String updateLocation(@RequestParam(name="id") int id,
-                                 @ModelAttribute GameForm form, Model model, RedirectAttributes redirAttrs) {
-        try {
-            model.addAttribute("gameForm", form);
-
-            Optional<Game> game = this.gameService.getGame(id);
-            String location = form.getLocation();
-
-            if(game.isPresent()) {
-                boolean success = this.gameService.updateLocation(id, location);
-                if(success) {
-                    redirAttrs.addFlashAttribute("success", String.format("Game location changed to %s!",
-                            location));
-                } else redirAttrs.addFlashAttribute("error", "Failed to location!");
-
-                return String.format("redirect:/game/profile?id=%d", id);
-            }
-
-            redirAttrs.addFlashAttribute("error", "The game does not exist!");
-            return "redirect:/game/list";
-        } catch (Exception e) {
-            return "redirect:/error/";
-        }
-    }
-
-    @GetMapping("/delete")
-    public String deleteEvent(@RequestParam(name = "id") int id, Model model) {
-        try {
-            model.addAttribute("id", id);
-            return "game/delete";
-        } catch (Exception e) {
-            return "redirect:/error/";
-        }
-    }
-
-    @PostMapping("/delete")
-    public String deleteEventConfirm(@RequestParam(name = "id") int id, RedirectAttributes redirAttrs){
-        try{
-            this.eventService.deleteEvent(id);
-            redirAttrs.addFlashAttribute("success", "Event deleted!");
-            return "redirect:/game/list";
-        } catch (Exception e) {
-            redirAttrs.addFlashAttribute("error", "Failed to delete event!");
             return "redirect:/error/";
         }
     }

@@ -1,3 +1,6 @@
+/**
+ * This class is used to represent the status of a game
+ */
 package com.scoreDEI.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

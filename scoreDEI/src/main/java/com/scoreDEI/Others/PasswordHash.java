@@ -1,3 +1,6 @@
+/**
+ * It takes a string, hashes it with SHA-256, and returns the hash as a hexadecimal string
+ */
 package com.scoreDEI.Others;
 
 import java.math.BigInteger;
@@ -9,6 +12,12 @@ import java.util.Scanner;
 
 public class PasswordHash {
 
+    /**
+     * Get the SHA-256 hash of the given string.
+     *
+     * @param plainTextPassword The password you want to hash.
+     * @return A byte array of the hashed password.
+     */
     public static byte[] getSha(String plainTextPassword) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -19,6 +28,12 @@ public class PasswordHash {
         }
     }
 
+    /**
+     * Convert the byte array to a BigInteger, then convert the BigInteger to a hex string.
+     *
+     * @param hash The byte array to convert to hex
+     * @return A string of the hexadecimal representation of the hash.
+     */
     public static String toHexString(byte[] hash) {
         BigInteger number =  new BigInteger(1, hash);
         StringBuilder hexString = new StringBuilder(number.toString(16));

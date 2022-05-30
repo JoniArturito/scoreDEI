@@ -1,3 +1,6 @@
+/**
+ * It's a form that contains a name and a multipart file
+ */
 package com.scoreDEI.Forms;
 
 import org.springframework.web.multipart.MultipartFile;
