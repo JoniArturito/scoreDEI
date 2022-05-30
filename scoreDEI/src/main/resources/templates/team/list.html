@@ -20,7 +20,7 @@
         <a th:if="${session.user?.getType()==1}" href="/team/register">Register team</a>
       </div>
 
-      <div class="scorer">
+      <div class="scorer" th:if="${Eusebio != null}">
         <h2>Best Scorer</h2>
         <table border="1">
           <tr>

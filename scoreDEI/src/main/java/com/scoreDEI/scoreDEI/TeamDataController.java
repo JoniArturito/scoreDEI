@@ -68,11 +68,13 @@ public class TeamDataController {
             Optional<Player> opScorer = this.playerService.getBestScorer();
             if (opScorer.isPresent()) {
                 Player scorer = opScorer.get();
-                model.addAttribute("teams", this.teamService.getOrderedTeams());
                 model.addAttribute("Eusebio", scorer);
-                return "/team/list";
             }
-            return "redirect:/error/";
+            else{
+                model.addAttribute("Eusebio", null);
+            }
+            model.addAttribute("teams", this.teamService.getOrderedTeams());
+            return "/team/list";
         } catch (Exception e) {
             return "redirect:/error/";
         }
