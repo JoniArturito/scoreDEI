@@ -150,6 +150,8 @@ public class RESTcontroller {
         JsonElement je = jp.parse(String.valueOf(response.getBody()));
         JsonObject myObject = je.getAsJsonObject();
         JsonArray myArray = myObject.get("response").getAsJsonArray();
+        String prettyJsonString = gson.toJson(je);
+        System.out.println(prettyJsonString);
         for (JsonElement resp: myArray) {
             JsonObject respObjectPlayer = resp.getAsJsonObject();
             JsonObject jsonPlayer = respObjectPlayer.getAsJsonObject("player");
@@ -176,18 +178,23 @@ public class RESTcontroller {
             System.out.println(position);
             System.out.println(dateString);
              */
-            Date date = Date.valueOf(dateString);
+            Date date;
+            if (dateString == null || dateString.equals("null")){
+                date = Date.valueOf("1900-01-01");
+            }
+            else{
+                date = Date.valueOf(dateString);
+            }
             Optional<Team> opTeam = teamService.getTeam(teamName);
             if (opTeam.isPresent()) {
                 Team team = opTeam.get();
                 Player dbPlayer = new Player(name, position, date, team);
                 dbPlayer.setUrlPhoto(photoURL);
-                playerService.addPlayer(dbPlayer);
+                if (!this.playerService.isPlayerExist(dbPlayer)) {
+                    playerService.addPlayer(dbPlayer);
+                }
             }
         }
-
-        String prettyJsonString = gson.toJson(je);
-        System.out.println(prettyJsonString);
 
         return prettyJsonString;
     }
