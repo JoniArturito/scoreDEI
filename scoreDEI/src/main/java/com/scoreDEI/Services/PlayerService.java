@@ -42,6 +42,7 @@ public class PlayerService {
     {
         List<Player> allPlayers = new ArrayList<>();
         playerRepository.findAll().forEach(allPlayers::add);
+        if (allPlayers.size() == 0) return Optional.empty();
         for (Player player: allPlayers)
         {
             System.out.printf("%s -> %d\n", player, player.getNumberGoals());
