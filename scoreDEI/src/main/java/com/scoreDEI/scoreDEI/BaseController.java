@@ -97,14 +97,13 @@ public class BaseController {
 
             if(user.isPresent()) {
                 session.setAttribute("user", user.get());
-                session.setAttribute("login", true);
-                session.setAttribute("logout", null);
+                session.setAttribute("logout", true);
+                session.setAttribute("login", false);
 
                 if(user.get().getType() == 1) session.setAttribute("admin", user.get());
                 else session.setAttribute("admin", null);
             } else {
                 session.setAttribute("user", null);
-
             }
 
             return "redirect:/game/list";

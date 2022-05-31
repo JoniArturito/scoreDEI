@@ -17,15 +17,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_gen")
     @Column(name = "userId", nullable = false)
-    private int userId;
+    protected int userId;
     @Column(name = "name", nullable = false)
-    private String name;
+    protected String name;
     @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    protected String email;
     @Column(name = "phone", nullable = false, unique = true)
-    private Long phone;
+    protected Long phone;
     @Column(name = "password", nullable = false)
-    private String password;
+    protected String password;
 
     public User() {
     }
