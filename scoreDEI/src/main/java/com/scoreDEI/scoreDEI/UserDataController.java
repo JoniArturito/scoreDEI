@@ -216,7 +216,8 @@ public class UserDataController {
         try {
             model.addAttribute("editForm", form);
 
-            String email = form.getUsername();
+            String email = form.getEmail();
+            System.out.println(email);
             boolean feedback = userService.updateEmail(id, email);
             if(feedback) {
                 redirAttrs.addFlashAttribute("success", String.format("Email changed to %s!", email));
@@ -327,8 +328,8 @@ public class UserDataController {
         try {
             model.addAttribute("editForm", form);
 
-            long phone = form.getPhone();
-            boolean feedback = userService.updatePhone(id, phone);
+            String newPass = PasswordHash.toHexString(PasswordHash.getSha(form.getPassword()));
+            boolean feedback = userService.updatePassword(id, newPass);
             if(feedback) {
                 redirAttrs.addFlashAttribute("success", "Password changed!");
             } else redirAttrs.addFlashAttribute("error", "Failed to change password!");

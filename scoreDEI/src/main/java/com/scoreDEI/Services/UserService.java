@@ -192,8 +192,10 @@ public class UserService {
         Optional<User> u = this.getUser(id);
 
         if(u.isPresent()) {
-            u.get().setEmail(email);
-            return true;
+            User user = u.get();
+            //user.setEmail(email);
+            //return true;
+            return userRepository.updateEmail(email, user.getUserId()) > 0;
         }
 
         return false;
