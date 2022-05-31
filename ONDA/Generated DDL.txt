@@ -18,9 +18,13 @@ CREATE TABLE admin_user (
 );
 
 CREATE TABLE team (
-	id	 BIGINT,
-	name VARCHAR(512) UNIQUE NOT NULL,
-	logo BYTEA,
+	id		 BIGINT,
+	name	 VARCHAR(512) UNIQUE NOT NULL,
+	logo	 BYTEA,
+	numbergames	 INTEGER DEFAULT 0,
+	numberwins	 INTEGER DEFAULT 0,
+	numberdraws	 INTEGER DEFAULT 0,
+	numberlosses INTEGER DEFAULT 0,
 	PRIMARY KEY(id)
 );
 
@@ -29,6 +33,7 @@ CREATE TABLE player (
 	name	 VARCHAR(512) NOT NULL,
 	position VARCHAR(512) NOT NULL,
 	birthday DATE NOT NULL,
+	urlphoto VARCHAR(512),
 	team_id	 BIGINT NOT NULL,
 	PRIMARY KEY(id)
 );
@@ -43,9 +48,8 @@ CREATE TABLE game (
 );
 
 CREATE TABLE game_event (
-	id		 INTEGER,
-	eventdate	 TIMESTAMP,
-	default_user_id INTEGER NOT NULL,
+	id	 INTEGER,
+	eventdate TIMESTAMP,
 	game_id	 BIGINT NOT NULL,
 	PRIMARY KEY(id)
 );
@@ -74,8 +78,7 @@ ALTER TABLE admin_user ADD CONSTRAINT admin_user_fk1 FOREIGN KEY (default_user_i
 ALTER TABLE player ADD CONSTRAINT player_fk1 FOREIGN KEY (team_id) REFERENCES team(id);
 ALTER TABLE game ADD CONSTRAINT game_fk1 FOREIGN KEY (team_id) REFERENCES team(id);
 ALTER TABLE game ADD CONSTRAINT game_fk2 FOREIGN KEY (team_id1) REFERENCES team(id);
-ALTER TABLE game_event ADD CONSTRAINT game_event_fk1 FOREIGN KEY (default_user_id) REFERENCES default_user(id);
-ALTER TABLE game_event ADD CONSTRAINT game_event_fk2 FOREIGN KEY (game_id) REFERENCES game(id);
+ALTER TABLE game_event ADD CONSTRAINT game_event_fk1 FOREIGN KEY (game_id) REFERENCES game(id);
 ALTER TABLE goal ADD CONSTRAINT goal_fk1 FOREIGN KEY (player_id) REFERENCES player(id);
 ALTER TABLE goal ADD CONSTRAINT goal_fk2 FOREIGN KEY (game_event_id) REFERENCES game_event(id);
 ALTER TABLE card ADD CONSTRAINT card_fk1 FOREIGN KEY (player_id) REFERENCES player(id);
