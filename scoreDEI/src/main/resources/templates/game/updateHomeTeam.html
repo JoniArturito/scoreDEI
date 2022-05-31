@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="João Artur & Rui Marques">
@@ -36,7 +36,7 @@
 
                     <div class="formCommands">
                         <input type="submit" value="Save">
-                        <a class="cancel" th:href="@{game/profile(id=${game.getGameId()})}"> Cancel </a>
+                        <a class="cancel" th:href="@{/game/profile(id=${game.getGameId()})}"> Cancel </a>
                     </div>
                 </form>
             </div>
