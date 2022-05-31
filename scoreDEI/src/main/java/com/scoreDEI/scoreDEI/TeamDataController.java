@@ -33,12 +33,6 @@ public class TeamDataController {
     @Autowired
     PlayerService playerService;
 
-    @Autowired
-    GameService gameService;
-
-    @Autowired
-    EventService eventService;
-
     /**
      * This function is used to display the registration form for a new team
      *

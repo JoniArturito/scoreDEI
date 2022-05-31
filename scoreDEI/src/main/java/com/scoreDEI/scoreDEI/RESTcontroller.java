@@ -28,20 +28,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("rest")
 public class RESTcontroller {
-    @Autowired
-    UserService userService;
 
     @Autowired
     TeamService teamService;
 
     @Autowired
     PlayerService playerService;
-
-    @Autowired
-    GameService gameService;
-
-    @Autowired
-    EventService eventService;
 
     // Host url
     String host = "https://v3.football.api-sports.io/";

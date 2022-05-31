@@ -26,21 +26,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class DatabaseController {
+public class Base {
     @Autowired
     UserService userService;
-
-    @Autowired
-    TeamService teamService;
-
-    @Autowired
-    PlayerService playerService;
-
-    @Autowired
-    GameService gameService;
-
-    @Autowired
-    EventService eventService;
 
     /**
      * This function redirects the user to the game list page
