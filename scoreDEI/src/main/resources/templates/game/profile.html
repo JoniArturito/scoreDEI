@@ -81,8 +81,8 @@
                                     <a style="{color:black; font-size: 18px}" text="Default message">Default. </a>
                                 </div>
                                 <div th:if="${event?.getTypeEvent()==1}">
-                                    <a style="{color:black; font-size: 18px}" th:if="${event.isYellow()}">Yellow Card </a>
-                                    <a style="{color:black; font-size: 18px}" th:if="${!event.isYellow()}">Red Card </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${event.isYellow()}" th:text="${'Yellow Card to ' + event.getPlayer().getName()}">Yellow Card </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${!event.isYellow()}" th:text="${'Red Card to ' + event.getPlayer().getName()}">Red Card </a>
                                 </div>
                                 <div th:if="${event?.getTypeEvent()==2}">
                                     <a style="{color:black; font-size: 18px}" th:if="${event.getType()==0}">Game Started </a>
@@ -91,7 +91,7 @@
                                     <a style="{color:black; font-size: 18px}" th:if="${event.getType()==3}">Game Resumed </a>
                                 </div>
                                 <div th:if="${event?.getTypeEvent()==3}">
-                                    <a style="{color:black; font-size: 18px}" th:if="${event?.getTypeEvent()==3}" text="Goal Event">Goal Event </a>
+                                    <a style="{color:black; font-size: 18px}" th:if="${event?.getTypeEvent()==3}" th:text="${'Goal of ' + event.getPlayer().getName()}">Goal Event </a>
                                 </div>
                             </td>
                         </tr>

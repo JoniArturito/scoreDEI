@@ -298,8 +298,9 @@ public class TeamDataController {
     public String deleteTeamConfirm(@RequestParam(name = "id", required = true) int id, Model model){
         try{
             this.teamService.deleteTeam(id);
-            return "redirect:/player/list";
+            return "redirect:/team/list";
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "redirect:/error/";
         }
     }

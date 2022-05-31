@@ -157,9 +157,31 @@ public class TeamService {
         if (opTeam.isPresent()) {
             Team team = opTeam.get();
             for (Game g: team.getHomeGames()) {
+                int homeScore = teamRepository.getTeamScore(g, team);
+                int visitorScore = teamRepository.getTeamScore(g, g.getVisitorTeam());
+                if (homeScore - visitorScore > 0) {
+                    teamRepository.deleteLoss(g.getVisitorTeam().getTeamId());
+                }
+                else if (homeScore - visitorScore < 0) {
+                    teamRepository.deleteWin(g.getVisitorTeam().getTeamId());
+                }
+                else{
+                    teamRepository.deleteDraw(g.getVisitorTeam().getTeamId());
+                }
                 teamRepository.deleteGameEvents(g);
             }
             for (Game g: team.getVisitorGames()) {
+                int homeScore = teamRepository.getTeamScore(g, g.getHomeTeam());
+                int visitorScore = teamRepository.getTeamScore(g, team);
+                if (homeScore - visitorScore > 0) {
+                    teamRepository.deleteWin(g.getHomeTeam().getTeamId());
+                }
+                else if (homeScore - visitorScore < 0) {
+                    teamRepository.deleteLoss(g.getHomeTeam().getTeamId());
+                }
+                else{
+                    teamRepository.deleteDraw(g.getHomeTeam().getTeamId());
+                }
                 teamRepository.deleteGameEvents(g);
             }
             teamRepository.deleteGames(team);

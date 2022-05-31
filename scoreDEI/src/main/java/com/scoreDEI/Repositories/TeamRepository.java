@@ -63,4 +63,26 @@ public interface TeamRepository extends CrudRepository<Team, Integer> {
     @Modifying
     @Query("DELETE FROM Player p WHERE p.team = ?1")
     public void deletePlayers(Team t);
+
+    /**
+     * Get the number of goals scored by a team in a game.
+     *
+     * @param game The game we want to get the score for
+     * @param team The team to get the score for
+     * @return The number of goals scored by a team in a game.
+     */
+    @Query("SELECT COUNT(t) FROM Goal t WHERE t.game = ?1 AND t.player.team = ?2")
+    public int getTeamScore(Game game, Team team);
+
+    @Modifying
+    @Query("UPDATE Team t SET t.numberWins = t.numberWins - 1, t.numberGames = t.numberGames - 1 WHERE t.teamId = ?1")
+    public void deleteWin(int teamId);
+
+    @Modifying
+    @Query("UPDATE Team t SET t.numberLosses = t.numberLosses - 1, t.numberGames = t.numberGames - 1 WHERE t.teamId = ?1")
+    public void deleteLoss(int teamId);
+
+    @Modifying
+    @Query("UPDATE Team t SET t.numberDraws = t.numberDraws - 1, t.numberGames = t.numberGames - 1 WHERE t.teamId = ?1")
+    public void deleteDraw(int teamId);
 }
