@@ -12,7 +12,8 @@
             <a href="/team/list">Teams</a>
             <a href="/player/list">Players</a>
             <a href="/user/list">Users</a>
-            <a href="/logout">Logout</a>
+            <a th:if="${session.logout}" href="/logout">Logout</a>
+            <a th:if="${session.login}" href="/login">Login</a>
         </div>
         <div th:if="${session.user?.getType()!=1}" class="menu">
             <h2 id="logo">scoreDEI</h2>

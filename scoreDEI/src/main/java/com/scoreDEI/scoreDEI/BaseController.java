@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class Base {
+public class BaseController {
     @Autowired
     UserService userService;
 
@@ -97,12 +97,11 @@ public class Base {
 
             if(user.isPresent()) {
                 session.setAttribute("user", user.get());
+                session.setAttribute("login", true);
+                session.setAttribute("logout", null);
+
                 if(user.get().getType() == 1) session.setAttribute("admin", user.get());
-                else {
-                    session.setAttribute("admin", null);
-                    session.setAttribute("login", true);
-                    session.setAttribute("logout", null);
-                }
+                else session.setAttribute("admin", null);
             } else {
                 session.setAttribute("user", null);
 
