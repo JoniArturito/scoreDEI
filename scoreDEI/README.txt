@@ -2,7 +2,7 @@ Sistemas Distribuídos, edição 2021/ 2022
 Licenciatura em Engenharia Informática, 
 Faculdade de Ciência e Tecnologias da Universidade de Coimbra
 
-ucDrive, desenvolvido por:
+scoreDEI, desenvolvido por:
  - João Filipe Guiomar Artur, 2019217853
  - Rui Eduardo Carvalho Marques, 2019216539
 
@@ -21,17 +21,20 @@ Para testar as aplicações desenvolvidas, efetuar os seguintes passos.
 	2.2) Para popular a base de dados, introduzir os seguintes URLs:
 
 		http://localhost:8080/createData
-		http://localhost:8080/rest/getTeams?league=England&season=2021
-		http://localhost:8080/rest/getPlayers?league=England&season=2021
 
-	2.3) Para efetuar autenticação:
+		Os URLs do REST Controller devem ser executados no Postman:
+
+			http://localhost:8080/rest/getTeams?league=39&season=2021
+			http://localhost:8080/rest/getPlayers?league=39&season=2021
+
+	2.3) Para efetuar autenticação: 
 
 		Utilizador administrador:
 			Email: admin@mail.com
 			Password: 123
 
-		Utilizador administrador:
-			Email: aaaa@mail.com
+		Utilizador normal:
+			Email: aaaa@gmail.com
 			Password: 1234
 
 	2.4) Testar a aplicação.
