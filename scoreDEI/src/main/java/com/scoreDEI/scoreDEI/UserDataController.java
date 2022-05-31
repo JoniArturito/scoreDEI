@@ -225,6 +225,7 @@ public class UserDataController {
 
             return String.format("redirect:/user/profile?id=%d", id);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "redirect:/error/";
         }
     }
@@ -251,6 +252,7 @@ public class UserDataController {
             redirAttrs.addFlashAttribute("error", "User does not exist!");
             return "redirect:/user/list";
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "redirect:/error/";
         }
     }
