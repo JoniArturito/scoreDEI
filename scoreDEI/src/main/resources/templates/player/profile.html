@@ -33,6 +33,10 @@
                 </div>
 
                 <div class="contentElement">
+
+                    <div class="successAlert" role="alert" th:text="${success}" th:if="${success}"></div>
+                    <div class="errorAlert" role="alert" th:text="${error}" th:if="${error}"></div>
+
                     <table class="default_table">
                         <caption>Player info</caption>
                         <tr>

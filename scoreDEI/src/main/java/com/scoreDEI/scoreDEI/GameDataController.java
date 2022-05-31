@@ -163,6 +163,11 @@ public class GameDataController {
                 model.addAttribute("game", game.get());
                 model.addAttribute("teams", this.teamService.getAllTeams());
 
+                if(eventService.beginningGameExists(game.get())) {
+                    redirAttrs.addFlashAttribute("error", "The game has already begun!");
+                    return "redirect:/game/list";
+                }
+
                 return "game/updateHomeTeam";
             }
 
@@ -224,6 +229,11 @@ public class GameDataController {
                 model.addAttribute("game", game.get());
                 model.addAttribute("teams", this.teamService.getAllTeams());
 
+                if(eventService.beginningGameExists(game.get())) {
+                    redirAttrs.addFlashAttribute("error", "The game has already begun!");
+                    return "redirect:/game/list";
+                }
+
                 return "game/updateVisitorTeam";
             }
 
@@ -283,6 +293,11 @@ public class GameDataController {
             if(game.isPresent()) {
                 model.addAttribute("gameForm", new GameForm());
                 model.addAttribute("game", game.get());
+
+                if(eventService.beginningGameExists(game.get())) {
+                    redirAttrs.addFlashAttribute("error", "The game has already begun!");
+                    return "redirect:/game/list";
+                }
 
                 return "game/updateLocation";
             }
@@ -345,6 +360,11 @@ public class GameDataController {
             if(game.isPresent()) {
                 model.addAttribute("gameForm", new GameForm());
                 model.addAttribute("game", game.get());
+
+                if(eventService.beginningGameExists(game.get())) {
+                    redirAttrs.addFlashAttribute("error", "The game has already begun!");
+                    return "redirect:/game/list";
+                }
 
                 return "game/updateDate";
             }
