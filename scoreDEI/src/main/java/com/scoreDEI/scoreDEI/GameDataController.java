@@ -134,6 +134,7 @@ public class GameDataController {
                 model.addAttribute("game", g);
                 model.addAttribute("events", gameEvents);
                 model.addAttribute("score", gameService.getScore(g));
+                model.addAttribute("beginGame", eventService.beginningGameExists(g));
                 return "/game/profile";
             }
 

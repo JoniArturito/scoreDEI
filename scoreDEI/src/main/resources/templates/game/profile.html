@@ -18,7 +18,7 @@
 
             <div  class="header">
                 <h1 class="headerTitle" th:text="${game.getHomeTeam().getName() + ' - ' + game.getVisitorTeam().getName()}"></h1>
-                <div class="userOptions" th:if="${session.user?.getType()==1}">
+                <div class="userOptions" th:if="${session.user?.getType()==1 && beginGame==false}">
                     <a style="{color:black; font-size: 18px}" th:href="@{edit/homeTeam(id=${game.getGameId()})}">Change home team.</a>
                     <a style="{color:black; font-size: 18px}" th:href="@{edit/visitorTeam(id=${game.getGameId()})}">Change visitor team.</a>
                     <a style="{color:black; font-size: 18px}" th:href="@{edit/location(id=${game.getGameId()})}">Change location.</a>
